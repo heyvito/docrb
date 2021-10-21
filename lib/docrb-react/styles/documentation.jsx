@@ -155,16 +155,16 @@ export const BaseReference = styled.span`
 
 export const BaseUnresolved = styled.div`
   border: 1px dotted #D8D8D8;
-  border-radius: 8px 3px 3px 8px;
-  display: flex;
+  border-radius: 10px 3px 3px 10px;
+  display: inline-flex;
   color: white;
   justify-content: center;
   align-content: center;
   align-items: center;
 
   .icon {
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
   }
 
   span {
@@ -180,4 +180,9 @@ export const FromBlock = styled.div`
   a {
     font-size: inherit;
   }
+`;
+
+export const Symbol = styled.span`
+  ${mono};
+  color: #CF91C9;
 `;

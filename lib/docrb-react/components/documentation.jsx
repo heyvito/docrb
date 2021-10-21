@@ -5,16 +5,16 @@ import {
   BaseHorizontalContainer,
   BaseHTMLContent,
   Mono, Faded, AttributeContainer,
-  SectionContainer, ToggleWrapper, SourceLink, SourceCode, FieldList, BaseReference, BaseUnresolved, FromBlock
+  SectionContainer, ToggleWrapper, SourceLink, SourceCode, FieldList, BaseReference, BaseUnresolved, FromBlock, Symbol
 } from "@/styles/documentation";
 import React, { useState } from "react";
 import { Link } from "@/components/link";
-import {cleanFilePath, gitURL, pathOf, prepareAttribute} from "@/lib/index";
+import { cleanFilePath, gitURL, pathOf, prepareAttribute } from "@/lib/index";
 import { Label } from "@/styles/method";
 import { Method } from "@/components/method";
 import { Margin } from "@/styles/positioning";
 import NextLink from "next/link";
-import {Icon} from "@/components/icon";
+import { Icon } from "@/components/icon";
 
 export const Text = ({ children }) => (
   <BaseText>
@@ -41,7 +41,7 @@ export const HorizontalContainer = ({ children }) => (
 )
 
 const Unresolved = ({ obj }) => (
-  <BaseUnresolved><Icon className="icon" name="questionmark" size={15} /> <span>{obj.name}</span></BaseUnresolved>
+  <BaseUnresolved><Icon className="icon" name="questionmark" size={15}/> <span>{obj.contents}</span></BaseUnresolved>
 );
 
 const ChildStructure = ({ name, list }) => (
@@ -104,8 +104,6 @@ export const AttributeList = ({ list, id }) => {
     return null;
   }
 
-  console.log(list);
-
   return (
     <SectionContainer id={id}>
       <Heading>Attributes</Heading>
@@ -133,7 +131,7 @@ const SourceBlock = ({ source }) => {
       </ToggleWrapper>
       <SourceCode expanded={expanded}>
         <Markdown html={source.markdown_source} noMargin/>
-        <FromBlock>Defined in <Link href={gitURL(source)} text={`${cleanFilePath(source)}, ${lineInfo}`} /></FromBlock>
+        <FromBlock>Defined in <Link href={gitURL(source)} text={`${cleanFilePath(source)}, ${lineInfo}`}/></FromBlock>
       </SourceCode>
     </>
   );
@@ -178,10 +176,21 @@ export const FieldBlock = ({ list }) => (
 
 export const Reference = (ref) => {
   if (!ref.ref_path) {
-    console.warn(ref);
-    return null;
+    return <Unresolved obj={ref}/>;
   }
-  return <NextLink href={["/components", ...ref.ref_path].join("/")}>
+
+  let path = [];
+  if (ref.ref_type === "method") {
+    // This one requires an extra step...
+    const components = [...ref.ref_path];
+    const methodName = components.pop();
+    const parentName = components.pop();
+    path = [...components, `${parentName}#${methodName}`];
+  } else {
+    path = ["/components", ...ref.ref_path].join("/");
+  }
+
+  return <NextLink href={path.join("/")}>
     <BaseReference type={ref.ref_type}>
       {ref.contents}
     </BaseReference>
@@ -201,14 +210,17 @@ export const TextBlock = ({ list }) => {
         return <Reference {...i} />;
       case "html":
         return <Markdown html={i.contents}/>;
+      case "sym_ref":
+        return <Symbol>{i.contents}</Symbol>
       default:
         return <div>Unknown textblock item {i.type} {JSON.stringify(i, undefined, 4)}</div>
     }
   }
-
-  return list.map((i, idx) => (
-    <span key={idx}>{renderContent(i)}</span>
-  ));
+  return <p>
+    {list.map((i, idx) => (
+      <span key={idx}>{renderContent(i)}</span>
+    ))}
+  </p>;
 }
 
 export const DocumentationBlock = ({ doc, noMargin, id }) => {
