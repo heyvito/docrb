@@ -32,7 +32,6 @@ module Docrb
 
       def subs!(index)
         @text = nil
-
         @buffer = @buffer[index...]
       end
 

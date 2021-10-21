@@ -99,6 +99,7 @@ module Docrb
     # is found.
     def resolve(name)
       return nil if name.nil?
+      name = name.to_sym
 
       # module?
       if (mod = try?(:modules)&.find(&by_name(name)))
@@ -139,8 +140,8 @@ module Docrb
              .values
              .flatten
              .compact
-             .join("::")
-      resolve_qualified(path)
+      return resolve_qualified(path.join("::")) if path.length > 1
+      resolve(path[0])
     end
 
     # Resolves a qualified path under the current container's context.

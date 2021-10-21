@@ -61,7 +61,7 @@ module Docrb
       coalesce_field_list
       detect_code_example
 
-      infer_visibility_from_doc if %i[def sdef].include? @type
+      infer_visibility_from_doc if %i[def defs].include? @type
 
       data = to_h
       data[:contents] = detect_references(data[:contents])
@@ -264,9 +264,9 @@ module Docrb
     # the parsing process.
     def to_h
       @meta.merge({
-                    type: @type,
-                    contents: @components.map(&:to_h)
-                  })
+        type: @type,
+        contents: @components.map(&:to_h)
+      })
     end
   end
 end

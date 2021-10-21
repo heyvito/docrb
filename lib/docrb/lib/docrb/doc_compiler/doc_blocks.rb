@@ -15,6 +15,7 @@ module Docrb
       # Returns the reference itself by augmenting it with :ref_type and
       # :ref_path information.
       def self.process_reference(ref, parent)
+        return process_method_reference(ref, parent) if ref[:ref_type] == :method
         return ref if ref[:ref_type] != :ambiguous
 
         resolved = parent.resolve_ref(ref)
@@ -24,6 +25,13 @@ module Docrb
         end
         ref[:ref_type] = resolved.type
         ref[:ref_path] = resolved.path
+        ref
+      end
+
+      def self.process_method_reference(ref, parent)
+        if (resolved = parent.resolve_ref(ref))
+          ref[:ref_path] = resolved.path
+        end
         ref
       end
 
