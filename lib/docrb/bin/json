@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "docrb"
+require "byebug"
+require "json"
+
+def run
+    data = Docrb.parse_folder(ARGV[0])
+    compiler = Docrb::DocCompiler.new
+    data.each { |f| compiler.append(f) }
+    puts compiler.to_h.to_json
+end
+
+run

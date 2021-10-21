@@ -1,0 +1,9 @@
+#!/bin/bash
+set -e
+echo "Compiling metadata..."
+cd /docrb/docrb && bin/docrb /work ../docrb-react/.docrb $@
+
+echo "Compiling HTML..."
+cd ../docrb-react && yarn build && yarn export
+
+cp -r /docrb/docrb-react/out/* /output
