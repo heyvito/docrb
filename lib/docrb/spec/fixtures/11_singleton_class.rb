@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Calculator
   class << self
     def sum(a, b)

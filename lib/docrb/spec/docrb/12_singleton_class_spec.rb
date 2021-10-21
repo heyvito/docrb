@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "handles singleton classes (2)" do
     parser = described_class.new(fixture_path("12_singleton_class.rb"))
@@ -8,25 +10,25 @@ RSpec.describe Docrb::RubyParser do
     expect(parser.classes.length).to eq 1
 
     expect(parser.classes.first).to eq({
-      type: :sclass,
-      target: :String,
-      start_at: 1,
-      end_at: 5,
-      doc: nil,
-      methods: [
-        {
-          type: :def,
-          name: :sum,
-          args: [
-            {type: :arg, name: :a},
-            {type: :arg, name: :b}
-          ],
-          start_at: 2,
-          end_at: 4,
-          doc: nil,
-          visibility: :public,
-        }
-      ]
-    })
+                                         type: :sclass,
+                                         target: :String,
+                                         start_at: 1,
+                                         end_at: 5,
+                                         doc: nil,
+                                         methods: [
+                                           {
+                                             type: :def,
+                                             name: :sum,
+                                             args: [
+                                               { type: :arg, name: :a },
+                                               { type: :arg, name: :b }
+                                             ],
+                                             start_at: 2,
+                                             end_at: 4,
+                                             doc: nil,
+                                             visibility: :public
+                                           }
+                                         ]
+                                       })
   end
 end

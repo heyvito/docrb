@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module Docrb
   class CommentParser
+    # TextBlock represents an array of characters to be built into a single
+    # text block.
     class TextBlock
       def initialize(text = nil)
         @buffer = [text].compact
@@ -23,7 +27,7 @@ module Docrb
       end
 
       def text
-        @text ||= @buffer.join('')
+        @text ||= @buffer.join
       end
 
       def subs!(index)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses simple methods" do
     parser = described_class.new(fixture_path("01_simple_method.rb"))
@@ -11,7 +13,7 @@ RSpec.describe Docrb::RubyParser do
     expect(method_meta[:name]).to eq :sum
     expect(method_meta[:args]).to eq [
       { type: :arg, name: :a },
-      { type: :arg, name: :b },
+      { type: :arg, name: :b }
     ]
     expect(method_meta[:start_at]).to eq 7
     expect(method_meta[:end_at]).to eq 9

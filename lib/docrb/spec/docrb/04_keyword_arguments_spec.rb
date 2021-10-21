@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses keyword arguments" do
     parser = described_class.new(fixture_path("04_keyword_arguments.rb"))
@@ -9,10 +11,10 @@ RSpec.describe Docrb::RubyParser do
     method_meta = parser.methods.first
     expect(method_meta[:type]).to eq :def
     expect(method_meta[:name]).to eq :sum
-    expect(method_meta[:args]).to eq  [
+    expect(method_meta[:args]).to eq [
       { name: :a, type: :kwarg },
       { name: :b, type: :kwarg },
-      { name: :c, type: :kwarg },
+      { name: :c, type: :kwarg }
     ]
     expect(method_meta[:start_at]).to eq 8
     expect(method_meta[:end_at]).to eq 10

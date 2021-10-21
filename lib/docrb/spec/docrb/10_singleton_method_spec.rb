@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses singleton methods" do
     parser = described_class.new(fixture_path("10_singleton_method.rb"))
@@ -9,18 +11,18 @@ RSpec.describe Docrb::RubyParser do
 
     method_meta = parser.methods.first
     expect(method_meta).to eq({
-      type: :defs,
-      visibility: :public,
-      target: :String,
-      name: :foo,
-      args: [
-        {type: :arg, name: :a},
-        {type: :arg, name: :b}
-      ],
-      class_path: [],
-      start_at: 1,
-      end_at: 3,
-      doc: nil
-    })
+                                type: :defs,
+                                visibility: :public,
+                                target: :String,
+                                name: :foo,
+                                args: [
+                                  { type: :arg, name: :a },
+                                  { type: :arg, name: :b }
+                                ],
+                                class_path: [],
+                                start_at: 1,
+                                end_at: 3,
+                                doc: nil
+                              })
   end
 end

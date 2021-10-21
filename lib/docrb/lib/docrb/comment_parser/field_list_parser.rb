@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module Docrb
   class CommentParser
+    # FieldListParser parses a field block (representing arguments of an method,
+    # for instance) into a specialised structure.
     class FieldListParser
       FIELD_FORMAT_REGEXP = /^([a-z_][0-9a-z_]*:?)\s+- /i
 
@@ -17,6 +21,7 @@ module Docrb
           return false unless handle_linebreak
         end
         return false unless handle_linebreak
+
         flush_current_field!
         true
       end
@@ -25,8 +30,11 @@ module Docrb
         return true if @current.empty?
 
         # Here's a linebreak. Handle it as needed.
-        @current = @current.join("")
-        unless infer_field_alignment(@current)
+        @current = @current.join
+        if infer_field_alignment(@current)
+          flush_current_field!
+          @data << @current
+        else
           # This is not a field. May be a continuation.
           # Can it be a continuation?
           return false if @data.empty?
@@ -36,9 +44,6 @@ module Docrb
 
           # It is. Append to data.
           @data << @current.strip
-        else
-          flush_current_field!
-          @data << @current
         end
         @current = []
         true
@@ -46,6 +51,7 @@ module Docrb
 
       def flush_current_field!
         return if @data.empty?
+
         data = @data.join(" ")
         @data = []
         field_name = FIELD_FORMAT_REGEXP.match(data)[1]
@@ -78,9 +84,7 @@ module Docrb
         true
       end
 
-      def result
-        @result
-      end
+      attr_reader :result
     end
   end
 end

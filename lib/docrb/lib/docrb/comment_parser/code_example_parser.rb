@@ -1,5 +1,9 @@
+# frozen_string_literal: true
+
 module Docrb
   class CommentParser
+    # CodeExampleParser attempts to extract code examples from a documentation
+    # block.
     class CodeExampleParser
       def self.process(components)
         new_components = []

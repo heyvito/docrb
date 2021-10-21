@@ -1,13 +1,20 @@
+# frozen_string_literal: true
+
 module Docrb
   class DocCompiler
+    # BaseContainer represents a container for methods, classes, modules and
+    # attributes.
     class BaseContainer < Resolvable
-      require_relative './base_container/computations'
+      require_relative "./base_container/computations"
       include Computations
 
       attr_accessor :extends, :includes, :classes, :modules, :defs, :sdefs,
                     :type, :name, :defined_by, :parent, :doc
 
+      # Initialises a new BaseContainer instance with a provided parent,
+      # filename and represented object.
       def initialize(parent, filename, obj)
+        super()
         @parent = parent
         @type = obj[:type]
         @name = obj[:name]
@@ -21,33 +28,38 @@ module Docrb
         append(filename, obj)
       end
 
+      # Appends a new object defined by the provided file to this container
       def <<(filename, obj)
         append(filename, obj)
       end
 
+      # Appends a new class defined by the provided file to this container
       def append_class(filename, cls)
         @classes.push filename, cls
       end
 
       def inspect
-        ext = "#{extends.length} extend#{extends.length != 1 ? "s" : ""}"
-        inc = "#{includes.length} include#{includes.length != 1 ? "s" : ""}"
-        cls = "#{classes.length} class#{classes.length != 1 ? "es" : ""}"
-        mod = "#{modules.length} module#{modules.length != 1 ? "s" : ""}"
-        de = "#{defs.length} def#{defs.length != 1 ? "s" : ""}"
-        sde = "#{sdefs.length} sdef#{sdefs.length != 1 ? "s" : ""}"
+        ext = "#{extends.length} extend#{extends.length == 1 ? "" : "s"}"
+        inc = "#{includes.length} include#{includes.length == 1 ? "" : "s"}"
+        cls = "#{classes.length} class#{classes.length == 1 ? "" : "es"}"
+        mod = "#{modules.length} module#{modules.length == 1 ? "" : "s"}"
+        de = "#{defs.length} def#{defs.length == 1 ? "" : "s"}"
+        sde = "#{sdefs.length} sdef#{sdefs.length == 1 ? "" : "s"}"
 
-        "#<#{self.class.name}:#{format("0x%08x", object_id * 2)} #{@type} #{@name} #{ext}, #{inc}, #{cls}, #{mod}, #{de}, #{sde}>"
+        "#<#{self.class.name}:#{format("0x%08x",
+                                       object_id * 2)} #{@type} #{@name} #{ext}, #{inc}, #{cls}, #{mod}, #{de}, #{sde}>"
       end
 
+      # Attempts to append a given object defined in a provided filename.
+      # Raises ArgumentError in case the object can't be added to the container
+      # due to type contraints.
+      #
+      # filename - Filename defining the object being appended
+      # obj      - The object definition to be appended to this container.
       def append(filename, obj)
-        if obj[:type] != @type
-          raise ArgumentError, "cannot append obj of type #{obj[:type]} into #{@name} (#{@type})"
-        end
+        raise ArgumentError, "cannot append obj of type #{obj[:type]} into #{@name} (#{@type})" if obj[:type] != @type
 
-        if obj[:name] != @name
-          raise ArgumentError, "cannot append obj named #{obj[:name]} into #{@name} (#{@type})"
-        end
+        raise ArgumentError, "cannot append obj named #{obj[:name]} into #{@name} (#{@type})" if obj[:name] != @name
 
         unless (doc = obj[:doc]).nil?
           @defined_by.push(filename, obj)
@@ -66,32 +78,40 @@ module Docrb
           end
         end
 
-        if obj[:type] == :class
-          @inherits = obj.fetch(:inherits, nil)
-        end
+        @inherits = obj.fetch(:inherits, nil) if obj[:type] == :class
 
         appended(filename, obj)
       end
 
+      # Courtesy method. This method is called whenever a new object is
+      # appended to the container. Inheriting classes can override it to perform
+      # further operations on the appended object.
       def appended(filename, obj); end
 
-      def unpack(el)
-        return unless el
-        el.tap do |e|
+      # Intenral: Recursively unpacks a given element by checking its
+      # :definition and :overriding keys.
+      #
+      # Returns the updated element.
+      def unpack(elem)
+        return unless elem
+
+        elem.tap do |e|
           inner = e[:definition]
           e[:definition] = inner.is_a?(Hash) ? unpack(inner) : inner.to_h
           e[:overriding] = unpack(e[:overriding])
         end
       end
 
+      # Returns a Hash representation of the current container along with its
+      # children.
       def to_h
         {
           type: type,
           name: name,
           doc: DocBlocks.prepare(doc, parent: self),
           defined_by: defined_by.map(&:to_h),
-          defs: merged_instance_methods.map { |k, v| [k, unpack(v)] }.to_h,
-          sdefs: merged_class_methods.map { |k, v| [k, unpack(v)] }.to_h,
+          defs: merged_instance_methods.transform_values { |v| unpack(v) },
+          sdefs: merged_class_methods.transform_values { |v| unpack(v) },
           classes: classes.map(&:to_h),
           modules: modules.map(&:to_h),
           includes: includes.map(&:to_h),

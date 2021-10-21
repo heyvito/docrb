@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses classes" do
     parser = described_class.new(fixture_path("07_simple_class.rb"))
@@ -10,7 +12,7 @@ RSpec.describe Docrb::RubyParser do
     class_meta = parser.classes.first
     expect(class_meta[:type]).to eq :class
     expect(class_meta[:name]).to eq :Calculator
-    expect(class_meta[:inherits]).to eq  :Object
+    expect(class_meta[:inherits]).to eq :Object
 
     expect(class_meta[:start_at]).to eq 2
     expect(class_meta[:end_at]).to eq 12

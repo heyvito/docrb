@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::CommentParser do
   it "detects code examples" do
     input = <<~DOC

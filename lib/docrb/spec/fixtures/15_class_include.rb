@@ -1,19 +1,25 @@
-class Docrb::App::Test
-  include Docrb::IncludeA
-  include Docrb::IncludeB
+# frozen_string_literal: true
 
-  def self.test_1
-    true
-  end
+module Docrb
+  module App
+    class Test
+      include Docrb::IncludeA
+      include Docrb::IncludeB
 
-  class << self
-    def self.test_2
-      false
+      def self.test_1
+        true
+      end
+
+      class << self
+        def self.test_2
+          false
+        end
+      end
+
+      def test_3
+        true
+      end
     end
-  end
-
-  def test_3
-    true
   end
 end
 

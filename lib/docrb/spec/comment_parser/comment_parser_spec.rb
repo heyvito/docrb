@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::CommentParser do
   it "parses class comments" do
     input = <<~DOC
@@ -31,65 +33,77 @@ RSpec.describe Docrb::CommentParser do
     output = {
       type: :class,
       contents: [
-        { type: :text_block, contents: "Logrb provides a facility for working with logs in text and json formats.\nAll instances share a single mutex to ensure logging consistency.\nThe following attributes are available:\n" },
+        { type: :text_block,
+          contents: "Logrb provides a facility for working with logs in text and json formats.\nAll instances share a single mutex to ensure logging consistency.\nThe following attributes are available:\n" },
         {
-              type: :field_block,
+          type: :field_block,
           contents: {
-            "fields" => { type: :text_block, contents: "A hash containing metadata to be included in logs emitted by this instance.", },
+            "fields" => { type: :text_block,
+                          contents: "A hash containing metadata to be included in logs emitted by this instance." },
             "format" => {
               type: :text_block,
               contents: [
-                { type: :span, contents: "The format to output logs. Supports ", },
-                { type: :sym_ref, contents: ":text", },
-                { type: :span, contents: " and ", },
-                { type: :sym_ref, contents: ":json", },
-                { type: :span, contents: ".", }
-              ],
+                { type: :span, contents: "The format to output logs. Supports " },
+                { type: :sym_ref, contents: ":text" },
+                { type: :span, contents: " and " },
+                { type: :sym_ref, contents: ":json" },
+                { type: :span, contents: "." }
+              ]
             },
-             "level" => {
-                  type: :text_block,
+            "level" => {
+              type: :text_block,
               contents: [
-                { type: :span, contents: "The level filter for the instance. Valid values are ", },
-                { type: :sym_ref, contents: ":error", },
-                { type: :span, contents: ", ", },
-                { type: :sym_ref, contents: ":fatal", },
-                { type: :span, contents: ", ", },
-                { type: :sym_ref, contents: ":info", },
-                { type: :span, contents: ", ", },
-                { type: :sym_ref, contents: ":warn", },
-                { type: :span, contents: ", and ", },
-                { type: :sym_ref, contents: ":debug", }
-              ],
+                { type: :span, contents: "The level filter for the instance. Valid values are " },
+                { type: :sym_ref, contents: ":error" },
+                { type: :span, contents: ", " },
+                { type: :sym_ref, contents: ":fatal" },
+                { type: :span, contents: ", " },
+                { type: :sym_ref, contents: ":info" },
+                { type: :span, contents: ", " },
+                { type: :sym_ref, contents: ":warn" },
+                { type: :span, contents: ", and " },
+                { type: :sym_ref, contents: ":debug" }
+              ]
             }
-          },
+          }
         },
-        { type: :text_block, contents: "Each instance exposes the following methods, which accepts an arbitrary\nnumber of key-value pairs to be included in the logged message:\n", },
+        { type: :text_block,
+          contents: "Each instance exposes the following methods, which accepts an arbitrary\nnumber of key-value pairs to be included in the logged message:\n" },
         {
-              type: :text_block,
+          type: :text_block,
           contents: [
-            { type: :ref, class_path: nil, contents: "#error(msg, error=nil, **fields)", name: "error", ref_type: :method, target: nil, },
-            { type: :span, contents: ": Outputs an error entry. When `error` is present, attempts to obtain backtrace information and also includes it to the emitted entry.\n" }
-          ],
-        },
-        {
-              type: :text_block,
-          contents: [
-            { type: :ref, class_path: nil, contents: "#fatal(msg, **fields)", name: "fatal", ref_type: :method, target: nil, },
-            { type: :span, contents: ": Outputs a fatal entry. Calling fatal causes the current process to exit with a status 1.\n", }
-          ],
+            { type: :ref, class_path: nil, contents: "#error(msg, error=nil, **fields)", name: "error",
+              ref_type: :method, target: nil },
+            { type: :span,
+              contents: ": Outputs an error entry. When `error` is present, attempts to obtain backtrace information and also includes it to the emitted entry.\n" }
+          ]
         },
         {
-              type: :text_block,
+          type: :text_block,
           contents: [
-            { type: :ref, class_path: nil, contents: "#warn(msg, **fields)", name: "warn", ref_type: :method, target: nil },
+            { type: :ref, class_path: nil, contents: "#fatal(msg, **fields)", name: "fatal", ref_type: :method,
+              target: nil },
+            { type: :span,
+              contents: ": Outputs a fatal entry. Calling fatal causes the current process to exit with a status 1.\n" }
+          ]
+        },
+        {
+          type: :text_block,
+          contents: [
+            { type: :ref, class_path: nil, contents: "#warn(msg, **fields)", name: "warn", ref_type: :method,
+              target: nil },
             { type: :span, contents: ": Outputs a warning entry.\n" },
-            { type: :ref, class_path: nil, contents: "#info(msg, **fields)", name: "info", ref_type: :method, target: nil },
-            { type: :span, contents: ": Outputs a informational entry.\n", },
-            { type: :ref, class_path: nil, contents: "#debug(msg, **fields)", name: "debug", ref_type: :method, target: nil },
+            { type: :ref, class_path: nil, contents: "#info(msg, **fields)", name: "info", ref_type: :method,
+              target: nil },
+            { type: :span, contents: ": Outputs a informational entry.\n" },
+            { type: :ref, class_path: nil, contents: "#debug(msg, **fields)", name: "debug", ref_type: :method,
+              target: nil },
             { type: :span, contents: ": Outputs a debug entry.\n" },
-            { type: :ref, class_path: nil, contents: "#dump(msg, data=nil)", name: "dump", ref_type: :method, target: nil },
-            { type: :span, contents: ": Outputs a given String or Array of bytes using the same format as `hexdump -C`.\n" }
-          ],
+            { type: :ref, class_path: nil, contents: "#dump(msg, data=nil)", name: "dump", ref_type: :method,
+              target: nil },
+            { type: :span,
+              contents: ": Outputs a given String or Array of bytes using the same format as `hexdump -C`.\n" }
+          ]
         }
       ]
     }
@@ -110,7 +124,7 @@ RSpec.describe Docrb::CommentParser do
       contents: [
         {
           type: :text_block,
-          contents: "Internal: Formats a given text using the ANSI escape sequences. Notice\nthat this method does not attempt to determine whether the current output\nsupports escape sequences.\n",
+          contents: "Internal: Formats a given text using the ANSI escape sequences. Notice\nthat this method does not attempt to determine whether the current output\nsupports escape sequences.\n"
         }
       ]
     }
@@ -164,7 +178,7 @@ RSpec.describe Docrb::CommentParser do
           },
           type: :field_block
         }
-      ],
+      ]
     }
 
     expect(described_class.parse(type: :method, comment: input)).to eq(output)
@@ -183,14 +197,16 @@ RSpec.describe Docrb::CommentParser do
       type: :method,
       contents: [
         {
-              type: :text_block,
+          type: :text_block,
           contents: [
-            { type: :span, contents: "Public: Emits a fatal message to the log output, and invokes ", },
-            { type: :ref, class_path: nil, contents: "Kernel#exit", name: "exit", ref_type: :method, target: "Kernel", },
-            { type: :span, contents: "\nwith a non-zero status code. When error is provided, this method attempts\nto gather a stacktrace to include in the emitted entry. This log entry\ncannot be filtered, and is always emitted.\n", }
-          ],
+            { type: :span, contents: "Public: Emits a fatal message to the log output, and invokes " },
+            { type: :ref, class_path: nil, contents: "Kernel#exit", name: "exit", ref_type: :method,
+              target: "Kernel" },
+            { type: :span,
+              contents: "\nwith a non-zero status code. When error is provided, this method attempts\nto gather a stacktrace to include in the emitted entry. This log entry\ncannot be filtered, and is always emitted.\n" }
+          ]
         }
-      ],
+      ]
     }
 
     expect(described_class.parse(type: :method, comment: input)).to eq(output)

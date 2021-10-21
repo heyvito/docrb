@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Docrb
   class CommentParser
+    # CodeExampleBlock represents a list of characters of a code example
     class CodeExampleBlock
       attr_reader :code
 

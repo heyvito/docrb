@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses modules" do
     parser = described_class.new(fixture_path("08_simple_module.rb"))

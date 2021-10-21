@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "handles module functions" do
     parser = described_class.new(fixture_path("19_module_function.rb"))
@@ -18,6 +20,5 @@ RSpec.describe Docrb::RubyParser do
     expect(method_meta[:type]).to eq :sdef
     expect(method_meta[:name]).to eq :fox
     expect(method_meta[:args]).to be_empty
-
   end
 end

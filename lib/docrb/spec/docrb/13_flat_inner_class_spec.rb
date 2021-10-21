@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "handles 'flat' inner class" do
     parser = described_class.new(fixture_path("13_flat_inner_class.rb"))

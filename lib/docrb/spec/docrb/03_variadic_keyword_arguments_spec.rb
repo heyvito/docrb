@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses variadic keyword arguments" do
     parser = described_class.new(fixture_path("03_variadic_keyword_arguments.rb"))

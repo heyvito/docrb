@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 unless Class.respond_to? :try?
   class Object
     def try?(method, *args, **kwargs, &block)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # App implements a generic application
 module App
   # Calculator implements a simple calculator
@@ -9,7 +11,7 @@ module App
     #
     # Returns the sum of the two arguments.
     def sum(a: 1, b: 2)
-        a + b
+      a + b
     end
   end
 end

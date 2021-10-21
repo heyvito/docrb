@@ -7,10 +7,10 @@ require "byebug"
 require "json"
 
 def run
-    data = Docrb.parse_folder(ARGV[0])
-    compiler = Docrb::DocCompiler.new
-    data.each { |f| compiler.append(f) }
-    puts compiler.to_h.to_json
+  data = Docrb.parse_folder(ARGV[0])
+  compiler = Docrb::DocCompiler.new
+  data.each { |f| compiler.append(f) }
+  puts compiler.to_h.to_json
 end
 
 run

@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 module Docrb
   class CommentParser
+    # FieldBlock represents a list of fields obtained by FieldListParser
     class FieldBlock
       attr_reader :fields
 

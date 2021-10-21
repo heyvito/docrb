@@ -3,6 +3,8 @@ PATH
   specs:
     docrb (0.1.0)
       parser
+      redcarpet
+      rouge
 
 GEM
   remote: https://rubygems.org/
@@ -55,8 +57,6 @@ DEPENDENCIES
   byebug
   docrb!
   rake (~> 13.0)
-  redcarpet
-  rouge
   rspec (~> 3.0)
   rubocop (~> 1.8)
 

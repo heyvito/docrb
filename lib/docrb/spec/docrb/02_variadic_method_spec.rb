@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses variadic methods" do
     parser = described_class.new(fixture_path("02_variadic_method.rb"))
@@ -12,7 +14,7 @@ RSpec.describe Docrb::RubyParser do
     expect(method_meta[:args]).to eq [
       { type: :arg, name: :a },
       { type: :arg, name: :b },
-      {name: :c, type: :restarg},
+      { name: :c, type: :restarg }
     ]
     expect(method_meta[:start_at]).to eq 8
     expect(method_meta[:end_at]).to eq 10

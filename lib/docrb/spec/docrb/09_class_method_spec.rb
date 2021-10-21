@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Docrb::RubyParser do
   it "parses class methods" do
     parser = described_class.new(fixture_path("09_class_method.rb"))
@@ -17,18 +19,18 @@ RSpec.describe Docrb::RubyParser do
 
     method_meta = class_meta[:methods].first
     expect(method_meta).to eq({
-      type: :defs,
-      visibility: :public,
-      target: :self,
-      class_path: [],
-      name: :sum,
-      args: [
-        {type: :arg, name: :a},
-        {type: :arg, name: :b}
-      ],
-      start_at: 2,
-      end_at: 4,
-      doc: nil
-    })
+                                type: :defs,
+                                visibility: :public,
+                                target: :self,
+                                class_path: [],
+                                name: :sum,
+                                args: [
+                                  { type: :arg, name: :a },
+                                  { type: :arg, name: :b }
+                                ],
+                                start_at: 2,
+                                end_at: 4,
+                                doc: nil
+                              })
   end
 end

@@ -1,6 +1,8 @@
 AllCops:
-  TargetRubyVersion: 3
+  TargetRubyVersion: 3.0
   NewCops: enable
+  Exclude:
+    - spec/**/*
 
 Style/StringLiterals:
   Enabled: true
@@ -10,5 +12,56 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
 
+Style/Documentation:
+  Exclude:
+    - lib/docrb/module_extensions.rb
+
 Layout/LineLength:
   Max: 120
+  Exclude:
+    - bin/*
+    - lib/docrb/comment_parser.rb
+    - lib/docrb/ruby_parser.rb
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Exclude:
+    - spec/**/*
+
+Metrics/BlockLength:
+  Exclude:
+    - bin/*
+    - lib/docrb/ruby_parser.rb
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - bin/*
+    - lib/docrb/doc_compiler/base_container.rb
+    - lib/docrb/doc_compiler/base_container/computations.rb
+    - lib/docrb/doc_compiler/object_container.rb
+    - lib/docrb/resolvable.rb
+    - lib/docrb/ruby_parser.rb
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - bin/*
+    - lib/docrb/doc_compiler/base_container.rb
+    - lib/docrb/doc_compiler/base_container/computations.rb
+    - lib/docrb/doc_compiler/object_container.rb
+    - lib/docrb/resolvable.rb
+    - lib/docrb/ruby_parser.rb
+
+Lint/ShadowingOuterLocalVariable:
+  Exclude:
+    - bin/*
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false

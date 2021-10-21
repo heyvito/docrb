@@ -1,9 +1,14 @@
-class Docrb::App::Test
-  include Docrb::IncludeA
-  include Docrb::IncludeB
+# frozen_string_literal: true
 
-  attr_accessor :foo
-  attr_accessor :bar, :baz
-  attr_reader :status
-  attr_writer :input
+module Docrb
+  module App
+    class Test
+      include Docrb::IncludeA
+      include Docrb::IncludeB
+
+      attr_accessor :foo, :bar, :baz
+      attr_reader :status
+      attr_writer :input
+    end
+  end
 end

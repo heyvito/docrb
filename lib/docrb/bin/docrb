@@ -10,12 +10,12 @@ require "byebug"
 require "open3"
 
 def git(*args, **kwargs)
-    i, oe, t = Open3.popen2e("git", *args, **kwargs)
-    status = t.value
-    {
-      code: status.exitstatus,
-      output: oe.read.chomp,
-    }
+  _, oe, t = Open3.popen2e("git", *args, **kwargs)
+  status = t.value
+  {
+    code: status.exitstatus,
+    output: oe.read.chomp
+  }
 end
 
 def run
@@ -29,11 +29,13 @@ def run
       exit
     end
 
-    opts.on("-bPATH", "--base=PATH", "Base directory to search for source files. Defaults to the provided input directory.") do |b|
+    opts.on("-bPATH", "--base=PATH",
+            "Base directory to search for source files. Defaults to the provided input directory.") do |b|
       options[:base] = b
     end
 
-    opts.on("-rPATH", "--readme=PATH", "Path for README.md file. When omitted, Docrb searches for a README.md file in the provided input directory.") do |r|
+    opts.on("-rPATH", "--readme=PATH",
+            "Path for README.md file. When omitted, Docrb searches for a README.md file in the provided input directory.") do |r|
       options[:readme] = r
     end
 
@@ -49,7 +51,8 @@ def run
       options[:host_url] = u
     end
 
-    opts.on("-gURL", "--git-repo=URL", "URL for the repository containing the documented project. When omitted, Docrb attempts to extract this information from the .git directory present in the provided input directory, if any.") do |u|
+    opts.on("-gURL", "--git-repo=URL",
+            "URL for the repository containing the documented project. When omitted, Docrb attempts to extract this information from the .git directory present in the provided input directory, if any.") do |u|
       options[:git_url] = u
     end
 
@@ -69,7 +72,8 @@ def run
     exit(1)
   end
 
-  input, output = ARGV[0], ARGV[1]
+  input = ARGV[0]
+  output = ARGV[1]
 
   unless File.exist? input
     puts "#{input}: Does not exist"
@@ -84,8 +88,8 @@ def run
   else
     begin
       FileUtils.mkdir_p output
-    rescue StandardError => ex
-      puts ex
+    rescue StandardError => e
+      puts e
       exit(1)
     end
   end
@@ -106,10 +110,8 @@ def run
 
   spec = Docrb::Spec.parse_folder(input) || {}
 
-  [:name, :summary, :host_url, :git_url, :authors, :license].each do |k|
-    if options.key? k
-      spec[k] = options[k]
-    end
+  %i[name summary host_url git_url authors license].each do |k|
+    spec[k] = options[k] if options.key? k
   end
 
   if spec[:name] == "" || spec[:name].nil?
@@ -131,36 +133,34 @@ def run
     base_path = path
   end
 
-  is_git_repo = false
   git_tip = nil
   git_root = nil
   git_status = git("status", "--porcelain", chdir: input)
-  if git_status[:code] != 0
-    puts "git status returned status #{git_status[:code]}; avoiding git..."
-  else
-    is_git_repo = true
-    if git_status[:output].length > 0
-        puts "WARNING: Your local git copy seems to be dirty. Consider commiting your changes before generating docs."
+  if (git_status[:code]).zero?
+    if git_status[:output].length.positive?
+      puts "WARNING: Your local git copy seems to be dirty. Consider commiting your changes before generating docs."
     end
     tip_data = git("rev-parse", "HEAD", chdir: input)
     if tip_data[:code] != 0
-        puts "ERROR: Acquiring repository information failed:"
-        puts tip_data[:output]
-        puts "------- 8< cut here"
-        puts "Aborting."
-        exit 1
+      puts "ERROR: Acquiring repository information failed:"
+      puts tip_data[:output]
+      puts "------- 8< cut here"
+      puts "Aborting."
+      exit 1
     end
     toplevel = git("rev-parse", "--show-toplevel", chdir: input)
     if toplevel[:code] != 0
-        puts "ERROR: Acquiring repository toplevel failed:"
-        puts tip_data[:output]
-        puts "------- 8< cut here"
-        puts "Aborting."
-        exit 1
+      puts "ERROR: Acquiring repository toplevel failed:"
+      puts tip_data[:output]
+      puts "------- 8< cut here"
+      puts "Aborting."
+      exit 1
     end
 
     git_tip = tip_data[:output]
     git_root = toplevel[:output]
+  else
+    puts "git status returned status #{git_status[:code]}; avoiding git..."
   end
 
   spec[:git_tip] = git_tip if git_tip
