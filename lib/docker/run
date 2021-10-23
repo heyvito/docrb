@@ -2,6 +2,7 @@
 
 set -e
 
+rb_args=()
 while test $# -gt 0; do
   case "$1" in
     --root-path*)
@@ -12,12 +13,16 @@ while test $# -gt 0; do
       export DOCRB_TO_GH_PAGES=true;
       shift;
       ;;
+    *)
+      rb_args+=($1)
+      shift;
+      ;;
   esac
 done
 
 echo "Compiling metadata..."
 cd /docrb/docrb
-bin/docrb /work ../docrb-react/.docrb $@
+bin/docrb /work ../docrb-react/.docrb $rb_args
 
 echo "Compiling HTML..."
 cd ../docrb-react
