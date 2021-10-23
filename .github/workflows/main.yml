@@ -90,5 +90,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: heyvito/docrb:${{ needs.release.outputs.version }}
-        labels: heyvito/docrb:latest
+        tags: ghcr.io/heyvito/docrb:${{ needs.release.outputs.version }}
+        labels: ghcr.io/heyvito/docrb:latest
