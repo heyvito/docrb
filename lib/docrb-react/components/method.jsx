@@ -29,7 +29,7 @@ const methodCallArgument = (value) => {
     } else {
       return [<ClassOrModule key="0">{i}</ClassOrModule>, "::"];
     }
-  });
+  }).flat(Infinity);
   if (classPath.length > 1) {
     classPath.pop();
   }

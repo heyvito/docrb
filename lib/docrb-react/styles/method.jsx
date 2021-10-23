@@ -107,5 +107,9 @@ export const ClassOrModule = styled.span`
 `;
 
 export const MethodCallArgument = styled.span`
+  margin-left: 8px;
+  > span {
+    margin-left: 0;
+  }
   color: white;
 `;

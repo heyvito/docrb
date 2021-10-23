@@ -3,7 +3,7 @@ import React from 'react';
 import { Label } from '@/components/docrb-label';
 
 export default {
-  title: 'Example/Label',
+  title: 'Basic/Label',
   component: Label,
 };
 

@@ -41,7 +41,7 @@ export const HorizontalContainer = ({ children }) => (
   </BaseHorizontalContainer>
 )
 
-const Unresolved = ({ obj }) => (
+export const Unresolved = ({ obj }) => (
   <BaseUnresolved title="Docrb could not resolve this reference. It may be from an external library or dynamically-generated method.">
     <Icon className="icon" name="questionmark" size={15}/> <span>{obj.contents}</span>
   </BaseUnresolved>

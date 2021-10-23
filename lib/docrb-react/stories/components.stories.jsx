@@ -23,8 +23,33 @@ export const Basic = (args) => (
       license="MIT"
       links={links} />
     <TabBar items={["Readme", "Components"]} selectedIndex={1} />
-    <ComponentList />
+    <ComponentList list={args.list} />
   </div>
 );
 
-Basic.args = {};
+Basic.args = {
+  list:  [
+    {
+      level: 0,
+      name: "Foo",
+      attributes: [
+        { name: "attr1", type: "Attribute", visibility: "read/write" }
+      ],
+      methods: [
+        { name: "def1", type: "Method", decoration: "inherited" }
+      ],
+      classes: [
+        {
+          level: 1,
+          name: "Bar",
+          attributes: [
+            { name: "attr1", type: "Attribute", visibility: "read/write" }
+          ],
+          methods: [
+            { name: "def1", type: "Method", decoration: "inherited" }
+          ]
+        }
+      ]
+    }
+  ]
+};

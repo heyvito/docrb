@@ -1,8 +1,7 @@
 import {BaseFooter, Left, Right} from "@/styles/footer";
-import {updatedAt, version} from "@/lib/index";
 import {Link} from "@/components/link";
 
-export const Footer = () => (
+export const Footer = ({ updatedAt, version }) => (
   <BaseFooter>
     <Left>
       Last Updated {updatedAt}
