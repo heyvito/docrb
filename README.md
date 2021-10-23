@@ -7,6 +7,10 @@ methods, and generates a static website with its findings. You can check
 [Logrb's documentation](https://heyvito.github.io/logrb) to see Docrb
 in action!
 
+> **Beta quality!** Hey there! As far as we are already using Docrb on a few
+projects (some private, some public), there may still be some rough edges. In
+case you run into any issue, please do tell us using GitHub's issue tracker! 💕
+
 ## Using
 
 As mentioned in the previous section, Docrb is an **opinionated** documentation
