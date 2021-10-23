@@ -3,14 +3,92 @@ name: Ruby
 on: [push,pull_request]
 
 jobs:
-  build:
+  rubocop:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lib/docrb
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.0.2
+        ruby-version: 3.0
         bundler-cache: true
-    - name: Run the default task
-      run: bundle exec rake
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Run Rubocop
+      run: bundle exec rubocop
+
+  rspec:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./lib/docrb
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.0
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Run Rspec
+      run: bundle exec rspec
+
+  release:
+    needs: [rubocop, rspec]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/trunk')
+    outputs:
+      version: ${{ steps.releaser.outputs.version }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Prepare local repository
+      run: git fetch --prune --unshallow --tags -f
+
+    - name: semver-releaser
+      id: releaser
+      uses: heyvito/semver-releaser@v0.0.9
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+  build_and_release:
+    runs-on: ubuntu-latest
+    needs: release
+    env:
+      REGISTRY: ghcr.io
+      IMAGE_NAME: ${{ github.repository }}
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Log in to the Container registry
+      uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+      with:
+        context: .
+        push: true
+        tags: heyvito/docrb:${{ needs.release.outputs.version }}
+        labels: heyvito/docrb:latest

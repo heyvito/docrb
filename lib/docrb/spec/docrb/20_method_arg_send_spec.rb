@@ -26,7 +26,7 @@ RSpec.describe Docrb::RubyParser do
               name: :something,
               value_type: :send,
               value: {
-                target: [nil],
+                target: [],
                 name: :bar
               }
             }

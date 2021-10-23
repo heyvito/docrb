@@ -65,3 +65,6 @@ Metrics/AbcSize:
 
 Metrics/ModuleLength:
   Enabled: false
+
+Lint/BooleanSymbol:
+  Enabled: false
