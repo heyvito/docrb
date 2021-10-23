@@ -1,0 +1,42 @@
+#!/bin/bash
+
+if ! $(which ruby > /dev/null 2>&1); then
+    echo "Ruby not installed. Please install Ruby 3 to use this script."
+    exit 1
+fi
+
+echo "Using Ruby from $(which ruby)"
+
+if ! [[ "$(ruby --version)" =~ ^ruby\ 3\..*$ ]]; then
+    echo "Ruby v3+ is required to run this script. You have $(ruby --version)"
+    exit 1
+fi
+
+set -e
+
+fail() {
+    echo "$@"
+    exit 1
+}
+
+pushd . > /dev/null || fail
+echo "Installing ruby dependencies..."
+cd lib/docrb && bundle install
+popd > /dev/null || fail
+
+pushd . > /dev/null || fail
+echo "Installing node dependencies..."
+cd lib/docrb-react && yarn
+popd > /dev/null || fail
+
+echo "Generating sample documentation..."
+git clone https://github.com/heyvito/logrb.git /tmp/logrb
+
+pushd . > /dev/null || fail
+cd lib/docrb && bin/docrb /tmp/logrb ../docrb-react/.docrb -blib
+popd > /dev/null || fail
+
+echo "Cleaning up..."
+rm -rf /tmp/logrb
+
+echo "Done. To start the react frontend, cd to lib/docrb-react and run yarn dev"
