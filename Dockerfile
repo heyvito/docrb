@@ -11,10 +11,11 @@ RUN mkdir -p /docrb
 WORKDIR /docrb
 
 COPY lib/docrb ./docrb
-COPY lib/docrb-react ./docrb-react
 RUN cd docrb && bundle install --without development
+
+COPY lib/docrb-react ./docrb-react
 RUN cd docrb-react && yarn install --production --frozen-lockfile
 
 COPY lib/docker/run /docrb
 
-CMD ["./run"]
+ENTRYPOINT ["./run"]
