@@ -6,7 +6,6 @@ require "docrb"
 require "json"
 require "fileutils"
 require "optparse"
-require "byebug"
 require "open3"
 
 def git(*args, **kwargs)
