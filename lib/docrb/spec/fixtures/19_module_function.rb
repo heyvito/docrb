@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Foo
   module_function def bar
     :baz!

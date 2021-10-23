@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Calculator implements a simple calculator
 class Calculator < Object
   # Returns the sum of the two provided arguments

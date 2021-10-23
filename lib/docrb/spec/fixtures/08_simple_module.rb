@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # App implements a generic application
 module App
   # Calculator implements a simple calculator

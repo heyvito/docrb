@@ -264,9 +264,9 @@ module Docrb
     # the parsing process.
     def to_h
       @meta.merge({
-        type: @type,
-        contents: @components.map(&:to_h)
-      })
+                    type: @type,
+                    contents: @components.map(&:to_h)
+                  })
     end
   end
 end

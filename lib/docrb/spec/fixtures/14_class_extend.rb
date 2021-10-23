@@ -1,27 +1,20 @@
-# frozen_string_literal: true
+class Docrb::App::Test
+  extend Docrb::ExtendsA
+  extend Docrb::ExtendsB
+  extend Docrb::ExtendsC, Docrb::ExtendsD
 
-module Docrb
-  module App
-    class Test
-      extend Docrb::ExtendsA
-      extend Docrb::ExtendsB
-      extend Docrb::ExtendsD
-      extend Docrb::ExtendsC
+  def self.test_1
+    true
+  end
 
-      def self.test_1
-        true
-      end
-
-      class << self
-        def self.test_2
-          false
-        end
-      end
-
-      def test_3
-        true
-      end
+  class << self
+    def self.test_2
+      false
     end
+  end
+
+  def test_3
+    true
   end
 end
 

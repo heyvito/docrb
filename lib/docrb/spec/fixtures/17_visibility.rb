@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Test
   private def pri_1
     :pri_1

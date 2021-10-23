@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Returns the sum of the two provided arguments
 #
 # a - The first argument to be used in the sum

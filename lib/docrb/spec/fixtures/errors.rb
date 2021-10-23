@@ -1,6 +1,4 @@
-# frozen_string_literal: true
-
-module JosieTalk
+module SampleApp
   # Error class from which all other errors are derived from.
   class Error < StandardError; end
 

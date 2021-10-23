@@ -34,9 +34,9 @@ module Docrb
       # Returns a Hash representation of this class definition
       def to_h
         super.to_h.merge({
-          inherits: inherits,
-          attributes: merged_attributes.transform_values { |v| unpack(v) }
-        })
+                           inherits: inherits,
+                           attributes: merged_attributes.transform_values { |v| unpack(v) }
+                         })
       end
     end
   end

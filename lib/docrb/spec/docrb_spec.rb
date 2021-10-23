@@ -6,7 +6,6 @@ RSpec.describe Docrb do
   end
 
   it "parses real code" do
-    result = Docrb.parse(fixture_path("errors.rb"))
-    byebug
+    expect { Docrb.parse(fixture_path("errors.rb")) }.to_not raise_error
   end
 end

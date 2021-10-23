@@ -119,17 +119,17 @@ RSpec.describe Docrb::CommentParser do
     DOC
 
     output = {
-      type: :method,
+      type: :def,
       doc_visibility_annotation: :internal,
       contents: [
         {
           type: :text_block,
-          contents: "Internal: Formats a given text using the ANSI escape sequences. Notice\nthat this method does not attempt to determine whether the current output\nsupports escape sequences.\n"
+          contents: " Formats a given text using the ANSI escape sequences. Notice\nthat this method does not attempt to determine whether the current output\nsupports escape sequences.\n"
         }
       ]
     }
 
-    expect(described_class.parse(type: :method, comment: input)).to eq(output)
+    expect(described_class.parse(type: :def, comment: input)).to eq(output)
   end
 
   it "parses method comments with fields" do
@@ -146,11 +146,11 @@ RSpec.describe Docrb::CommentParser do
     DOC
 
     output = {
-      type: :method,
+      type: :def,
       doc_visibility_annotation: :internal,
       contents: [
         {
-          contents: "Internal: Logs a text entry to the current output.\n",
+          contents: " Logs a text entry to the current output.\n",
           type: :text_block
         },
         {
@@ -181,7 +181,7 @@ RSpec.describe Docrb::CommentParser do
       ]
     }
 
-    expect(described_class.parse(type: :method, comment: input)).to eq(output)
+    expect(described_class.parse(type: :def, comment: input)).to eq(output)
   end
 
   it "parses references" do
@@ -194,12 +194,12 @@ RSpec.describe Docrb::CommentParser do
 
     output = {
       doc_visibility_annotation: :public,
-      type: :method,
+      type: :def,
       contents: [
         {
           type: :text_block,
           contents: [
-            { type: :span, contents: "Public: Emits a fatal message to the log output, and invokes " },
+            { type: :span, contents: " Emits a fatal message to the log output, and invokes " },
             { type: :ref, class_path: nil, contents: "Kernel#exit", name: "exit", ref_type: :method,
               target: "Kernel" },
             { type: :span,
@@ -209,6 +209,6 @@ RSpec.describe Docrb::CommentParser do
       ]
     }
 
-    expect(described_class.parse(type: :method, comment: input)).to eq(output)
+    expect(described_class.parse(type: :def, comment: input)).to eq(output)
   end
 end

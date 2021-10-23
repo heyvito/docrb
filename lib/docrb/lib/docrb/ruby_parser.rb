@@ -561,6 +561,12 @@ module Docrb
               when :nil
                 represented_type = :nil
                 represented_value = :nil
+              when :send
+                represented_type = :send
+                represented_value = {
+                  target: parse_class_path(val.children.first).flatten,
+                  name: val.children.last
+                }
               else
                 represented_type = val.type
                 represented_value = val.children.first
