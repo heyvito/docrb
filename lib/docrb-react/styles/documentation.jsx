@@ -5,12 +5,15 @@ import { body, mono } from "@/styles/fonts";
 export const MainContainer = styled.div`
   margin: 44px 46px;
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   column-gap: 38px;
 `;
 
 export const Left = styled.div`
   flex: 1;
+  max-width: 100%;
+  flex-wrap: wrap;
 `;
 
 export const Right = styled.div`

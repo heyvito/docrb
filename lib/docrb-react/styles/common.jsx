@@ -9,6 +9,7 @@ export const Linked = styled.div`
 
 export const Container = styled.span`
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 
   .decoration {

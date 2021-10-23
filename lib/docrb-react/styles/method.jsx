@@ -82,6 +82,11 @@ export const Colon = styled.span`
   }
 `;
 
+export const ElementContainer = styled.div`
+  margin-bottom: 8px;
+  line-height: 22px;
+`;
+
 export const Rest = styled.span`
   color: #A5ACBA;
 
