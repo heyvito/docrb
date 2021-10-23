@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "byebug"
 module Docrb
   class DocCompiler
     # DocBlocks provides utilities for annotating and formatting documentation
