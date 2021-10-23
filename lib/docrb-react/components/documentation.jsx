@@ -1,3 +1,6 @@
+import NextLink from "next/link";
+import React, { useState } from "react";
+
 import {
   BaseText,
   BaseHeading,
@@ -7,13 +10,11 @@ import {
   Mono, Faded, AttributeContainer,
   SectionContainer, ToggleWrapper, SourceLink, SourceCode, FieldList, BaseReference, BaseUnresolved, FromBlock, Symbol
 } from "@/styles/documentation";
-import React, { useState } from "react";
 import { Link } from "@/components/link";
-import { cleanFilePath, gitURL, pathOf, prepareAttribute } from "@/lib/index";
+import { cleanFilePath, gitURL, pathOf } from "@/lib/index";
 import { Label } from "@/styles/method";
 import { Method } from "@/components/method";
 import { Margin } from "@/styles/positioning";
-import NextLink from "next/link";
 import { Icon } from "@/components/icon";
 
 export const Text = ({ children }) => (
@@ -41,7 +42,9 @@ export const HorizontalContainer = ({ children }) => (
 )
 
 const Unresolved = ({ obj }) => (
-  <BaseUnresolved><Icon className="icon" name="questionmark" size={15}/> <span>{obj.contents}</span></BaseUnresolved>
+  <BaseUnresolved title="Docrb could not resolve this reference. It may be from an external library or dynamically-generated method.">
+    <Icon className="icon" name="questionmark" size={15}/> <span>{obj.contents}</span>
+  </BaseUnresolved>
 );
 
 const ChildStructure = ({ name, list }) => (

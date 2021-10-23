@@ -11,7 +11,7 @@ export const MainContainer = styled.div`
 
 export const Left = styled.div`
   flex: 1;
-`
+`;
 
 export const Right = styled.div`
   padding-right: 54px;
@@ -26,7 +26,7 @@ export const Right = styled.div`
     ${body};
     text-decoration: none;
   }
-`
+`;
 
 export const BaseText = styled.span`
   ${body};
@@ -91,19 +91,19 @@ export const AttributeContainer = styled.div`
 
 export const SectionContainer = styled.div`
   margin: 25px 0 0;
-`
+`;
 
 export const ToggleWrapper = styled.div`
   text-align: right;
   margin: 13px 0 22px 0;
-`
+`;
 
 export const SourceLink = styled.span`
   ${body({ weight: 500 })};
   border-bottom: white 1px dotted;
   cursor: pointer;
   color: #FFF;
-`
+`;
 
 export const SourceCode = styled.div`
   display: ${props => props.expanded ? "block" : "none"};
@@ -168,8 +168,7 @@ export const BaseUnresolved = styled.div`
   }
 
   span {
-    margin-right: 5px;
-    ${mono};
+    ${mono({ size: 15 })};
   }
 `
 
