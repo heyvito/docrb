@@ -552,10 +552,10 @@ module Docrb
               represented_type = nil
               represented_value = nil
               case val.type
-              when true
+              when true, :true
                 represented_type = :bool
                 represented_value = true
-              when false
+              when false, :false
                 represented_type = :bool
                 represented_value = false
               when :nil
@@ -564,7 +564,7 @@ module Docrb
               when :send
                 represented_type = :send
                 represented_value = {
-                  target: parse_class_path(val.children.first).flatten,
+                  target: parse_class_path(val.children.first).flatten.compact,
                   name: val.children.last
                 }
               else
