@@ -203,7 +203,7 @@ export const Reference = (ref) => {
     const parentName = components.pop();
     path = [...components, `${parentName}#${methodName}`];
   } else {
-    path = ['/components', ...ref.ref_path].join('/');
+    path = ['/components', ...ref.ref_path];
   }
 
   return (
