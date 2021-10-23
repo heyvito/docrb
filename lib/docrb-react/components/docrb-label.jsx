@@ -3,6 +3,8 @@ import { ReactComponent as LabelSVG } from "@/images/docrb-label.svg";
 
 export const Label = () => (
   <div>
-    <LabelSVG/>
+    <a href="https://github.com/heyvito/docrb" rel="noreferrer" target="_blank">
+      <LabelSVG/>
+    </a>
   </div>
 );

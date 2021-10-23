@@ -1,9 +1,9 @@
 import {
   Argument,
-  ArgumentsContainer,
+  ArgumentsContainer, ClassOrModule,
   Colon,
   Equal,
-  Label,
+  Label, MethodCallArgument,
   MethodName, Number, Plain, Rest, String, Symbol
 } from "@/styles/method";
 import React from "react";
@@ -22,20 +22,36 @@ const continuationForType = (type) => {
   }
 }
 
+const methodCallArgument = (value) => {
+  const classPath = value.target.map(i => {
+    if (i === "self") {
+      return <Symbol>self</Symbol>
+    } else {
+      return [<ClassOrModule key="0">{i}</ClassOrModule>, "::"];
+    }
+  });
+  if (classPath.length > 1) {
+    classPath.pop();
+  }
+  return <MethodCallArgument>{classPath}{classPath.length > 0 && "."}{value.name}</MethodCallArgument>;
+}
+
 const valueForArgument = (value, valueType) => {
-  if (!valueType) {
+  if (valueType === null || valueType === undefined) {
     return;
   }
   switch (valueType) {
     case "sym":
     case "bool":
-      return <Symbol>{value}</Symbol>;
+      return <Symbol>{value ? "true" : "false"}</Symbol>;
     case "nil":
       return <Symbol>nil</Symbol>;
     case "int":
       return <Number>{value}</Number>;
     case "str":
       return <String>{value}</String>;
+    case "send":
+      return methodCallArgument(value);
     default:
       return <Plain>{value}</Plain>;
   }

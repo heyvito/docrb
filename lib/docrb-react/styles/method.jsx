@@ -101,3 +101,11 @@ export const Label = styled.span`
   text-transform: uppercase;
   margin-left: 8px;
 `;
+
+export const ClassOrModule = styled.span`
+  color: #579AD1;
+`;
+
+export const MethodCallArgument = styled.span`
+  color: white;
+`;
