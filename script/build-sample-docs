@@ -12,6 +12,13 @@ if ! [[ "$(ruby --version)" =~ ^ruby\ 3\..*$ ]]; then
     exit 1
 fi
 
+if ! $(which yarn > /dev/null 2>&1); then
+    echo "Yarn not installed. Please install yarn to use this script."
+    exit 1
+fi
+
+echo "Using yarn from $(which yarn)"
+
 set -e
 
 fail() {
