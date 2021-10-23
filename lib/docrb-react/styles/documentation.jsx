@@ -5,7 +5,7 @@ import { body, mono } from "@/styles/fonts";
 export const MainContainer = styled.div`
   margin: 44px 46px;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap-reverse;
   flex-direction: row;
   column-gap: 38px;
 `;
@@ -18,6 +18,7 @@ export const Left = styled.div`
 
 export const Right = styled.div`
   padding-right: 54px;
+  margin-bottom: 48px;
 
   .linked-container {
     margin-bottom: 5px;
