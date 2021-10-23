@@ -132,6 +132,9 @@ static copy.
 
 Yay! Contributions are more than welcome!
 See [CONTRIBUTING.md](CONTRIBUTING.md) to get a summary on how to hack Docrb.
+Also, ensure to take a look at our [code of conduct](CODE_OF_CONDUCT.md)!
+Everyone interacting in the Docrb project's codebases, issue trackers,
+chat rooms, and mailing lists is expected to follow it. Rule of thumb: be nice.
 
 ## License
 
