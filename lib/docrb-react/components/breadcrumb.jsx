@@ -30,14 +30,14 @@ export const Breadcrumb = ({ projectName, items }) => (
       </Margin>
     </Link>
     {[{ name: "Components", parents: [] }, ...items].map((i, idx) =>
-      <>
+      <React.Fragment key={i.name}>
         <Separator/>
         <Link href={["/components", ...i.parents, idx === 0 ? "" : i.name].join("/")}>
           <Margin left={10} right={8}>
             <Text>{i.name}</Text>
           </Margin>
         </Link>
-      </>
+      </React.Fragment>
     )}
   </Base>
 );

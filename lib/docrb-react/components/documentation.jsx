@@ -12,7 +12,7 @@ import {
 } from "@/styles/documentation";
 import { Link } from "@/components/link";
 import { cleanFilePath, gitURL, pathOf } from "@/lib/index";
-import { Label } from "@/styles/method";
+import { Label, ElementContainer } from "@/styles/method";
 import { Method } from "@/components/method";
 import { Margin } from "@/styles/positioning";
 import { Icon } from "@/components/icon";
@@ -162,6 +162,7 @@ export const FieldBlock = ({ list }) => (
   <FieldList>
     <h3>Arguments</h3>
     <table>
+      <tbody>
       {Object
         .keys(list)
         .map(k => ({ name: k, contents: list[k] }))
@@ -173,6 +174,7 @@ export const FieldBlock = ({ list }) => (
             </td>
           </tr>
         ))}
+        </tbody>
     </table>
   </FieldList>
 );
@@ -205,25 +207,28 @@ export const TextBlock = ({ list }) => {
     list = [{ type: "html", contents: list }];
   }
 
-  const renderContent = i => {
-    switch (i.type) {
+  const TextElement = ({ element, kind }) => {
+    switch (kind) {
       case "span":
-        return <Markdown noMargin inline html={i.contents}/>;
+        return <Markdown noMargin inline html={element.contents}/>;
       case "ref":
-        return <Reference {...i} />;
+        return <Reference {...element} />;
       case "html":
-        return <Markdown html={i.contents}/>;
+        return <Markdown html={element.contents}/>;
       case "sym_ref":
-        return <Symbol>{i.contents}</Symbol>
+        return <Symbol>{element.contents}</Symbol>
       default:
-        return <div>Unknown textblock item {i.type} {JSON.stringify(i, undefined, 4)}</div>
+        return <>Unknown textblock item {kind} {JSON.stringify(i, undefined, 4)}</>
     }
   }
-  return <p>
-    {list.map((i, idx) => (
-      <span key={idx}>{renderContent(i)}</span>
-    ))}
-  </p>;
+  return (
+    <ElementContainer>
+      {list.map((i, idx) => (
+        <React.Fragment key={idx}>
+          <TextElement element={i} kind={i.type} />
+        </React.Fragment>
+      ))}
+    </ElementContainer>);
 }
 
 export const DocumentationBlock = ({ doc, noMargin, id }) => {
@@ -234,16 +239,16 @@ export const DocumentationBlock = ({ doc, noMargin, id }) => {
     doc = { contents: [doc] };
   }
   return <div id={id}>
-    {doc && doc.contents.map(i => {
+    {doc && doc.contents.map((i, idx) => {
       switch (i.type) {
         case "text_block":
-          return <TextBlock list={i.contents}/>;
+          return <TextBlock key={idx} list={i.contents}/>;
         case "code_example":
-          return <Markdown noMargin={noMargin} html={i.contents}/>;
+          return <Markdown key={idx} noMargin={noMargin} html={i.contents}/>;
         case "field_block":
-          return <FieldBlock list={i.contents}/>;
+          return <FieldBlock key={idx} list={i.contents}/>;
         default:
-          return <Text>!Unexpected item {i.type}</Text>;
+          return <Text key={idx}>!Unexpected item {i.type}</Text>;
       }
     })}
   </div>;
