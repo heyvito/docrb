@@ -1,24 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { Label } from '@/components/docrb-label';
 import { Link } from '@/components/link';
-import { Icon } from "@/components/icon"
-import { Checkbox } from "@/components/checkbox"
+import { Icon } from '@/components/icon';
+import { Checkbox } from '@/components/checkbox';
 
 import {
   Base, Class, Type, Defs, RightSide, ClassName, DefLink,
-  ChevronContainer, Toggles, Column
+  ChevronContainer, Toggles, Column,
 } from '@/styles/header';
 
-export const ClassHeader = ({ type, name, definitions, filters = {}, onChangeFilter = () => {} }) => {
+export const ClassHeader = ({
+  type, name, definitions, filters = {}, onChangeFilter = () => {},
+}) => {
   const defs = [...definitions];
   let defCollection;
   if (definitions.length > 1) {
     const lastDef = defs.pop();
-    const list = defs.map((i, idx) => <DefLink key={idx}><Link href={i.href} kind="dashed" text={i.name}/>, </DefLink>);
-    defCollection = list.concat(<DefLink>and <Link href={lastDef.href} kind="dashed" text={lastDef.name}/> </DefLink>);
+    const list = defs.map((i, idx) => (
+      <DefLink key={idx}>
+        <Link href={i.href} kind="dashed" text={i.name} />
+        ,
+        {' '}
+      </DefLink>
+    ));
+    defCollection = list.concat(<DefLink>
+      and
+      <Link href={lastDef.href} kind="dashed" text={lastDef.name} />
+                                </DefLink>);
   } else if (definitions.length === 1) {
     const def = definitions[0];
-    defCollection = (<DefLink><Link href={def.href} kind="dashed" text={def.name}/> </DefLink>);
+    defCollection = (
+      <DefLink>
+        <Link href={def.href} kind="dashed" text={def.name} />
+        {' '}
+      </DefLink>
+    );
   }
 
   const [collapsed, setCollapsed] = useState(true);
@@ -32,16 +48,12 @@ export const ClassHeader = ({ type, name, definitions, filters = {}, onChangeFil
     ...filters,
   });
 
-  const toggleFilter = (named) => {
-    return (newVal) => {
-      setFilters(current => {
-        return { ...current, [named]: newVal };
-      });
-    }
+  const toggleFilter = (named) => (newVal) => {
+    setFilters((current) => ({ ...current, [named]: newVal }));
   };
 
   useEffect(() => {
-    onChangeFilter(currentFilters)
+    onChangeFilter(currentFilters);
   }, [currentFilters]);
 
   return (
@@ -49,38 +61,61 @@ export const ClassHeader = ({ type, name, definitions, filters = {}, onChangeFil
       <Class>
         <Type>{type}</Type>
         <ClassName>{name}</ClassName>
-        {defCollection &&
+        {defCollection
+        && (
         <Defs>
-          Defined in {defCollection}
+          Defined in
+          {' '}
+          {defCollection}
         </Defs>
-        }
-        <ChevronContainer collapsed={collapsed} onClick={() => setCollapsed(prev => !prev)}>
-          <Icon name="chevron"/> <span>{collapsed ? "Show More" : "Show Less"}</span>
+        )}
+        <ChevronContainer collapsed={collapsed} onClick={() => setCollapsed((prev) => !prev)}>
+          <Icon name="chevron" />
+          {' '}
+          <span>{collapsed ? 'Show More' : 'Show Less'}</span>
         </ChevronContainer>
         <Toggles collapsed={collapsed}>
           <Column>
-            <Checkbox checked={currentFilters.hideInternal} onChange={toggleFilter('hideInternal')}
-                      label="Hide internal members"/>
-            <Checkbox checked={currentFilters.hidePrivate} onChange={toggleFilter('hidePrivate')}
-                      label="Hide private members"/>
+            <Checkbox
+              checked={currentFilters.hideInternal}
+              onChange={toggleFilter('hideInternal')}
+              label="Hide internal members"
+            />
+            <Checkbox
+              checked={currentFilters.hidePrivate}
+              onChange={toggleFilter('hidePrivate')}
+              label="Hide private members"
+            />
           </Column>
           <Column>
-            <Checkbox checked={currentFilters.hideAttributes} onChange={toggleFilter('hideAttributes')}
-                      label="Hide attributes"/>
-            <Checkbox checked={currentFilters.showInherited} onChange={toggleFilter('showInherited')}
-                      label="Show inherited members"/>
+            <Checkbox
+              checked={currentFilters.hideAttributes}
+              onChange={toggleFilter('hideAttributes')}
+              label="Hide attributes"
+            />
+            <Checkbox
+              checked={currentFilters.showInherited}
+              onChange={toggleFilter('showInherited')}
+              label="Show inherited members"
+            />
           </Column>
           <Column>
-            <Checkbox checked={currentFilters.showExtended} onChange={toggleFilter('showExtended')}
-                      label="Show extended members"/>
-            <Checkbox checked={currentFilters.showIncluded} onChange={toggleFilter('showIncluded')}
-                      label="Show included members"/>
+            <Checkbox
+              checked={currentFilters.showExtended}
+              onChange={toggleFilter('showExtended')}
+              label="Show extended members"
+            />
+            <Checkbox
+              checked={currentFilters.showIncluded}
+              onChange={toggleFilter('showIncluded')}
+              label="Show included members"
+            />
           </Column>
         </Toggles>
       </Class>
       <RightSide>
-        <Label/>
+        <Label />
       </RightSide>
     </Base>
   );
-}
+};

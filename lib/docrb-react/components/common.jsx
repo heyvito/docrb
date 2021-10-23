@@ -1,6 +1,6 @@
-import { Linked } from "@/styles/common";
-import NextLink from "next/link";
-import React from "react";
+import NextLink from 'next/link';
+import React from 'react';
+import { Linked } from '@/styles/common';
 
 export const Link = ({ href, children }) => (
   <Linked className="linked-container">
