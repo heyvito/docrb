@@ -26,6 +26,6 @@ yarn export
 
 cp -r /docrb/docrb-react/out/* /output
 
-if [ -z "$DOCRB_TO_GH_PAGES" ]; then
+if [ -n "$DOCRB_TO_GH_PAGES" ]; then
     touch /output/.nojekyll;
 fi
