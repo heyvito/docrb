@@ -48,7 +48,7 @@ export const HighlightDefinitions = css`
   .highlight .na { color: hsl(357, 79%, 65%) } /* Name.Attribute */
   .highlight .nb { color: #eaeaea } /* Name.Builtin */
   .highlight .nc { color: hsl(300, 30%, 68%) } /* Name.Class */
-  .highlight .no { color: hsl(32, 93%, 66%)} /* Name.Constant */
+  .highlight .no { color: #579AD1} /* Name.Constant */
   .highlight .nd { color: #70c0b1 } /* Name.Decorator */
   .highlight .ni { color: hsl(32, 93%, 66%) } /* Name.Entity */
   .highlight .ne { color: #d54e53 } /* Name.Exception */
@@ -68,14 +68,14 @@ export const HighlightDefinitions = css`
   .highlight .sb { color: hsl(114, 31%, 68%) } /* Literal.String.Backtick */
   .highlight .sc { color: hsl(114, 31%, 68%) } /* Literal.String.Char */
   .highlight .sd { color: hsl(114, 31%, 68%) } /* Literal.String.Doc */
-  .highlight .s2 { color: hsl(114, 31%, 68%) } /* Literal.String.Double */
+  .highlight .s2 { color: #8CC98F } /* Literal.String.Double */
   .highlight .se { color: hsl(114, 31%, 68%) } /* Literal.String.Escape */
   .highlight .sh { color: hsl(114, 31%, 68%) } /* Literal.String.Heredoc */
   .highlight .si { color: hsl(0, 0%, 100%) } /* Literal.String.Interpol */
   .highlight .sx { color: #b9ca4a } /* Literal.String.Other */
   .highlight .sr { color: #b9ca4a } /* Literal.String.Regex */
-  .highlight .s1 { color: #b9ca4a } /* Literal.String.Single */
-  .highlight .ss { color: #b9ca4a } /* Literal.String.Symbol */
+  .highlight .s1 { color: #8CC98F } /* Literal.String.Single */
+  .highlight .ss { color: #CF91C9 } /* Literal.String.Symbol */
   .highlight .bp { color: #eaeaea } /* Name.Builtin.Pseudo */
   .highlight .vc { color: hsl(357, 79%, 65%) } /* Name.Variable.Class */
   .highlight .vg { color: hsl(357, 79%, 65%)} /* Name.Variable.Global */
