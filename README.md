@@ -107,9 +107,9 @@ the `--root-path` and `--gh-pages` flags)
 docker run --rm \
     --volume ~/Developer/logrb:/work:ro \
     --volume ~/Developer/logrb-docs:/output \
-    ghcr.io/heyvito/docrb:v0.1.0 \
+    ghcr.io/heyvito/docrb:v0.1.1 \
     -blib \
-    --root-path=/loogrb \
+    --root-path=/logrb \
     --gh-pages
 ```
 
