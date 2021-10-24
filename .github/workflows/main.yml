@@ -63,7 +63,7 @@ jobs:
   release:
     needs: [rubocop, rspec, react-lint]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/heads/trunk')
+    if: github.ref == 'refs/heads/trunk'
     outputs:
       version: ${{ steps.releaser.outputs.version }}
 
