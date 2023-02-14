@@ -452,7 +452,7 @@ module Docrb
         name: node.children.first,
         args: parse_method_args(node),
         start_at: node.loc.keyword.line,
-        end_at: node.loc.end.line
+        end_at: node.loc&.end&.line || node.loc.keyword.line
       }
     end
 
@@ -471,7 +471,7 @@ module Docrb
         name: node.children[1],
         args: parse_method_args(node),
         start_at: node.loc.keyword.line,
-        end_at: node.loc.end.line
+        end_at: node.loc&.end&.line || node.loc.keyword.line
       }
     end
 
