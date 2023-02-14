@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "renderer"
+
+if ARGV.length != 2
+  puts "Usage: docrb-html INPUT OUTPUT"
+  exit 1
+end
+
+Renderer.new.render

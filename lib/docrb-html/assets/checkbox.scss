@@ -1,0 +1,34 @@
+div.checkbox-base {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    svg {
+      margin-right: 8px;
+    }
+
+    .label {
+        @include body($weight: 500);
+        color: white;
+    }
+
+    label {
+        user-select: none;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    input {
+        display: none;
+        + label > svg {
+            &.checkbox-on { display: none; }
+            &.checkbox-off { display: inline; }
+        }
+    }
+
+    input:checked + label > svg {
+        &.checkbox-on { display: inline; }
+        &.checkbox-off { display: none; }
+    }
+}

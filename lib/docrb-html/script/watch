@@ -1,0 +1,17 @@
+#!/bin/bash
+notifier &
+NOTIFIER_PID=$!
+
+trap 'kill $NOTIFIER_PID' INT TERM EXIT
+
+fswatch -0 lib assets templates | while read -d "" event; do
+  bundle exec exe/docrb-html work
+
+  for f in $(find output -name '*.html'); do
+    echo "<script>" >> "$f"
+    cat "script/reload.js" >> "$f"
+    echo "</script>" >> "$f"
+  done
+  kill -USR1 $NOTIFIER_PID
+  echo "Updated at $(date)"
+done

@@ -1,0 +1,25 @@
+<% div("method-list-base", id:) do %>
+    <% list && list.length > 0 && list.each do |i| %>
+        <div class="method-definition"
+             id="<%= i[:type] %>-<%= i[:name] %>"
+             data-visibility="<%= i.dig(:doc, :doc_visibility_annotation) || '' %>"
+             data-origin="<%= i.dig(:origin) %>">
+            <div class="method-block">
+                <%= method_display(**i.merge(type: nil).slice(*Renderer::Component::MethodDisplay.instance_variable_get(:@props))) %>
+            </div>
+            <div class="doc-block">
+                <%= documentation_block(doc: i[:doc]) %>
+            </div>
+            <details class="source-block">
+                <summary>
+                    <span class="expanded">Hide Source</span>
+                    <span class="collapsed">Show Source</span>
+                </summary>
+                <%= markdown(source: i[:defined_by][:markdown_source]) %>
+                <div class="from">
+                    Defined in <a href="<%= git_url(i[:defined_by]) %>" class="dotted"><%= clean_file_path(i[:defined_by]) %>, <%= line_range(i[:defined_by]) %></a>
+                </div>
+            </details>
+        </div>
+    <% end %>
+<% end %>

@@ -567,6 +567,12 @@ module Docrb
                   target: parse_class_path(val.children.first).flatten.compact,
                   name: val.children.last
                 }
+              when :const
+                represented_type = :const
+                represented_value = {
+                  target: parse_class_path(val.children.first).flatten.compact,
+                  name: val.children.last
+                }
               else
                 represented_type = val.type
                 represented_value = val.children.first

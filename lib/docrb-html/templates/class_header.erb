@@ -1,0 +1,53 @@
+<% div("class-header-base", id:) do %>
+    <div class="class">
+        <h3 class="type"><%= type %></h3>
+        <h1 class="class-name"><%= name %></h1>
+        <% def_link = Proc.new do |item, extra = nil| %>
+        <span class="def-link">
+            <%= extra %>
+            <a href="<%= item[:href] %>"
+                class="dashed"><%= item[:name] %>
+            </a>
+        </span>
+        <% end %>
+        <% if definitions.length > 0 %>
+            <div class="defs">
+                Defined in
+                <% if def_collection.length == 1 %>
+                    <% def_link.call def_collection.first %>
+                <% else %>
+                    <% last_item = def_collection.pop %>
+                    <% def_collection.each do |item| %>
+                        <% def_link item %>
+                    <% end %>
+                    <% def_link.call last_item, " and " %>
+                <% end %>
+            </div>
+        <% end %>
+        <details class="chevron-container">
+            <summary>
+                <%= svg("chevron") %> <span class="collapsed">Show More</span> <span class="open">Show Less</span>
+            </summary>
+
+            <div class="toggles">
+                <div class="column">
+                    <%= checkbox(id: "filter-hide-internal", label: "Hide internal members", checked: false) %>
+                    <%= checkbox(id: "filter-hide-private", label: "Hide private members", checked: false) %>
+                </div>
+                <div class="column">
+                    <%= checkbox(id: "filter-hide-attrs", label: "Hide attributes", checked: false) %>
+                    <%= checkbox(id: "filter-hide-inherited", label: "Hide inherited members", checked: false) %>
+                </div>
+                <div class="column">
+                    <%= checkbox(id: "filter-show-extended", label: "Show extended members", checked: true) %>
+                    <%= checkbox(id: "filter-show-included", label: "Show included members", checked: true) %>
+                </div>
+            </div>
+        </details>
+    </div>
+    <div class="right">
+        <a href="https://github.com/heyvito/docrb" rel="noreferrer" target="_blank">
+            <%= svg('docrb-label') %>
+        </a>
+    </div>
+<% end %>

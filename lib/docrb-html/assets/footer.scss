@@ -1,0 +1,15 @@
+div.footer-base {
+  margin: 30px 46px;
+  padding-top: 10px;
+  border-top: 1px solid #707070;
+  color: #707070;
+  @include body($size: 13);
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    font-size: inherit;
+    color: inherit;
+    border-color: #707070;
+  }
+}

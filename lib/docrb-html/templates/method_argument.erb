@@ -1,0 +1,29 @@
+<% div("method-argument-base", id:) do %>
+    <% if computed[:rest] %>
+        <span class="rest-arg <%= computed[:rest] %>"></span>
+    <% end %>
+
+    <%= computed[:name] %>
+
+    <% if computed[:continuation] %>
+        <span class="continuation <%= computed[:continuation] %>"></span>
+    <% end %>
+
+    <% if computed.dig(:value, :kind) == :method_call_argument %>
+    <% elsif computed.dig(:value, :kind) == :const
+        last = computed.dig(:value, :value).pop
+    %>
+        <% computed.dig(:value, :value).each do |val| %>
+            <% if val[:kind] == :continuation %>
+                <span class="continuation colon double"></span>
+            <% elsif val[:kind] == :class_or_module %>
+                <span class="class_or_module">
+                    <%= val[:value] %>
+                </span>
+            <% end %>
+        <% end %>
+        <span class="simple-argument plain"><%= last[:value] %></span>
+    <% elsif computed.dig(:value, :kind) %>
+        <span class="simple-argument <%= computed[:value][:kind] %>"><%= computed[:value][:value] %></span>
+    <% end %>
+<% end %>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= title %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <% unless level.zero? %>
+    <base href="<%= ([".."] * level).join("/") %>" />
+    <% end %>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+</head>
+<body>
+    <% if body.is_a? Array %>
+        <%= body.map(&:render).join("") %>
+    <% else %>
+        <%= body %>
+    <% end %>
+    <script type="text/javascript" src="filtering.js"></script>
+</body>
+</html>

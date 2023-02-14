@@ -1,0 +1,36 @@
+div.reference-base {
+    display: inline-flex;
+    cursor: pointer;
+    color: white;
+
+    .resolved {
+        border-color: white;
+        border-bottom: 1px dashed;
+
+        &.class { color: #FFAB42; border-color: #FFAB42; }
+        &.module { color: #579AD1; border-color: #579AD1; }
+    }
+
+    .unresolved {
+        border: 1px dotted #D8D8D8;
+        border-radius: 10px 3px 3px 10px;
+        display: inline-flex;
+        color: white;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+
+        .icon {
+            margin-left: 2px;
+            margin-right: 2px;
+        }
+
+        span {
+            @include mono($size: 15);
+        }
+    }
+
+    a {
+        @include mono($weight: 300, $size: 15);
+    }
+}

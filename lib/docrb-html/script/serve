@@ -1,0 +1,2 @@
+#!/bin/bash
+docker run -it --rm -p 8000:80 --name web -v "$(cd "$(dirname "$1")"; pwd)/$(basename "$1")":/usr/share/nginx/html nginx

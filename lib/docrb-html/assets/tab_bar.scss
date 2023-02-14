@@ -1,0 +1,22 @@
+div.tab-bar-base {
+  height: 57px;
+  background: #161617;
+  padding: 12px 12px 0;
+  display: flex;
+
+  a {
+    padding: 12px 27px;
+    color: #FFFFFF;
+    border-radius: 3px 3px 0 0;
+    @include body;
+    cursor: pointer;
+
+    &.selected {
+        background-color: #1C1C1E;
+    }
+
+    &:hover:not(.selected) {
+        background-color: #18181A;
+    }
+  }
+}

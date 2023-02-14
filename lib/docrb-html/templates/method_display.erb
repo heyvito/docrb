@@ -1,0 +1,28 @@
+<% div("method-display-base", id:) do %>
+    <%= decoration && !decoration.empty? && svg(decoration, class_name: "decoration", title: decoration == "inherited" ? "Inherited" : "Override") || "" %>
+    <%= type && typedef(name: type) %>
+    <% base = capture do %>
+        <div class="container">
+            <div class="method-name"><%= name %></div>
+            <% if args %>
+                <div class="argument-container<%= args.empty? ? "" : " not-empty" %>">
+                    <% args.map do |i| %>
+                        <%= method_argument(**i) %>
+                    <% end %>
+                </div>
+            <% end %>
+        </div>
+    <% end %>
+    <% if href && !href.empty? %>
+        <a class="dashed" href="<%= href %>">
+            <%= base %>
+        </a>
+    <% else %>
+        <%= base %>
+    <% end %>
+    <% if visibility&.downcase != 'public' %>
+        <div class="label"><%= visibility %></div>
+    <% elsif ![nil, 'public'].include? doc&.dig(:doc_visibility_annotation) %>
+        <div class="label"><%= doc.dig(:doc_visibility_annotation) %></div>
+    <% end %>
+<% end %>

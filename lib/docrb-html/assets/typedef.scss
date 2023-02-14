@@ -1,0 +1,6 @@
+div.typedef-base {
+  @include mono($weight: 500);
+  color: #808080;
+  margin-right: 11px;
+  text-transform: capitalize;
+}

@@ -1,0 +1,38 @@
+<% div("project-header-base", id:) do %>
+    <div class="project">
+        <h1><%= name %></h1>
+        <h3><%= description %></h3>
+    </div>
+    <div class="right">
+        <div class="label">
+            <a href="https://github.com/heyvito/docrb" rel="noreferrer" target="_blank">
+                <%= svg('docrb-label') %>
+            </a>
+        </div>
+        <div class="link-panel">
+            <% if owner %>
+                <div class="link-row">
+                    <span><%= owner %></span>
+                    <%= svg('user') %>
+                </div>
+            <% end %>
+            <% if license %>
+            <div class="link-row">
+                <span><%= license %></span>
+                <%= svg('balance') %>
+            </div>
+            <% end %>
+            <% links.each do |link| %>
+                <div class="link-row">
+                    <span><a href="<%= link[:href] %>"
+                        class="dashed"
+                        rel="noreferrer"
+                        target="_blank">
+                        <%= link[:href].gsub(/^https?:\/\//, '') %>
+                    </a></span>
+                    <%= svg(link[:kind]) %>
+                </div>
+            <% end %>
+        </div>
+    </div>
+<% end %>
