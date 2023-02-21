@@ -27,7 +27,7 @@ class Renderer
 
     def initialize(path)
       @template = ERB.new(File.read(path))
-      @template.filename = path
+      @template.filename = path.to_s
     end
 
     def render(b, *args, **kwargs)

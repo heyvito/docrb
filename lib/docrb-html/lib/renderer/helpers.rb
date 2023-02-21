@@ -6,7 +6,7 @@ class Renderer
       attrs["class"] = cls if cls
       kwargs.each { |k, v| attrs[k.to_s] = v.to_s }
 
-      svg = File.read("assets/images/#{name}.svg")
+      svg = File.read(Renderer::ASSETS_PATH.join("images/#{name}.svg"))
       return svg if attrs.empty?
 
       doc = Nokogiri::XML svg

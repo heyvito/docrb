@@ -19,7 +19,7 @@ class Renderer
       return @template_instance if @template_instance
 
       t_name = @template || name.split("::").last.snakify
-      @template_instance = Template.new("templates/#{t_name}.erb")
+      @template_instance = Template.new(Renderer::TEMPLATES_PATH.join("#{t_name}.erb"))
     end
 
     def props = @props ||= self.class.instance_variable_get(:@props) || []

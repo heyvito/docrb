@@ -8,15 +8,10 @@ require "nokogiri"
 
 require_relative "renderer/version"
 require_relative "renderer/core_extensions"
-require_relative "renderer/template"
-require_relative "renderer/component"
-require_relative "renderer/helpers"
-require_relative "renderer/page"
-require_relative "renderer/metadata"
-require_relative "renderer/defs"
 
 class Renderer
   ASSETS_PATH = Pathname.new(__dir__).join("../assets")
+  TEMPLATES_PATH = Pathname.new(__dir__).join("../templates")
   STYLE_BASE = SassC::Engine.new(File.read(ASSETS_PATH.join("style.scss")),
                                  style: :compressed,
                                  load_paths: [ASSETS_PATH]).render
@@ -127,3 +122,10 @@ class Renderer
     end
   end
 end
+
+require_relative "renderer/template"
+require_relative "renderer/component"
+require_relative "renderer/helpers"
+require_relative "renderer/page"
+require_relative "renderer/metadata"
+require_relative "renderer/defs"

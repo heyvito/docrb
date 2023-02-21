@@ -2,7 +2,7 @@
 
 class Renderer
   class Page
-    PAGE_BASE = Template.new("templates/base.erb")
+    PAGE_BASE = Template.new(Renderer::TEMPLATES_PATH.join("base.erb"))
 
     def initialize(title: nil, level: 0, &body)
       @title = "#{title} - Docrb"
