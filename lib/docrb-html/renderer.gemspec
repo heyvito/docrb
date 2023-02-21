@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/trunk/lib/docrb-html"
   spec.metadata["changelog_uri"] = spec.homepage
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
@@ -26,7 +27,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "nokogiri", "~> 1.14"
-  spec.add_dependency "sassc"
-  spec.add_dependency "tilt"
-  spec.metadata["rubygems_mfa_required"] = "true"
+  spec.add_dependency "sassc", "~> 2.4"
 end
