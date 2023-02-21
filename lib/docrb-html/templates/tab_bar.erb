@@ -1,0 +1,7 @@
+<% div("tab-bar-base", id:) do %>
+    <% items.each.with_index do |i, idx| %>
+        <a href="<%= i[:href] %>" class="<%= idx == selected_index ? "selected" : "" %>">
+            <%= i[:name] %>
+        </a>
+    <% end %>
+<% end %>

@@ -1,0 +1,25 @@
+div.breadcrumb-base {
+    padding-left: 17px;
+    padding-right: 40px;
+    background-color: #161617;
+    height: 57px;
+    display: flex;
+    align-items: center;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    div.link {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        @include body;
+        a {
+            color: white;
+            font-weight: 400;
+
+            .padded {
+                padding: 0 8px 0 10px;
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+div.method-display-base {
+    @include container;
+    margin-top: 8px;
+    .container {
+        @include container;
+    }
+
+    .method-name {
+        @include mono;
+        color: #39B6B5;
+    }
+
+    .argument-container {
+        @include mono;
+        color: #39B6B5;
+        display: flex;
+
+        &.not-empty {
+            &:before { content: '(' }
+            &:after { content: ')' }
+        }
+    }
+
+    .label {
+        @include label;
+    }
+}

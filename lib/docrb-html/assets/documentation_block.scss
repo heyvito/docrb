@@ -1,0 +1,5 @@
+div.documentation-block-base {
+    .faded {
+        @include faded;
+    }
+}

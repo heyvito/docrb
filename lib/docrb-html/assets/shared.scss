@@ -1,0 +1,23 @@
+.section-container {
+    margin: 25px 0 0;
+
+    .horizontal-container {
+        display: flex;
+        column-gap: 50px;
+
+        .child-structure {
+            .heading {
+                @include body($size: 24);
+                color: #FFFFFF;
+                padding-bottom: 12px;
+            }
+
+            .link-column {
+                display: flex;
+                flex-direction: column;
+                row-gap: 8px;
+                padding-left: 12px;
+            }
+        }
+    }
+}

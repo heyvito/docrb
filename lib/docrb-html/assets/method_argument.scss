@@ -1,0 +1,75 @@
+div.method-argument-base {
+    color: #FFAB42;
+    display: inline;
+    display: flex;
+
+    span { display: inline-block; }
+
+    &:not(:first-of-type) {
+        margin-left: 8px;
+    }
+
+    &:not(:last-of-type) {
+        &:after {
+            content: ',';
+            color: #A5ACBA;
+        }
+    }
+
+    .rest-arg {
+        color: #FF724C;
+        &.double {
+            &:after { content: "**" }
+        }
+        &.single {
+            &:after { content: "*" }
+        }
+        &.block  {
+            &:after { content: "&" }
+        }
+    }
+
+    @mixin base_arg { margin-left: 8px; }
+
+    .continuation {
+        @include base_arg;
+        margin: 0;
+        &.equal {
+            color: #FF724C;
+            margin: 0 0 0 8px;
+            &:after {
+              content: "=";
+            }
+        }
+        &.colon {
+            color: #A5ACBA;
+
+            &:after {
+              content: ':';
+            }
+
+            &.double {
+                &:after {
+                    content: '::';
+                }
+            }
+        }
+
+        + span {
+            margin-left: 8px;
+        }
+    }
+
+    .simple-argument {
+        &.symbol { color: #CF91C9; }
+        &.number { color: #FF724C; }
+        &.string {
+            color: #8CC98F;
+            :before, :after {
+                content: '"';
+                color: #39B6B5;
+            }
+        }
+        &.plain  { color: white; }
+    }
+}

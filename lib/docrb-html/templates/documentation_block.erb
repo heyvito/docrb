@@ -1,0 +1,18 @@
+<% div("documentation-block-base", id:) do %>
+    <% if doc.nil? || doc.empty? %>
+        <div class="faded">(No documentation available)</div>
+    <% else %>
+        <% items = (doc[:contents].is_a?(Array) ? doc[:contents] : [doc[:contents]]).compact %>
+
+        <% items.map.each do |i| %>
+            <% if i[:type] == 'text_block' %>
+                <%= text_block list: i[:contents] %>
+            <% elsif i[:type] == 'code_example' %>
+                <%= markdown(source: i[:contents]) %>
+            <% elsif i[:type] == 'field_block' %>
+            <% else %>
+                <span class="text">!Unexpected item <%= i[:type] %></span>
+            <% end %>
+        <% end %>
+    <% end %>
+<% end %>

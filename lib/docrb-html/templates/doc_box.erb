@@ -1,0 +1,82 @@
+<% child_structure = Proc.new do |name, list| %>
+    <% if list && !list.length.zero? && list.is_a?(Array) %>
+        <div class="child-structure">
+            <h3 class="heading"><%= name %></h3>
+            <div class="link-column">
+                <% list.each do |item| %>
+                    <div>
+                        <% if item.is_a? String %>
+                            <%= reference(ref: { contents: item }) %>
+                        <% else %>
+                            <%= reference(ref: { ref_type: item.type, ref_path: item.path, contents: item.name }) %>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    <% end %>
+<% end %>
+
+<% div("doc-box-base", id:) do %>
+    <div class="left">
+        <%= has_class_docs && documentation_block(doc: item[:doc]) %>
+        <% if has_class_details %>
+            <div class="section-container" id="class-details">
+                <div class="horizontal-container">
+                    <% child_structure.call("Inherits", [item.inherits].compact) %>
+                    <% child_structure.call("Extends", item.extends) %>
+                    <% child_structure.call("Includes", item.includes) %>
+                    <% child_structure.call("Child Modules", item.modules) %>
+                    <% child_structure.call("Child Classes", item.classes) %>
+                </div>
+            </div>
+        <% end %>
+        <% if has_attrs %>
+            <div class="section-container" id="attributes">
+                <h3 class="heading">Attributes</h3>
+                <% attrs.each do |att| %>
+                    <div class="attribute-container"
+                        data-origin="<%= att.dig(:origin) %>"
+                        data-type="<%= att[:type].downcase %>"
+                        id="<%= att[:type] %>-<%= att[:name] %>"
+                        >
+                        <% if att[:decoration] %>
+                            <%= svg(att[:decoration], class_name: "decoration", title: att[:decoration] == 'inherited' ? 'Inherited' : 'Override') %>
+                        <% end %>
+                        <span class="name"><%= att[:name] %></span>
+                        <span class="label"><%= att[:visibility] %></span>
+                        <% if att[:doc] %>
+                            <%= markdown(source: att[:doc]) %>
+                        <% else %>
+                            <div class="faded">
+                                (No documentation available)
+                            </div>
+                        <% end %>
+                    </div>
+                <% end %>
+            </div>
+        <% end %>
+        <% if has_class_methods %>
+            <div class="section-container" id="class-methods">
+                <h3 class="heading">Class Methods</h3>
+                <%= method_list(list: sdefs) %>
+            </div>
+        <% end %>
+        <% if has_instance_methods %>
+            <div class="section-container" id="instance-methods">
+                <h3 class="heading">Instance Methods</h3>
+                <%= method_list(list: defs) %>
+            </div>
+        <% end %>
+    </div>
+    <div class="right">
+        <% if page_components.any? { _1.last[:enabled] } %>
+            <h3>In this Page</h3>
+            <% page_components.map do |href, item| %>
+                <% if item[:enabled] %>
+                    <div><a href="#<%= href %>" class="dotted"><%= item[:name] %></a></div>
+                <% end %>
+            <% end %>
+        <% end %>
+    </div>
+<% end %>

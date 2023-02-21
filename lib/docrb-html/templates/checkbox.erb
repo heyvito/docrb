@@ -1,0 +1,8 @@
+<% div("checkbox-base") do %>
+    <input type="checkbox" id="<%= id %>" <%= checked && "checked" %>/>
+    <label for="<%= id %>">
+        <%= svg "checkbox-on", class_name: "checkbox-on" %>
+        <%= svg "checkbox-off", class_name: "checkbox-off" %>
+        <span class="label"><%= label %></span>
+    </label>
+<% end %>

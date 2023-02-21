@@ -1,0 +1,205 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "json"
+require "fileutils"
+require "optparse"
+require "open3"
+require "tmpdir"
+require "renderer"
+
+require "docrb"
+
+def exec(cmd, *args, **kwargs)
+  _, stdout_and_err, wait_thread = Open3.popen2e(cmd, *args, **kwargs)
+  status = wait_thread.value
+  {
+    code: status.exitstatus,
+    output: stdout_and_err.read.chomp
+  }
+end
+
+def git(*args, **kwargs)
+  exec("git", *args, **kwargs)
+end
+
+def render_html(*args, **kwargs)
+  exec("docrb-html", *args, **kwargs)
+end
+
+def run
+  options = {}
+  opts = OptionParser.new do |opts|
+    opts.banner = "Usage: bin/docrb [options] [input directory] [output directory]"
+    gemspec_info = "When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory."
+
+    opts.on("--help", "Prints this help") do
+      puts opts
+      exit
+    end
+
+    opts.on("-bPATH", "--base=PATH",
+            "Base directory to search for source files. Defaults to the provided input directory.") do |b|
+      options[:base] = b
+    end
+
+    opts.on("-rPATH", "--readme=PATH",
+            "Path for README.md file. When omitted, Docrb searches for a README.md file in the provided input directory.") do |r|
+      options[:readme] = r
+    end
+
+    opts.on("-nNAME", "--name=NAME", "Name of the project being documented. #{gemspec_info}") do |n|
+      options[:name] = n
+    end
+
+    opts.on("-sSUMMARY", "--summary=SUMMARY", "Short summary of the project being documented. #{gemspec_info}") do |d|
+      options[:summary] = d
+    end
+
+    opts.on("-hURL", "--host=URL", "URL for the gem's hosted URL. #{gemspec_info}") do |u|
+      options[:host_url] = u
+    end
+
+    opts.on("-gURL", "--git-repo=URL",
+            "URL for the repository containing the documented project. When omitted, Docrb attempts to extract this information from the .git directory present in the provided input directory, if any.") do |u|
+      options[:git_url] = u
+    end
+
+    opts.on("--authors a,b,c", "List of name of project authors. #{gemspec_info}") do |list|
+      options[:authors] = list
+    end
+
+    opts.on("-lLICENSE", "--license=LICENSE", "The project's license. #{gemspec_info}") do |license|
+      options[:license] = license
+    end
+  end
+
+  opts.parse!
+
+  if ARGV.length != 2
+    puts opts
+    exit(1)
+  end
+
+  input = ARGV[0]
+  output = ARGV[1]
+
+  unless File.exist? input
+    puts "#{input}: Does not exist"
+    exit(1)
+  end
+
+  if File.exist? output
+    unless File.directory? output
+      puts "#{output}: Exists and is not a directory."
+      exit(1)
+    end
+  else
+    begin
+      FileUtils.mkdir_p output
+    rescue StandardError => e
+      puts e
+      exit(1)
+    end
+  end
+
+  tmp_output = Dir.mktmpdir
+  data_path = File.join(tmp_output, "data.json")
+  markdown_path = File.join(tmp_output, "readme.html")
+  metadata_path = File.join(tmp_output, "metadata.json")
+  readme_path = File.join(input, "README.md")
+  base_path = input
+
+  if options[:readme]
+    readme_path = options[:readme]
+    unless File.exist? readme_path
+      puts "--readme was provided, but #{readme_path} could not be found."
+      exit(1)
+    end
+  end
+
+  spec = Docrb::Spec.parse_folder(input) || {}
+
+  %i[name summary host_url git_url authors license].each do |k|
+    spec[k] = options[k] if options.key? k
+  end
+
+  if spec[:name] == "" || spec[:name].nil?
+    puts "Docrb could not detect the project name. Please check your .gemspec, or provide one manually using --name."
+    exit(1)
+  end
+
+  if spec[:summary] == "" || spec[:summary].nil?
+    puts "Docrb could not detect the project's summary. Please check your .gemspec, or provide one manually using --summary."
+    exit(1)
+  end
+
+  if options[:base]
+    path = File.join(input, options[:base])
+    unless File.exist? path
+      puts "--base was provided, but #{path} does not exist."
+      exit(1)
+    end
+    base_path = path
+  end
+
+  git_tip = nil
+  git_root = nil
+  git_status = git("status", "--porcelain", chdir: input)
+  if (git_status[:code]).zero?
+    if git_status[:output].length.positive?
+      puts "WARNING: Your local git copy seems to be dirty. Consider commiting your changes before generating docs."
+    end
+    tip_data = git("rev-parse", "HEAD", chdir: input)
+    if tip_data[:code] != 0
+      puts "ERROR: Acquiring repository information failed:"
+      puts tip_data[:output]
+      puts "------- 8< cut here"
+      puts "Aborting."
+      exit 1
+    end
+    toplevel = git("rev-parse", "--show-toplevel", chdir: input)
+    if toplevel[:code] != 0
+      puts "ERROR: Acquiring repository toplevel failed:"
+      puts tip_data[:output]
+      puts "------- 8< cut here"
+      puts "Aborting."
+      exit 1
+    end
+
+    git_tip = tip_data[:output]
+    git_root = toplevel[:output]
+  else
+    puts "git status returned status #{git_status[:code]}; avoiding git..."
+  end
+
+  spec[:git_tip] = git_tip if git_tip
+  spec[:git_root] = git_root if git_root
+  spec[:timestamp] = Time.now.utc.strftime("%A, %d %b %Y %l:%M %p GMT")
+  spec[:version] = Docrb::VERSION
+
+  data = Docrb.parse_folder(base_path)
+  compiler = Docrb::DocCompiler.new
+  data.each { |f| compiler.append(f) }
+
+  File.write(data_path, compiler.to_h.to_json)
+  puts "Created: #{data_path}"
+
+  if File.exist? readme_path
+    puts "Found #{readme_path}"
+    md = File.read(readme_path).to_s
+    result = Docrb::Markdown.render(md)
+    File.write(markdown_path, result)
+    puts "Created #{markdown_path}"
+  else
+    puts "#{readme_path} does not exist. Skipping..."
+  end
+  File.write(metadata_path, spec.to_json)
+  puts "Created #{metadata_path}"
+
+  puts "Generating HTML into #{output}"
+  Renderer.new(tmp_output, output).render
+end
+
+run

@@ -52,12 +52,12 @@ module Docrb
       # Public: Returns a Hash representation of this method
       def to_h
         {
-          type: type,
-          name: name,
-          args: args,
+          type:,
+          name:,
+          args:,
           doc: DocBlocks.prepare(doc, parent: self),
-          visibility: visibility,
-          overriden_by: overriden_by,
+          visibility:,
+          overriden_by:,
           defined_by: defined_by&.to_h
         }
       end

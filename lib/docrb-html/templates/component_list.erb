@@ -1,0 +1,21 @@
+<% div("component-list-base", id:, class_name: class_name) do %>
+    <% list.each do |item| %>
+        <%
+            base_path = (parents + ["#{item[:name]}.html"]).join("/")
+            new_parents = parents + [item[:name]]
+        %>
+        <div class="level" style="padding-left: <%= item[:level] * 20 %>px">
+            <%= type_definition(type: item[:type], href: "#{base_path}", name: item[:name]) %>
+            <div class="level" style="padding-left: <%= (item[:level] + 1) * 20 %>px">
+                <% item[:attributes]&.each do |att| %>
+                    <%= method_display(type: att[:type], name: att[:name], visibility: att[:visibility], decoration: att[:decoration], href: "#{base_path}#attr-#{att[:name]}") %>
+                <% end %>
+                <% item[:defs]&.each do |met| %>
+                    <%= method_display(href: "#{base_path}##{met[:short_type]}-#{met[:name]}", **met) %>
+                <% end %>
+            </div>
+            <%= component_list(list: item[:modules], parents: new_parents, class_name: "no-margin") %>
+            <%= component_list(list: item[:classes], parents: new_parents, class_name: "no-margin") %>
+        </div>
+    <% end %>
+<% end %>

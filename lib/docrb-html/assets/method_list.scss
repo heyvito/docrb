@@ -1,0 +1,51 @@
+div.method-list-base {
+    .method-definition {
+        margin-bottom: 23px;
+    }
+
+    .doc-block {
+        margin-top: 8px;
+    }
+
+    .source-block {
+        margin: 13px 0 22px 0;
+        position: relative;
+        display: block;
+
+        &[open] {
+            summary {
+                .expanded { display: block }
+                .collapsed { display: none }
+            }
+        }
+
+        summary {
+            display: inline-block;
+            list-style: none;
+            > span {
+                @include body($weight: 500);
+                border-bottom: white 1px dotted;
+                cursor: pointer;
+                color: #FFF;
+            }
+
+            .expanded { display: none }
+            .collapsed { display: block }
+        }
+
+        .markdown-base > .highlight {
+            margin-bottom: 0;
+        }
+
+        .from {
+            @include body;
+            font-size: 80%;
+            color: white;
+            margin-bottom: 30px;
+            a {
+              font-size: inherit;
+            }
+        }
+    }
+
+}

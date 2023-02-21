@@ -1,0 +1,16 @@
+a {
+    @include body($weight: 500);
+    color: #FFFFFF;
+    cursor: pointer;
+    text-decoration: none;
+
+    &.dotted {
+        border-bottom: white 1px dotted;
+        padding-bottom: 3px;
+    }
+
+    &.dashed {
+        border-bottom: white 1px dashed;
+        padding-bottom: 3px;
+    }
+}

@@ -106,8 +106,8 @@ module Docrb
       # children.
       def to_h
         {
-          type: type,
-          name: name,
+          type:,
+          name:,
           doc: DocBlocks.prepare(doc, parent: self),
           defined_by: defined_by.map(&:to_h),
           defs: merged_instance_methods.transform_values { |v| unpack(v) },

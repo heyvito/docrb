@@ -1,5 +1,5 @@
 AllCops:
-  TargetRubyVersion: 3.0
+  TargetRubyVersion: 3.2
   NewCops: enable
   Exclude:
     - spec/**/*
@@ -19,7 +19,7 @@ Style/Documentation:
 Layout/LineLength:
   Max: 120
   Exclude:
-    - bin/*
+    - exe/*
     - lib/docrb/comment_parser.rb
     - lib/docrb/ruby_parser.rb
 
@@ -35,12 +35,12 @@ Naming/MethodParameterName:
 
 Metrics/BlockLength:
   Exclude:
-    - bin/*
+    - exe/*
     - lib/docrb/ruby_parser.rb
 
 Metrics/PerceivedComplexity:
   Exclude:
-    - bin/*
+    - exe/*
     - lib/docrb/doc_compiler/base_container.rb
     - lib/docrb/doc_compiler/base_container/computations.rb
     - lib/docrb/doc_compiler/object_container.rb
@@ -49,7 +49,7 @@ Metrics/PerceivedComplexity:
 
 Metrics/CyclomaticComplexity:
   Exclude:
-    - bin/*
+    - exe/*
     - lib/docrb/doc_compiler/base_container.rb
     - lib/docrb/doc_compiler/base_container/computations.rb
     - lib/docrb/doc_compiler/object_container.rb
@@ -58,7 +58,7 @@ Metrics/CyclomaticComplexity:
 
 Lint/ShadowingOuterLocalVariable:
   Exclude:
-    - bin/*
+    - exe/*
 
 Metrics/AbcSize:
   Enabled: false

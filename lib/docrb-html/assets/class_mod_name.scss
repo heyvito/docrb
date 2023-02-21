@@ -1,0 +1,8 @@
+div.class-mod-name-base {
+    display: flex;
+    flex-direction: column;
+    .type-name {
+        @include body($size: 24);
+        color: white;
+    }
+}

@@ -1,0 +1,75 @@
+div.class-header-base {
+    padding-left: 52px;
+    padding-right: 40px;
+    background-color: #101010;
+    min-height: 240px;
+    display: flex;
+    justify-content: space-between;
+
+    .class {
+        margin-top: 46px;
+    }
+
+    .type {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 16px;
+        color: white;
+    }
+
+    .class-name {
+        @include body($weight: 300, $size: 64);
+        color: white;
+    }
+
+    .def-link {
+        a {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 16px;
+        }
+    }
+
+    .defs {
+        @include body($weight: 300);
+        color: white;
+        margin-left: 6px;
+    }
+
+    .chevron-container {
+        &[open] {
+            summary {
+                svg {
+                    rotation: 180deg;
+                    rotate: 180deg;
+                }
+                .collapsed { display: none; }
+                .open { display: inline; }
+            }
+        }
+
+        summary {
+            user-select: none;
+            @include body($weight: 500);
+            select: none;
+            color: #FFFFFF;
+            display: flex;
+            margin-top: 18px;
+            margin-left: 10px;
+            cursor: pointer;
+            svg { margin-right: 8px }
+            .open { display: none };
+        }
+
+        .toggles {
+            display: flex;
+            flex-direction: row;
+            margin: 22px 10px 30px;
+
+            .column {
+                margin-right: 50px;
+                display: flex;
+                flex-direction: column;
+                row-gap: 8px;
+            }
+        }
+    }
+}

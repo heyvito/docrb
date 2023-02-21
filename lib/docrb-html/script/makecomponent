@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative "../lib/renderer/core_extensions"
+name = ARGV.first.snakify
+real_name = ARGV.first
+dashed_name = name.gsub(/_/, "-")
+File.write("assets/#{name}.scss", "div.#{dashed_name}-base {\n\n}\n")
+styles = File.read("assets/style.scss")
+File.write("assets/style.scss", "#{styles}@import './#{name}';\n")
+File.write("lib/renderer/component/#{name}.rb", <<~RUBY)
+  class Renderer
+    class Component
+      class #{real_name} < Component
+      end
+    end
+  end
+RUBY
+
+File.write("templates/#{name}.erb", <<~ERB)
+  <% div("#{dashed_name}-base", id:) do %>
+  <% end %>
+ERB

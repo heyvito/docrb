@@ -1,0 +1,79 @@
+div.doc-box-base {
+    margin: 44px 46px;
+    display: flex;
+    flex-wrap: wrap-reverse;
+    flex-direction: row;
+    column-gap: 38px;
+
+    .heading {
+        @include body($size: 24);
+        color: #FFFFFF;
+        padding-bottom: 12px;
+    }
+
+    .left {
+        flex: 1;
+        max-width: 100%;
+        flex-wrap: wrap;
+
+        .section-container {
+            margin: 25px 0 0;
+        }
+
+        .horizontal-container {
+            display: flex;
+            column-gap: 50px;
+        }
+
+        .link-column {
+            display: flex;
+            flex-direction: column;
+            row-gap: 8px;
+            padding-left: 12px;
+        }
+
+        .attribute-container {
+            margin-bottom: 12px;
+
+            .decoration {
+                display: inline-block;
+                margin-right: 8px;
+                margin-left: -18px;
+            }
+
+            .name {
+                @include mono;
+                color: white;
+            }
+
+            .label {
+                @include label;
+            }
+
+            .faded {
+                @include faded;
+            }
+        }
+    }
+
+    .right {
+        padding-right: 54px;
+        margin-bottom: 48px;
+
+        h3 {
+            @include body($size: 24);
+            color: #FFFFFF;
+            padding-bottom: 12px;
+        }
+
+        > div {
+            margin-bottom: 5px;
+        }
+
+        a {
+          color: #FFF;
+          @include body;
+          text-decoration: none;
+        }
+    }
+}

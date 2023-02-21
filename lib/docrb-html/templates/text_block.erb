@@ -1,0 +1,16 @@
+<% div("text-block-base", id:) do %>
+    <% list.each do |i| %>
+        <% if i[:type] == 'span' %>
+            <div class="html inline"><%= i[:contents] %></div>
+        <% elsif i[:type] == 'ref' %>
+            <%= reference(ref: i) %>
+        <% elsif i[:type] == 'html' %>
+            <div class="html"><%= i[:contents] %></div>
+        <% elsif i[:type] == 'sym_ref' %>
+            <%= symbol(name: i[:contents]) %>
+        <% else %>
+            Unknown textblock item <%= i[:kind] %><br/>
+            <%= i.to_json %>
+        <% end %>
+    <% end %>
+<% end %>

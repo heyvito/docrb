@@ -1,0 +1,41 @@
+div.markdown-base {
+    @include body;
+    color: #fff;
+    background-color: #1C1C1E;
+    padding: 12px 24px;
+
+    h1 {
+        border-bottom: 1px solid #373e47;
+    padding-bottom: 8px;
+    }
+
+    h1, h2, h3, h4, h5 {
+        margin: 12px 0;
+    }
+
+    p code {
+        background-color: #242426;
+        font-size: 80%;
+        padding: 3px 4px;
+        border-radius: 3px;
+    }
+
+    p {
+        margin-bottom: 8px;
+        line-height: 22px;
+    }
+
+    p + h1, p + h2, p + h3, p + h4, p + h5 {
+      margin-top: 24px;
+    }
+
+    a {
+        color: #fff;
+        border-bottom: dashed 1px white;
+        text-decoration: none;
+    }
+
+    code, pre {
+        @include mono($size: 15);
+    }
+}
