@@ -2,19 +2,30 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "docrb"
 require "json"
 require "fileutils"
 require "optparse"
 require "open3"
+require "tmpdir"
+require "renderer"
 
-def git(*args, **kwargs)
-  _, oe, t = Open3.popen2e("git", *args, **kwargs)
-  status = t.value
+require "docrb"
+
+def exec(cmd, *args, **kwargs)
+  _, stdout_and_err, wait_thread = Open3.popen2e(cmd, *args, **kwargs)
+  status = wait_thread.value
   {
     code: status.exitstatus,
-    output: oe.read.chomp
+    output: stdout_and_err.read.chomp
   }
+end
+
+def git(*args, **kwargs)
+  exec("git", *args, **kwargs)
+end
+
+def render_html(*args, **kwargs)
+  exec("docrb-html", *args, **kwargs)
 end
 
 def run
@@ -93,9 +104,10 @@ def run
     end
   end
 
-  data_path = File.join(output, "data.json")
-  markdown_path = File.join(output, "readme.html")
-  metadata_path = File.join(output, "metadata.json")
+  tmp_output = Dir.mktmpdir
+  data_path = File.join(tmp_output, "data.json")
+  markdown_path = File.join(tmp_output, "readme.html")
+  metadata_path = File.join(tmp_output, "metadata.json")
   readme_path = File.join(input, "README.md")
   base_path = input
 
@@ -185,6 +197,9 @@ def run
   end
   File.write(metadata_path, spec.to_json)
   puts "Created #{metadata_path}"
+
+  puts "Generating HTML into #{output}"
+  Renderer.new(tmp_output, output).render
 end
 
 run
