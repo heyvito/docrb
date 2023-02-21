@@ -11,6 +11,14 @@ in action!
 projects (some private, some public), there may still be some rough edges. In
 case you run into any issue, please do tell us using GitHub's issue tracker! 💕
 
+## Installing
+
+Install the `docrb` by executing the following command:
+
+```
+gem install docrb
+```
+
 ## Using
 
 As mentioned in the previous section, Docrb is an **opinionated** documentation
@@ -96,41 +104,31 @@ The following patterns are assumed as references and linked automatically:
 
 ## Generating Documentation
 
-Docrb requires a few different dependencies to run. Therefore, the recommended
-way of using it is through Docker (or other container runtimes). You will need
-to provide both a volume containing the source files, and another volume for the
-generated documentation. For instance, the following command line is used to
-generate Logrb's documentation, which is hosted by GitHub pages (hence
-the `--root-path` and `--gh-pages` flags)
+Simply `cd` to your project's directory, and invoke the `docrb` utility.
+For instance, the following command line is used to generate Logrb's
+documentation, which is then generated on an `output` directory:
 
 ```bash
-docker run --rm \
-    --volume ~/Developer/logrb:/work:ro \
-    --volume ~/Developer/logrb-docs:/output \
-    ghcr.io/heyvito/docrb:v0.1.1 \
-    -blib \
-    --root-path=/logrb \
-    --gh-pages
+$ docrb -blib . output
 ```
 
-Basically, mount your project's directory to `/work`, and the desired output
-directory to `/output`. `-b` sets the base directory that contains the library's
-source code, so Docrb only parses files inside that directory.
+The tool can usually detect all it needs, but if needed, extra options may
+be provided:
 
-## Using without a container runtime
+```
+$ docrb --help
 
-Clone this repository, and make sure you have Ruby 3, NodeJS, and Yarn
-installed on your system. Then, `cd` to `lib/docrb` and run `bundle` to install
-Ruby dependencies. Repeat the operation on `lib/docrb-react`, but using `yarn`
-to install dependencies.
-
-Finally, `cd` back to `lib/docrb` and run `bin/docrb` passing required
-arguments. (`--help` will list them). You may want to use `../docrb-react/.docrb`
-as the output directory.
-
-To finish, `cd` to `lib/docrb-react`, and run `yarn dev`, to have a local
-development server, or `yarn build` followed by `yarn export` to generate a
-static copy.
+Usage: bin/docrb [options] [input directory] [output directory]
+        --help                       Prints this help
+    -b, --base=PATH                  Base directory to search for source files. Defaults to the provided input directory.
+    -r, --readme=PATH                Path for README.md file. When omitted, Docrb searches for a README.md file in the provided input directory.
+    -n, --name=NAME                  Name of the project being documented. When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory.
+    -s, --summary=SUMMARY            Short summary of the project being documented. When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory.
+    -h, --host=URL                   URL for the gem's hosted URL. When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory.
+    -g, --git-repo=URL               URL for the repository containing the documented project. When omitted, Docrb attempts to extract this information from the .git directory present in the provided input directory, if any.
+        --authors a,b,c              List of name of project authors. When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory.
+    -l, --license=LICENSE            The project's license. When omitted, Docrb attempts to extract information from a .gemspec file in the provided input directory.
+```
 
 ## Contributing
 

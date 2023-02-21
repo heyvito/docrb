@@ -29,3 +29,4 @@ lib/docrb-react/.idea
 
 .DS_Store
 *.pem
+*.gem
