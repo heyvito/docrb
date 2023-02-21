@@ -106,7 +106,7 @@ module Docrb
                  .collect { |l| l.gsub(COMMENT_PREFIX, "") }
                  .reverse
                  .join("\n")
-      CommentParser.parse(type: type, comment: comments)
+      CommentParser.parse(type:, comment: comments)
     end
 
     # Parses a `begin` keyword
@@ -214,7 +214,7 @@ module Docrb
 
       args.map(&:to_a).flatten.each do |n|
         parent[name].append({
-                              docs: docs,
+                              docs:,
                               name: n,
                               writer_visibility: parent[:_visibility],
                               reader_visibility: parent[:_visibility]
@@ -467,7 +467,7 @@ module Docrb
       {
         type: :defs,
         target: name,
-        class_path: class_path,
+        class_path:,
         name: node.children[1],
         args: parse_method_args(node),
         start_at: node.loc.keyword.line,
@@ -485,8 +485,8 @@ module Docrb
       class_path, name = parse_class_path(node.children.first)
       {
         type: :class,
-        name: name,
-        class_path: class_path,
+        name:,
+        class_path:,
         start_at: node.loc.keyword.line,
         end_at: node.loc.end.line,
         _visibility: :public
@@ -508,7 +508,7 @@ module Docrb
       target = node.children[0].children.last if target == :const
       {
         type: :sclass,
-        target: target,
+        target:,
         _visibility: :public,
         start_at: node.loc.keyword.line,
         end_at: node.loc.end.line
@@ -525,9 +525,9 @@ module Docrb
       class_path, name = parse_class_path(node.children.first)
       {
         type: :module,
-        name: name,
+        name:,
         _visibility: :public,
-        class_path: class_path,
+        class_path:,
         start_at: node.loc.keyword.line,
         end_at: node.loc.end.line
       }

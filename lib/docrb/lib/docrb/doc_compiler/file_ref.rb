@@ -29,10 +29,10 @@ module Docrb
       def to_h
         source = ruby_source
         {
-          filename: filename,
-          start_at: start_at,
-          end_at: end_at,
-          source: source,
+          filename:,
+          start_at:,
+          end_at:,
+          source:,
           markdown_source: Markdown.render_source(source)
         }
       end

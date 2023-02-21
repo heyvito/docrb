@@ -45,12 +45,12 @@ module Docrb
       # Returns a Hash representing this attribute
       def to_h
         {
-          defined_by: defined_by,
-          name: name,
-          docs: docs,
-          type: type,
-          writer_visibility: writer_visibility,
-          reader_visibility: reader_visibility
+          defined_by:,
+          name:,
+          docs:,
+          type:,
+          writer_visibility:,
+          reader_visibility:
         }
       end
     end

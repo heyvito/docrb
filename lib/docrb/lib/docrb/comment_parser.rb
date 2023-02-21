@@ -187,7 +187,7 @@ module Docrb
 
     def process_comment_method_reference(contents, match)
       class_path, target, invocation, name = match.to_a.slice(1...)
-      class_path&.gsub! /::$/, ""
+      class_path&.gsub!(/::$/, "")
       reference_type = invocation == "#" ? :method : :ambiguous
       begin_at = match.begin(0)
       end_at = match.end(0)
@@ -196,9 +196,9 @@ module Docrb
       item = {
         type: :ref,
         ref_type: reference_type,
-        name: name,
-        target: target,
-        class_path: class_path,
+        name:,
+        target:,
+        class_path:,
         contents: match[0]
       }
       [
@@ -215,7 +215,7 @@ module Docrb
       right_slice = contents[end_at...]
       [
         { type: :span, contents: left_slice },
-        { type: type, contents: match[0] },
+        { type:, contents: match[0] },
         { type: :span, contents: right_slice }
       ].reject { |i| i[:contents].empty? }
     end
