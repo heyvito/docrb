@@ -9,4 +9,4 @@ if ARGV.length != 2
   exit 1
 end
 
-Renderer.new.render
+Renderer.new(ARGV.shift, ARGV.shift).render

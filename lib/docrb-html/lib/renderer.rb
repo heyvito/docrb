@@ -23,14 +23,14 @@ class Renderer
 
   def now = Time.now.strftime("%A, %-d %b %Y %H:%M:%S %Z")
 
-  def initialize
-    @base = Pathname.new(ARGV.shift)
-    @output = Pathname.new(ARGV.shift)
+  def initialize(base, output)
+    @base = Pathname.new(base)
+    @output = Pathname.new(output)
   end
 
   def metadata = @metadata ||= Metadata.new(@base)
   def defs = @defs ||= Defs.new(@base, metadata)
-  def footer = @footer ||= Component::Footer.new(version: "0.2.0", updated_at: now)
+  def footer = @footer ||= Component::Footer.new(version: VERSION, updated_at: now)
 
   def render
     project_header = Component::ProjectHeader.new(
