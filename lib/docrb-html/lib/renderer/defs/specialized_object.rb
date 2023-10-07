@@ -16,22 +16,23 @@ class Renderer
       end
 
       def [](key) = @obj[key]
+
       def fetch(*, **, &) = @obj.fetch(*, **, &)
 
       def resolve(name)
         named = named_as(name)
         modules.find(&named) \
-        || classes.find(&named) \
-        || attributes&.find(&named) \
-        || defs.find(&named) \
-        || sdefs.find(&named)
+          || classes.find(&named) \
+          || attributes&.find(&named) \
+          || defs.find(&named) \
+          || sdefs.find(&named) \
       end
 
       def resolve_inheritance(name)
         named = named_as(name)
         modules.find(&named) \
-        || classes.find(&named) \
-        || parent&.resolve_inheritance(name)
+          || classes.find(&named) \
+          || parent&.resolve_inheritance(name)
       end
 
       def resolve_parent(name)
@@ -64,6 +65,10 @@ class Renderer
           query = obj[:name]
           result = resolve(query)
           result ||= resolve_inheritance(query)
+        end
+
+        if result.nil? && @inheritance_prepared
+          result = @provider.find_specialized(query)
         end
 
         puts "Qualified resolution of #{query.inspect} by #{name} failed." unless result
@@ -130,17 +135,17 @@ class Renderer
       def specialize_defs(defs, _parent)
         defs.values.map do |i|
           decoration = if i[:source] == "inheritance"
-                         "inherited"
-                       elsif i[:overriding]
-                         "override"
-                       else
-                         ""
-                       end
+            "inherited"
+          elsif i[:overriding]
+            "override"
+          else
+            ""
+          end
 
           origin = i[:source]
 
           @provider.find_source(i)
-                   .merge({ decoration:, origin: })
+            .merge({ decoration:, origin: })
         end
       end
 
@@ -166,7 +171,9 @@ class Renderer
         @modules = @obj[:modules].map { SpecializedObject.specialize(_1, self, @provider) }
       end
 
-      def named_as(n) = ->(o) { o.name == n }
+      def named_as(n) = ->(o) {
+        (o.is_a?(Hash) ? o[:name] : o.name) == n
+      }
     end
   end
 end

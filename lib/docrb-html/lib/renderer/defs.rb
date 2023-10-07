@@ -22,6 +22,7 @@ class Renderer
     attr_reader :meta
 
     def classes = @classes ||= make_paths(@data[:classes])
+
     def modules = @modules ||= make_paths(@data[:modules])
 
     def make_paths(obj)
@@ -58,10 +59,10 @@ class Renderer
 
     def map_method(met)
       decoration = if met[:source] == "inheritance"
-                     "inherited"
-                   elsif met[:overriding]
-                     "override"
-                   end
+        "inherited"
+      elsif met[:overriding]
+        "override"
+      end
 
       obj = find_source(met)
       type = [].tap do |arr|
@@ -88,19 +89,19 @@ class Renderer
 
     def prepare_attr(met)
       decoration = if met[:source] == "inheritance"
-                     "inherited"
-                   elsif met[:overriding]
-                     "override"
-                   end
+        "inherited"
+      elsif met[:overriding]
+        "override"
+      end
       origin = met[:source]
       att = find_source(met)
       visibility = if att[:reader_visibility] == "public" && att[:writer_visibility] == "public"
-                     "read/write"
-                   elsif att[:reader_visibility] == "public" && att[:writer_visibility] != "public"
-                     "read-only"
-                   else
-                     "write-only"
-                   end
+        "read/write"
+      elsif att[:reader_visibility] == "public" && att[:writer_visibility] != "public"
+        "read-only"
+      else
+        "write-only"
+      end
 
       {
         name: att[:name],
@@ -134,7 +135,7 @@ class Renderer
 
     def git_url(definition)
       "#{@meta.git_url}/blob/#{@meta.git_tip}#{definition[:filename].gsub(@meta.git_root,
-                                                                          "")}#L#{definition[:start_at]}"
+        "")}#L#{definition[:start_at]}"
     end
 
     def clean_file_path(definition) = definition[:filename].gsub(meta.git_root, "")
@@ -145,8 +146,8 @@ class Renderer
 
     def specialize_data
       @specialize_data ||= (data[:modules] + data[:classes])
-                           .map { specialize_object _1 }
-                           .each(&:prepare_inheritance)
+        .map { specialize_object _1 }
+        .each(&:prepare_inheritance)
     end
 
     def specialize_object(obj, parent = nil)
@@ -175,6 +176,23 @@ class Renderer
       return nil unless next_item
 
       find_recursive(path, next_item)
+    end
+
+    def find_specialized(path)
+      path = [path] unless path.is_a? Array
+      segment = path.shift
+      item = modules.find {  _1.name == segment } ||
+        classes.find {_1.name == segment }
+      return if item.nil?
+
+      until path.empty?
+        segment = path.shift
+        item = item.modules.find { _1.name == segment } ||
+          item.classes.find { _1.name == segment }
+        break if item.nil?
+      end
+
+      item
     end
   end
 end

@@ -1,0 +1,21 @@
+module Renderer
+  module Entities
+    class AttributeDefinition
+      attr_reader defined_by: ::Array[String]
+
+      attr_reader docs: untyped # TODO
+
+      attr_reader name: String
+
+      attr_reader reader_visibility: Base::visibility
+
+      attr_reader writer_visibility: Base::visibility
+
+      attr_reader type: untyped # TODO
+
+      attr_reader parent: Attribute
+
+      def initialize: (Attribute parent, Base::model model) -> void
+    end
+  end
+end

@@ -1,0 +1,13 @@
+module Renderer
+  module Entities
+    class Class < Container
+      attr_accessor attributes: ::Array[Attribute]
+
+      attr_accessor inherits: Reference[Class]?
+
+      def initialize: (Container parent, Base::model model) -> void
+
+      def type: () -> :class
+    end
+  end
+end

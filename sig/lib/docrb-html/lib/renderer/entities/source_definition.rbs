@@ -1,0 +1,17 @@
+module Renderer
+  module Entities
+    class SourceDefinition
+      attr_accessor end_at: Integer
+
+      attr_accessor start_at: Integer
+
+      attr_accessor source: String
+
+      attr_accessor markdown_source: String
+
+      attr_accessor filename: String
+
+      def initialize: (Base::model model) -> void
+    end
+  end
+end

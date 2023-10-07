@@ -1,0 +1,15 @@
+module Renderer
+  module Entities
+    class Method < Base
+      @type: Base::method_kind
+
+      attr_accessor overriding: untyped # TODO
+
+      attr_accessor source: SourceDefinition
+
+      attr_accessor definition: MethodDefinition
+
+      def initialize: (Container parent, Base::method_kind type, String name, Base::model model) -> void
+    end
+  end
+end

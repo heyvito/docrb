@@ -13,8 +13,8 @@ class Renderer
   ASSETS_PATH = Pathname.new(__dir__).join("../assets")
   TEMPLATES_PATH = Pathname.new(__dir__).join("../templates")
   STYLE_BASE = SassC::Engine.new(File.read(ASSETS_PATH.join("style.scss")),
-                                 style: :compressed,
-                                 load_paths: [ASSETS_PATH]).render
+    style: :compressed,
+    load_paths: [ASSETS_PATH]).render
 
   def now = Time.now.strftime("%A, %-d %b %Y %H:%M:%S %Z")
 
@@ -24,7 +24,9 @@ class Renderer
   end
 
   def metadata = @metadata ||= Metadata.new(@base)
+
   def defs = @defs ||= Defs.new(@base, metadata)
+
   def footer = @footer ||= Component::Footer.new(version: VERSION, updated_at: now)
 
   def render
@@ -83,7 +85,7 @@ class Renderer
       "favicon.ico"
     ].each do |file|
       File.write(@output.join(Pathname.new(file).basename),
-                 File.read(ASSETS_PATH.join(file)))
+        File.read(ASSETS_PATH.join(file)))
     end
   end
 
@@ -129,3 +131,4 @@ require_relative "renderer/helpers"
 require_relative "renderer/page"
 require_relative "renderer/metadata"
 require_relative "renderer/defs"
+require_relative "renderer/entities"
