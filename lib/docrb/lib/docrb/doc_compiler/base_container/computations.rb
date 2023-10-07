@@ -25,7 +25,7 @@ module Docrb
 
           return unless (parent_name = @inherits)
 
-          @parent_class = resolve(parent_name)
+          @parent_class = resolve_qualified(parent_name.values.reverse.flatten)
           return unless @parent_class
 
           @parent_class.compute_dependants

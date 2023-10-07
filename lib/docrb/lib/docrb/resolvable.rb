@@ -152,7 +152,9 @@ module Docrb
     #        object name being searched, or a classpath for it (e.g.
     #        `Foo::Bar::Baz`)
     def resolve_qualified(path)
-      components = path.split("::").map(&:to_sym)
+      components = path.is_a?(Array) ? path : path.split("::").map(&:to_sym)
+      components.shift if components&.first == "::"
+
       obj = root
       until components.empty?
         obj = obj.resolve(components.shift)

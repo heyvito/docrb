@@ -489,12 +489,31 @@ module Docrb
         class_path:,
         start_at: node.loc.keyword.line,
         end_at: node.loc.end.line,
-        _visibility: :public
-      }.tap do |h|
-        if (inherits = node.children[1])
-          h[:inherits] = inherits.children.last
-        end
+        _visibility: :public,
+        inherits: superclass_path(node)
+      }.compact
+    end
+
+
+    def superclass_path(node)
+      inherits = node.children[1]
+      return unless inherits
+
+      inherits = inherits.children
+      name = inherits.last
+      class_path = []
+      segment = inherits.first
+      while !segment.nil? && segment.type == :const
+        class_path << segment.children.last
+        segment = segment.children.first
       end
+
+      class_path << "::" if segment&.type == :cbase
+
+      {
+        name:,
+        class_path: class_path.reverse
+      }
     end
 
     # Generates metadata for a given singleton class, such as its name,
