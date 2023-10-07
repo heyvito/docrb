@@ -9,3 +9,7 @@ class String
       .downcase
   end
 end
+
+class Object
+  def object_id_hex = "0x#{object_id.to_s(16).rjust(16, "0")}"
+end

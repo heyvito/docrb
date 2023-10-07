@@ -30,8 +30,6 @@ class Renderer
         raise "Orphaned object"
       end
 
-      def object_id_hex = "0x#{object_id.to_s(16).rjust(16, "0")}"
-
       def inspect = "#<#{self.class.name}:#{object_id_hex} #{name}>"
 
       def to_s = inspect

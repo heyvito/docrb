@@ -47,6 +47,13 @@ class Renderer
         @target&.respond_to_missing?(name, include_private) || super
       end
 
+      def inspect
+        full_name = [@class_path, @name].flatten.join("::")
+        "#<#{self.class.name}:#{object_id_hex} #{broken? ? "broken" : "valid"} reference to #{full_name}>"
+      end
+
+      def to_s = inspect
+
       private
 
       def __location__
@@ -55,9 +62,7 @@ class Renderer
         parents = []
         current = @parent.parent
 
-        loop do
-          break if current.parent.nil?
-
+        while current&.parent
           parents << current
           current = current.parent
         end
@@ -71,14 +76,11 @@ class Renderer
       end
 
       def __assign__(target)
-        @target = target
-        __broken__ if target.nil?
+        (@target = target) or __broken__
       end
 
       def __resolve_from_root__
-        container = @root.resolve_class_path(@class_path.dup)
-        return __broken__ if container.nil?
-
+        container = @root.resolve_class_path(@class_path.dup) or return __broken__
         __assign__ container.find_nested_container(@name)
       end
 
@@ -86,16 +88,12 @@ class Renderer
         location = __location__.dup
         container = nil
 
-        loop do
-          break if container || location.empty? || @class_path.empty?
-
-          container = location.shift.find_nested_container(@class_path.first)
+        while !container && !location.empty? && !@class_path.empty?
+          container = location.shift&.find_nested_container(@class_path.first)
         end
         return __broken__ if container.nil?
 
-        container = container.resolve_class_path(@class_path[1..].dup)
-        return __broken__ if container.nil?
-
+        container = container.resolve_class_path(@class_path[1..].dup) or return __broken__
         __assign__ container.find_nested_container(@name)
       end
     end
