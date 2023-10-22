@@ -13,9 +13,9 @@ module Renderer
 
       attr_accessor visibility: Base::visibility
 
-      attr_accessor parent: Container
+      attr_accessor parent: Method
 
-      def initialize: (Container parent, Base::model model) -> void
+      def initialize: (Method parent, Base::model model) -> void
 
       def protected?: () -> bool
 

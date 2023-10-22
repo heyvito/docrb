@@ -1,0 +1,22 @@
+module Docrb
+  class Parser
+    class ResolvedReference
+      type reference_status = :valid | :broken
+
+      attr_accessor status: reference_status
+
+      @parser: Parser
+      @object_id: Integer
+
+      def initialize: (Parser parser, reference_status status, Integer id) -> void
+
+      def id: () -> Integer
+
+      def broken?: () -> bool
+
+      def valid?: () -> bool
+
+      def dereference!: () -> untyped
+    end
+  end
+end

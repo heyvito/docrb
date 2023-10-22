@@ -1,0 +1,37 @@
+.svg-container {
+    cursor: help;
+    position: relative;
+
+    .svg-title {
+        @include body;
+        cursor: default;
+        padding: 0.4em 0.8em;
+        white-space: break-spaces;
+        background: #48484d;
+        border-radius: 6px;
+        text-shadow: 0 0 3px black;
+
+        display: none;
+        position: absolute;
+        font-size: 14px;
+        color: white;
+        left: 22px;
+        top: -5px;
+
+        &::before {
+            content: '';
+            display: block;
+            background-color: #48484d;
+            height: 10px;
+            width: 10px;
+            position: absolute;
+            top: calc(50% - 5px);
+            left: -5px;
+            transform: rotate(45deg);
+        }
+    }
+
+    &:hover {
+        .svg-title { display: block; }
+    }
+}

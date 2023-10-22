@@ -2,16 +2,23 @@
     <% if doc.nil? || doc.empty? %>
         <div class="faded">(No documentation available)</div>
     <% else %>
-        <% items = (doc[:contents].is_a?(Array) ? doc[:contents] : [doc[:contents]]).compact %>
-
-        <% items.map.each do |i| %>
-            <% if i[:type] == 'text_block' %>
-                <%= text_block list: i[:contents] %>
+        <!--
+        <%= doc %>
+        -->
+        <% doc[:value].each do |i| %>
+            <% if i[:type] == :text_block %>
+                <%= text_block contents: i[:value] %>
             <% elsif i[:type] == 'code_example' %>
                 <%= markdown(source: i[:contents]) %>
-            <% elsif i[:type] == 'field_block' %>
+            <% elsif i[:type] == :field_block %>
+                <%= field_block(fields: i[:value]) %>
+            <% elsif i[:type] == :neutral_identifier %>
+                <code><%= i[:value] %></code>
             <% else %>
-                <span class="text">!Unexpected item <%= i[:type] %></span>
+                <div class="unknown-object">
+                    Unknown object <%= i[:type] %>
+                    <!-- <%= i.to_json %> -->
+                </div>
             <% end %>
         <% end %>
     <% end %>

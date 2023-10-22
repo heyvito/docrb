@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+module Docrb
+  class Parser
+    class DeferredSingletonClass < Class
+      attr_reader target: Array[Symbol]
+
+      def kind: () -> :deferred_singleton_class
+
+      def initialize: (Parser parser, Container? parent, untyped node) -> void
+    end
+  end
+end

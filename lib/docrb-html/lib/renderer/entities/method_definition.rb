@@ -7,12 +7,12 @@ class Renderer
 
       def initialize(parent, model)
         @parent = parent
-        @args = model[:args].map { MethodArgument.new(self, _1) }
-        @defined_by = SourceDefinition.new(model[:defined_by])
-        @doc = model[:doc]
-        @name = model[:name]
-        @overridden_by = model[:overridden_by] # TODO
-        @visibility = model[:visibility].to_sym
+        @args = model[:definition][:args].map { MethodArgument.new(self, _1) }
+        @defined_by = SourceDefinition.new(nil, model[:definition][:defined_by])
+        @doc = model[:definition][:doc]
+        @name = model[:definition][:name]
+        @overridden_by = model[:definition][:overridden_by] # TODO
+        @visibility = model[:definition][:visibility].to_sym
       end
 
       def protected? = visibility == :protected?

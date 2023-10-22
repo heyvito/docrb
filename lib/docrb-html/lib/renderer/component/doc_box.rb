@@ -3,32 +3,39 @@
 class Renderer
   class Component
     class DocBox < Component
-      prop :item, :meta, :defs, :has_class_docs, :has_class_details, :has_attrs,
-           :has_class_methods, :has_instance_methods, :page_components,
-           :defs, :sdefs, :attrs
+      prop :item, :meta, :has_class_docs, :has_class_details,
+           :instance_methods, :has_instance_methods,
+           :class_methods, :has_class_methods,
+           :has_instance_attributes, :instance_attributes,
+           :has_class_attributes, :class_attributes,
+           :has_constants, :constants,
+           :page_components
 
       def prepare
-        @item = defs.specialized_projection.find_path(@item)
+        @has_class_docs = (item.doc && !item.doc.empty?) || false
+        @instance_methods = item.all_instance_methods
+        @class_methods = item.all_class_methods
+        @instance_attributes = item.kind == :class ? item.all_instance_attributes : []
+        @class_attributes = item.all_class_attributes
+        @constants = item.constants
 
-        @has_class_docs = item[:doc] && !item[:doc].empty?
-        @defs = item.defs || []
-        @sdefs = item.sdefs || []
-        @attrs = item.attributes || []
-
-        @has_attrs = !@attrs.empty?
-        @has_class_methods = !@sdefs.empty?
-        @has_instance_methods = !@defs.empty?
+        @has_instance_attributes = !@instance_attributes.empty?
+        @has_class_attributes = !@class_attributes.empty?
+        @has_class_methods = !@class_methods.empty?
+        @has_instance_methods = !@instance_methods.empty?
         @has_class_details =
-          !item[:inherits].nil? \
-          || !item.fetch(:extends, []).empty? \
-          || !item.fetch(:includes, []).empty? \
-          || !item.fetch(:modules, []).empty? \
-          || !item.fetch(:classes, []).empty?
+          (item.kind == :class && !item.inherits.nil?) \
+            || !item.extends.empty? \
+            || !item.includes.empty? \
+            || !item.modules.empty? \
+            || !item.classes.empty?
+        @has_constants = !@constants.empty?
 
         @page_components = {
           "class-documentation" => { enabled: has_class_docs, name: "Class Documentation" },
           "class-details" => { enabled: has_class_details, name: "Inheritance" },
-          "attributes" => { enabled: has_attrs, name: "Attributes" },
+          "constants" => { enabled: has_constants, name: "Constants" },
+          "attributes" => { enabled: has_class_attributes || has_instance_attributes, name: "Attributes" },
           "class-methods" => { enabled: has_class_methods, name: "Class Methods" },
           "instance-methods" => { enabled: has_instance_methods, name: "Instance Methods" }
         }

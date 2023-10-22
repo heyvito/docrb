@@ -53,6 +53,37 @@ div.doc-box-base {
             .faded {
                 @include faded;
             }
+
+            .doc-block {
+                margin-top: 8px;
+            }
+        }
+
+        .constant-container {
+            margin-bottom: 12px;
+
+            .decoration {
+                display: inline-block;
+                margin-right: 8px;
+                margin-left: -18px;
+            }
+
+            .name {
+                @include mono;
+                color: #FFAB42;
+            }
+
+            .label {
+                @include label;
+            }
+
+            .faded {
+                @include faded;
+            }
+
+            .doc-block {
+                margin-top: 8px;
+            }
         }
     }
 
@@ -71,9 +102,9 @@ div.doc-box-base {
         }
 
         a {
-          color: #FFF;
-          @include body;
-          text-decoration: none;
+            color: #FFF;
+            @include body;
+            text-decoration: none;
         }
     }
 }

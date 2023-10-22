@@ -1,23 +1,67 @@
 <% div("method-list-base", id:) do %>
-    <% list && list.length > 0 && list.each do |i| %>
+    <% !list&.empty? && list.each do |i| %>
         <div class="method-definition"
-             id="<%= i[:type] %>-<%= i[:name] %>"
-             data-visibility="<%= i.dig(:doc, :doc_visibility_annotation) || '' %>"
-             data-origin="<%= i.dig(:origin) %>">
+             id="<%= i.type %>-<%= i.name %>"
+             data-visibility="<%= i.doc&.dig(:meta, :visibility_annotation) || '' %>"
+             data-origin="<%= source_of(i, parent) %>">
             <div class="method-block">
-                <%= method_display(**i.merge(type: nil).slice(*Renderer::Component::MethodDisplay.instance_variable_get(:@props))) %>
+                <%= method_display(item: i, omit_type:, parent:) %>
             </div>
+            <% if (o = i.override_target) %>
+                <div class="override-info-box">
+                    Overrides
+                    <%
+                        override_path = o.full_path(relative_to: parent)
+                        if override_path.length > 1
+                          method = override_path.pop
+                    %>
+                        <a href="<%= link_for(method) %>" class="dashed">
+                            <%= override_path.map(&:name).join("::") %><%= method.instance? ? "#" : "::" %><%= method.name %>
+                        </a>
+                    <% else %>
+                        <a href="<%= link_for(override_path.first) %>" class="dashed">
+                            <%= override_path.first.name %>
+                        </a>
+                    <% end %>
+                </div>
+            <% end %>
+            <% if (list = i.overriders) && !list.empty? %>
+                <div class="overridden-by-block">
+                    <details>
+                        <summary>
+                            Overridden by
+                            <span><%= list.first.full_path(relative_to: parent).map(&:name).join("::") %></span><% if list.length > 1 %>, and
+                                <%= list.length - 1 %> other<%= list.length - 1 == 1 ? "" : "s" %>
+                            <% end %>
+                        </summary>
+                        <ul>
+                            <%
+                                list.each do |override|
+                                  source = i.instance? ? override.instance_methods : override.class_methods
+                                  target = source.named!(i.name)
+                                  target_path = target.full_path(relative_to: parent).tap(&:pop).map(&:name).join("::")
+                            %>
+                                <li><a href="<%= link_for(target) %>" class="dashed">
+                                    <span><%= target_path %><%= i.instance? ? "#" : "::" %><%= i.name %></span>
+                                </a></li>
+                            <% end %>
+                        </ul>
+                    </details>
+                </div>
+            <% end %>
             <div class="doc-block">
-                <%= documentation_block(doc: i[:doc]) %>
+                <%= documentation_block(doc: i.doc) %>
             </div>
             <details class="source-block">
                 <summary>
                     <span class="expanded">Hide Source</span>
                     <span class="collapsed">Show Source</span>
                 </summary>
-                <%= markdown(source: i[:defined_by][:markdown_source]) %>
+                <%= markdown(source: Renderer::Markdown.render_source(i.location.source)) %>
                 <div class="from">
-                    Defined in <a href="<%= git_url(i[:defined_by]) %>" class="dotted"><%= clean_file_path(i[:defined_by]) %>, <%= line_range(i[:defined_by]) %></a>
+                    Defined in
+                    <a href="<%= git_url(i.location) %>" class="dotted"><%= clean_file_path(i.location) %>
+                        , <%= line_range(i.location) %></a>
                 </div>
             </details>
         </div>

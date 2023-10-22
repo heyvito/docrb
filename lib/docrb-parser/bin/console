@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "bundler/setup"
+require "irb"
+require "byebug"
+
+def reload!
+  if defined? Docrb::Parser::Reloader
+    Docrb::Parser::Reloader.reload!
+  else
+    require "docrb/parser"
+  end
+
+  define_singleton_method(:smoke) { |*arg| Docrb::Parser.smoke(*arg) }
+  true
+end
+
+reload!
+IRB.start(__FILE__)

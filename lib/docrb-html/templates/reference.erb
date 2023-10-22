@@ -2,12 +2,12 @@
     <% if unresolved %>
         <span class="unresolved" title="Docrb could not resolve this reference. It may be from an external library or dynamically-generated method.">
             <%= svg('questionmark') %>
-            <span><%= ref[:contents] %></span>
+            <span><%= path.last %></span>
         </span>
     <% else %>
-    <a href="<%= path.join('/') %>">
-        <span class="resolved <%= ref[:ref_type] %>">
-            <span><%= ref[:contents] %></span>
+    <a href="<%= path.join('/') %>.html">
+        <span class="resolved <%= ref_type %>">
+            <span><%= path.last %></span>
         </span>
     </a>
     <% end %>

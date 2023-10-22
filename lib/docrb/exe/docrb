@@ -7,7 +7,6 @@ require "fileutils"
 require "optparse"
 require "open3"
 require "tmpdir"
-require "renderer"
 
 require "docrb"
 
@@ -22,10 +21,6 @@ end
 
 def git(*args, **kwargs)
   exec("git", *args, **kwargs)
-end
-
-def render_html(*args, **kwargs)
-  exec("docrb-html", *args, **kwargs)
 end
 
 def run
@@ -104,10 +99,6 @@ def run
     end
   end
 
-  tmp_output = Dir.mktmpdir
-  data_path = File.join(tmp_output, "data.json")
-  markdown_path = File.join(tmp_output, "readme.html")
-  metadata_path = File.join(tmp_output, "metadata.json")
   readme_path = File.join(input, "README.md")
   base_path = input
 
@@ -119,7 +110,16 @@ def run
     end
   end
 
-  spec = Docrb::Spec.parse_folder(input) || {}
+  if options[:base]
+    path = File.join(input, options[:base])
+    unless File.exist? path
+      puts "--base was provided, but #{path} does not exist."
+      exit(1)
+    end
+    base_path = path
+  end
+
+  source, spec = Docrb.parse_folder(base_path, input)
 
   %i[name summary host_url git_url authors license].each do |k|
     spec[k] = options[k] if options.key? k
@@ -135,21 +135,12 @@ def run
     exit(1)
   end
 
-  if options[:base]
-    path = File.join(input, options[:base])
-    unless File.exist? path
-      puts "--base was provided, but #{path} does not exist."
-      exit(1)
-    end
-    base_path = path
-  end
-
   git_tip = nil
   git_root = nil
   git_status = git("status", "--porcelain", chdir: input)
   if (git_status[:code]).zero?
     if git_status[:output].length.positive?
-      puts "WARNING: Your local git copy seems to be dirty. Consider commiting your changes before generating docs."
+      puts "WARNING: Your local git copy seems to be dirty. Consider committing your changes before generating docs."
     end
     tip_data = git("rev-parse", "HEAD", chdir: input)
     if tip_data[:code] != 0
@@ -179,27 +170,16 @@ def run
   spec[:timestamp] = Time.now.utc.strftime("%A, %d %b %Y %l:%M %p GMT")
   spec[:version] = Docrb::VERSION
 
-  data = Docrb.parse_folder(base_path)
-  compiler = Docrb::DocCompiler.new
-  data.each { |f| compiler.append(f) }
-
-  File.write(data_path, compiler.to_h.to_json)
-  puts "Created: #{data_path}"
-
   if File.exist? readme_path
     puts "Found #{readme_path}"
     md = File.read(readme_path).to_s
-    result = Docrb::Markdown.render(md)
-    File.write(markdown_path, result)
-    puts "Created #{markdown_path}"
+    spec[:readme] = md
   else
     puts "#{readme_path} does not exist. Skipping..."
   end
-  File.write(metadata_path, spec.to_json)
-  puts "Created #{metadata_path}"
 
-  puts "Generating HTML into #{output}"
-  Renderer.new(tmp_output, output).render
+  compiler = Docrb::DocCompiler.new(source, spec, output)
+  compiler.run!
 end
 
 run

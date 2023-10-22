@@ -65,10 +65,6 @@ div.method-argument-base {
         &.number { color: #FF724C; }
         &.string {
             color: #8CC98F;
-            :before, :after {
-                content: '"';
-                color: #39B6B5;
-            }
         }
         &.plain  { color: white; }
     }

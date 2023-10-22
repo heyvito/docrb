@@ -1,0 +1,22 @@
+<% div("method-display-base", id:) do %>
+    <% if (dec = source_of(item)) %>
+        <%= svg(dec.to_s.downcase, class_name: "decoration", title: dec.to_s.capitalize) %>
+    <% end %>
+    <% if kind && !omit_type %>
+        <%= typedef(name: "#{kind.capitalize} Attribute") %>
+    <% end %>
+    <% name = capture do %>
+        <div class="container">
+            <div class="method-name"><%= item.name %></div>
+        </div>
+    <% end %>
+    <% if omit_link %>
+        <%= name %>
+    <% else %>
+        <a class="dashed" href="<%= link_for(item) %>"><%= name %></a>
+    <% end %>
+    <div class="label"><%= attr_type %></div>
+    <% if (visibility = item.doc&.dig(:meta, :visibility_annotation)) %>
+        <div class="label"><%= visibility %></div>
+    <% end %>
+<% end %>

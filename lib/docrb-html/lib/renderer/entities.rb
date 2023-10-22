@@ -16,15 +16,15 @@ require_relative "entities/reference"
 class Renderer
   module Entities
     def self.current_root = Thread.current[:current_root]
+
     def self.current_root=(val)
       Thread.current[:current_root] = val
     end
 
     def self.load_from(path)
       model = JSON.load_file(path, symbolize_names: true)
-      root = Module.new(nil, model)
-      root.resolve_references!
-      puts root
+      Module.new(nil, model)
+        .tap(&:resolve_references!)
     end
   end
 end

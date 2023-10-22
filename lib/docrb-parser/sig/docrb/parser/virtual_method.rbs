@@ -1,0 +1,17 @@
+module Docrb
+  class Parser
+    class VirtualMethod
+      VirtualReceiver: untyped
+
+      attr_accessor name: Symbol | String
+
+      attr_accessor parameters: ::Array[untyped]
+
+      attr_accessor receiver: untyped
+
+      def type: () -> :def_node
+
+      def initialize: (Symbol | String name, untyped receiver, ?::Array[untyped]? parameters) -> void
+    end
+  end
+end

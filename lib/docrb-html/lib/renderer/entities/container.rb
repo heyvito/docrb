@@ -1,7 +1,7 @@
 class Renderer
   module Entities
     class Container < Base
-      attr_accessor :classes, :modules, :extends, :includes, :defs, :sdefs, :defined_by, :doc
+      attr_accessor :classes, :modules, :extends, :includes, :defs, :sdefs, :defined_by, :doc, :constants
 
       def initialize(parent, model)
         super(parent, model[:name])
@@ -9,8 +9,10 @@ class Renderer
         @modules = init_entities(model, :modules, as: Module)
         @extends = init_references!(model, :extends)
         @includes = init_references!(model, :includes)
+        @constants = model[:constants] || {}
         @defs = model.fetch(:defs, {}).map { |k, v| Method.new(self, :def, k.to_s, v) }
         @sdefs = model.fetch(:sdefs, {}).map { |k, v| Method.new(self,:sdef, k.to_s, v) }
+        @defined_by = init_entities(model, :defined_by, as: SourceDefinition)
       end
 
       def find_nested_container(named)

@@ -3,9 +3,13 @@
 class Renderer
   class Component
     class MethodArgument < Component
-      prop :type, :name, :value, :value_type, :computed
+      prop :type, :name, :value, :value_type, :computed, :arg
 
       def prepare
+        @type = @arg.kind
+        @name = @arg.name
+        @value = @arg.value
+
         @computed = {
           rest: rest_arg,
           name:,
@@ -15,17 +19,17 @@ class Renderer
       end
 
       def continuation_for_type
-        if type == "kwarg" || type == "kwoptarg"
+        if arg.keyword? && !arg.rest?
           :colon
-        elsif type&.index("opt")&.zero?
+        elsif arg.optional?
           :equal
         end
       end
 
       REST_ARG_BY_TYPE = {
-        "kwrestarg" => :double,
-        "restarg" => :single,
-        "blockarg" => :block
+        :kwrestarg => :double,
+        :restarg => :single,
+        :blockarg => :block
       }.freeze
 
       def rest_arg

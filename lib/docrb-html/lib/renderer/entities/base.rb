@@ -34,8 +34,22 @@ class Renderer
 
       def to_s = inspect
 
+      def root? = module? && parent.nil?
+
       def register_reference(ref)
         @references << ref
+      end
+
+      def full_path
+        parents = []
+        parent = self.parent
+        until parent.root?
+          parents << parent
+          parent = parent.parent
+        end
+
+        parents.reverse!
+        parents << self
       end
     end
   end

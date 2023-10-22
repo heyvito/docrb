@@ -3,7 +3,7 @@
 class Renderer
   class Component
     class MethodList < Component
-      prop :list
+      prop :list, :omit_type, :parent
     end
   end
 end

@@ -17,6 +17,7 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/trunk/lib/docrb"
   spec.metadata["changelog_uri"] = spec.homepage
+  spec.metadata["rubygems_mfa_required"] = "true"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
@@ -26,8 +27,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "docrb-html", "~> 0.2"
-  spec.add_dependency "parser", "~> 3.2"
-  spec.add_dependency "redcarpet", "~> 3.6"
-  spec.add_dependency "rouge", "~> 4.1"
-  spec.metadata["rubygems_mfa_required"] = "true"
+  spec.add_dependency "docrb-parser", "~> 0.1"
 end

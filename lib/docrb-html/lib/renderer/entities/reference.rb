@@ -40,6 +40,8 @@ class Renderer
       def method_missing(name, *)
         return @target.send(name, *) if @target.respond_to?(name)
 
+        return @name if name == :name
+
         super
       end
 

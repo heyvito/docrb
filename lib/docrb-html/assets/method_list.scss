@@ -3,6 +3,46 @@ div.method-list-base {
         margin-bottom: 23px;
     }
 
+    .override-info-box {
+        @include faded;
+        padding-top: 8px;
+        font-size: 85%;
+        a {
+            @include mono;
+            font-size: inherit;
+            opacity: 80%;
+        }
+    }
+
+    .overridden-by-block {
+        @include faded;
+        font-size: 85%;
+        padding-top: 8px;
+
+        span {
+            @include mono;
+            font-size: inherit;
+        }
+
+        summary {
+            cursor: pointer;
+        }
+
+        a {
+            font-size: inherit;
+            opacity: 85%;
+        }
+
+        ul {
+            padding-top: 5px;
+            padding-left: 25px;
+
+            li {
+                padding-bottom: 8px;
+            }
+        }
+    }
+
     .doc-block {
         margin-top: 8px;
     }

@@ -1,0 +1,26 @@
+<% div("field-block-base", id:) do %>
+    <h3>Arguments</h3>
+    <table>
+        <tbody>
+        <% fields.each do |name, value| %>
+            <tr>
+                <td class="name"><%= name %></td>
+                <td class="value">
+                    <% value.each do |block| %>
+                        <% if block[:type] == :text_block %>
+                            <%= text_block(contents: block[:value], inline: true) %>
+                        <% elsif block[:type] == :symbol %>
+                            <%= symbol(name: block[:value]) %>
+                        <% else %>
+                            <div class="unknown-object">
+                                Unknown object <%= block[:type] %>
+                                <!-- <%= block.to_json %> -->
+                            </div>
+                        <% end %>
+                    <% end %>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+<% end %>

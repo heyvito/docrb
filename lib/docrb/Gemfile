@@ -2,6 +2,10 @@
 
 source "https://rubygems.org"
 
+gem "docrb-html", path: "../docrb-html"
+
+gem "docrb-parser", path: "../docrb-parser"
+
 # Specify your gem's dependencies in docrb.gemspec
 gemspec
 

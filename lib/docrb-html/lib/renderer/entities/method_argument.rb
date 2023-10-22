@@ -18,6 +18,10 @@ class Renderer
       def optional? = type == :optarg || type == :kwoptarg
 
       def kwarg? = type == :kwarg || type == :kwoptarg
+
+      def rest? = type == :restarg || type == :kwrestarg
+
+      def block? = type == :blockarg
     end
   end
 end

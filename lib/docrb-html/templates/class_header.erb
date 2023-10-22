@@ -5,20 +5,19 @@
         <% def_link = Proc.new do |item, extra = nil| %>
         <span class="def-link">
             <%= extra %>
-            <a href="<%= item[:href] %>"
-                class="dashed"><%= item[:name] %>
+            <a href="<%= item[:git_url] %>" class="dashed"><%= item[:filename] %>
             </a>
         </span>
         <% end %>
         <% if definitions.length > 0 %>
             <div class="defs">
                 Defined in
-                <% if def_collection.length == 1 %>
-                    <% def_link.call def_collection.first %>
+                <% if definitions.length == 1 %>
+                    <% def_link.call definitions.first %>
                 <% else %>
-                    <% last_item = def_collection.pop %>
-                    <% def_collection.each do |item| %>
-                        <% def_link item %>
+                    <% last_item = definitions.pop %>
+                    <% definitions.each do |item| %>
+                        <% def_link.call item %>,
                     <% end %>
                     <% def_link.call last_item, " and " %>
                 <% end %>

@@ -1,0 +1,5 @@
+module Docrb
+  class Parser
+    VERSION: String
+  end
+end

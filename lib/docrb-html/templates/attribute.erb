@@ -1,0 +1,10 @@
+<div class="attribute-container"
+     data-origin="<%= source_of(item) %>"
+     data-type="attribute"
+     id="<%= kind %>-attr-<%= item.name %>"
+>
+    <%= attribute_display(item: item, kind:, omit_type:) %>
+    <div class="doc-block">
+        <%= documentation_block(doc: item.doc) %>
+    </div>
+</div>

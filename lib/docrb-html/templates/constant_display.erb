@@ -1,0 +1,13 @@
+<% div("constant-display-base", id:) do %>
+    <%= typedef(name: "Constant") %>
+    <% base = capture do %>
+        <div class="container">
+            <div class="constant-name"><%= item.name %></div>
+        </div>
+    <% end %>
+    <% if omit_link %>
+        <%= base %>
+    <% else %>
+        <a class="dashed" href="<%= link_for(item) %>"><%= base %></a>
+    <% end %>
+<% end %>

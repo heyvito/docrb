@@ -7,6 +7,7 @@ class Renderer
         super(parent, name)
         @overriding = model[:overriding] # TODO
         @type = type
+        @definition = MethodDefinition.new(self, model)
       end
 
       attr_reader :type

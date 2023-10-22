@@ -12,4 +12,11 @@ end
 
 class Object
   def object_id_hex = "0x#{object_id.to_s(16).rjust(16, "0")}"
+
+  def self.memo(name, &)
+    define_method(name) do
+      @__memoized_variables__ ||= {}
+      @__memoized_variables__[name] ||= instance_exec(&)
+    end
+  end
 end

@@ -3,7 +3,7 @@
 class Renderer
   class Component
     class MethodDisplay < Component
-      prop :visibility, :type, :name, :href, :args, :doc, :decoration, :short_type
+      prop :item, :omit_type, :parent
     end
   end
 end
