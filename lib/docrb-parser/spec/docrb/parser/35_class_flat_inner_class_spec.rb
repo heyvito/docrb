@@ -5,6 +5,6 @@ RSpec.describe Docrb::Parser do
 
   it "defines a path_segment for flat class paths" do
     expect(subject).to have_kind :class
-    expect(subject.path_segments).to eq [:Docrb, :App]
+    expect(subject.path_segments).to eq %i[Docrb App]
   end
 end

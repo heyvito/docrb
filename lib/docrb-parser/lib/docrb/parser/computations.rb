@@ -137,15 +137,15 @@ module Docrb
         node = find_next_container(node) unless node.is_a? Container
         name = ref[:name].to_sym
         obj = if ref[:class_path]
-                resolve_path(ref[:class_path].split("::").map(&:to_sym), node)
-              else
-                node
-              end
+          resolve_path(ref[:class_path].split("::").map(&:to_sym), node)
+        else
+          node
+        end
         result = if ref[:type] == :method
-                   obj.all_instance_methods.named(name).first || obj.all_class_methods.named(name).first
-                 else
-                   obj.all_objects.named(name).first
-                 end
+          obj.all_instance_methods.named(name).first || obj.all_class_methods.named(name).first
+        else
+          obj.all_objects.named(name).first
+        end
 
         if result.nil?
           ref[:type] = :unresolved_identifier
@@ -173,7 +173,7 @@ module Docrb
 
             last_i = i - 1
             last = block[:value][i - 1]
-            mergeable_types = [:netural_identifier, :unresolved_identifier, :reference]
+            mergeable_types = %i[netural_identifier unresolved_identifier reference]
             if mergeable_types.include?(last[:type]) && current[:type] == :text_block
               case current[:value]
               when String
@@ -302,28 +302,28 @@ module Docrb
         parser.references.reject(&:fulfilled?).each do |ref|
           target = resolve_path(ref.parent, ref.path)
           ref.resolved = if target.nil?
-                           ResolvedReference.new(parser, :broken, nil)
-                         else
-                           ResolvedReference.new(parser, :valid, target.id)
-                         end
+            ResolvedReference.new(parser, :broken, nil)
+          else
+            ResolvedReference.new(parser, :valid, target.id)
+          end
         end
       end
 
       def attach_documentation
         parser.all_objects.each do |node|
           comment = case node.try(:kind)
-                    when :module, :class
-                      ([node.defined_by] + [node.location])
-                        .flatten
-                        .compact
-                        .uniq
-                        .lazy
-                        .map { Comment.new(parser, _1) }
-                        .reject { _1.comments.nil? }
-                        .first
-                    when :method
-                      Comment.new(parser, node.location)
-                    end
+          when :module, :class
+            ([node.defined_by] + [node.location])
+              .flatten
+              .compact
+              .uniq
+              .lazy
+              .map { Comment.new(parser, _1) }
+              .reject { _1.comments.nil? }
+              .first
+          when :method
+            Comment.new(parser, node.location)
+          end
 
           next if comment.nil? || comment.comments.nil?
 
@@ -385,10 +385,10 @@ module Docrb
       def resolve_deferred_singleton(sing)
         object = find_object(sing.parent, sing.target, container_only: true)
         object ||= sing.parser.nodes
-                     .named(sing.target)
-                     .typed(Container)
-                     .reject { _1.is_a?(DeferredSingletonClass) }
-                     .first
+          .named(sing.target)
+          .typed(Container)
+          .reject { _1.is_a?(DeferredSingletonClass) }
+          .first
         return if !object.nil? && object.kind != :class
 
         if object&.kind == :class
@@ -404,24 +404,24 @@ module Docrb
         # At this point we will have to synthesize the class. Prepare its path as modules.
         class_name = missing_segments.pop
         root = if missing_segments.empty?
-                 parser
-               else
-                 VirtualContainer.new(:module_node, missing_segments.shift).tap do |root|
-                   parent = root
-                   until missing_segments.empty?
-                     obj = VirtualContainer.new(:module_node, missing_segments.shift)
-                     parent.body.body = [obj]
-                     parent = obj
-                   end
+          parser
+        else
+          VirtualContainer.new(:module_node, missing_segments.shift).tap do |root|
+            parent = root
+            until missing_segments.empty?
+              obj = VirtualContainer.new(:module_node, missing_segments.shift)
+              parent.body.body = [obj]
+              parent = obj
+            end
 
-                   if last_found_node.is_a? Parser
-                     obj = last_found_node.handle_node(root)
-                     last_found_node.nodes << obj
-                   else
-                     last_found_node.handle_node(root)
-                   end
-                 end
-               end
+            if last_found_node.is_a? Parser
+              obj = last_found_node.handle_node(root)
+              last_found_node.nodes << obj
+            else
+              last_found_node.handle_node(root)
+            end
+          end
+        end
 
         cls = VirtualContainer.new(:class_node, class_name)
         cls.location = sing.location
@@ -438,14 +438,14 @@ module Docrb
       def find_object(container, name, container_only: false)
         if container_only
           return container&.all_modules&.named(name)&.first ||
-            container&.all_classes&.named(name)&.first ||
-            (find_object(container.parent, name, container_only:) if container&.parent) ||
-            parser.nodes.lazy
-              .filter { _1.is_a?(Container) && !_1.is_a?(DeferredSingletonClass) && _1.name == name }
-              .first ||
-            parser.nodes.lazy
-              .filter { _1.is_a?(Container) && !_1.is_a?(DeferredSingletonClass) }
-              .first { find_object(_1, name, container_only:) }
+                 container&.all_classes&.named(name)&.first ||
+                 (find_object(container.parent, name, container_only:) if container&.parent) ||
+                 parser.nodes.lazy
+                     .filter { _1.is_a?(Container) && !_1.is_a?(DeferredSingletonClass) && _1.name == name }
+                     .first ||
+                 parser.nodes.lazy
+                     .filter { _1.is_a?(Container) && !_1.is_a?(DeferredSingletonClass) }
+                     .first { find_object(_1, name, container_only:) }
         end
 
         container&.all_modules&.named(name)&.first ||

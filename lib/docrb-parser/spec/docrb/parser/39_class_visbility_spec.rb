@@ -4,28 +4,27 @@ RSpec.describe Docrb::Parser do
   subject { parse_fixture(39).nodes.first }
 
   context "visibility" do
-
     expected_members = {
       private: [
-        [:instance_method, :pri_1],
-        [:instance_method, :pri_2],
-        [:instance_method, :pri_3],
-        [:instance_method, :pri_4],
-        [:instance_attribute, :foo, :writer],
-        [:instance_attribute, :baz],
-        [:class_method, :new],
-        [:class_method, :class_priv],
+        %i[instance_method pri_1],
+        %i[instance_method pri_2],
+        %i[instance_method pri_3],
+        %i[instance_method pri_4],
+        %i[instance_attribute foo writer],
+        %i[instance_attribute baz],
+        %i[class_method new],
+        %i[class_method class_priv]
       ],
       protected: [
-        [:instance_method, :pro_1],
-        [:instance_method, :pro_2],
+        %i[instance_method pro_1],
+        %i[instance_method pro_2]
       ],
       public: [
-        [:method, :pub],
-        [:method, :pub_1],
-        [:method, :pub_2],
-        [:instance_attribute, :foo, :reader],
-        [:class_method, :class_pub],
+        %i[method pub],
+        %i[method pub_1],
+        %i[method pub_2],
+        %i[instance_attribute foo reader],
+        %i[class_method class_pub]
       ]
     }
 
@@ -49,6 +48,5 @@ RSpec.describe Docrb::Parser do
         end
       end
     end
-
   end
 end

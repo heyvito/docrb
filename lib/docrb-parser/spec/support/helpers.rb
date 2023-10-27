@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Helpers
   def parse_fixture(id)
     file = find_fixture(id) or raise ArgumentError, "Could not find fixture with id #{id}"

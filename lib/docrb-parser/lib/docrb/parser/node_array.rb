@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Docrb
   class Parser
     class NodeArray < Array

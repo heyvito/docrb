@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Docrb
   class Parser
     class Method
@@ -40,6 +42,7 @@ module Docrb
 
       def override_target = (@parser.object_by_id(@overriding) if @overriding)
       def overriders = @overridden_by.map { @parser.object_by_id(_1) }.map(&:parent).compact
+
       def full_path(relative_to: nil)
         path = (parent&.full_path || []).reverse + [self]
         return path unless relative_to

@@ -58,7 +58,6 @@ module Docrb
         path
       end
 
-
       def extract_references(from, attr)
         NodeArray.new(from
           .filter(&:fulfilled?)
@@ -98,7 +97,8 @@ module Docrb
       def all_objects
         NodeArray.new(
           all_classes + all_modules + all_instance_methods + all_classes +
-            all_class_attributes + all_instance_attributes)
+            all_class_attributes + all_instance_attributes
+        )
       end
 
       def id = @object_id
@@ -117,15 +117,15 @@ module Docrb
         end
       end
 
-      def handle_parsed_node(parser, node) = nil
+      def handle_parsed_node(_parser, _node) = nil
 
-      def instance_method_added(parser, node, method) = nil
+      def instance_method_added(_parser, _node, _method) = nil
 
-      def class_method_added(parser, node, method) = nil
+      def class_method_added(_parser, _node, _method) = nil
 
-      def class_added(parser, node, method) = nil
+      def class_added(_parser, _node, _method) = nil
 
-      def module_added(parser, node, method) = nil
+      def module_added(_parser, _node, _method) = nil
 
       def handle_call(call)
         case call.name
@@ -219,6 +219,7 @@ module Docrb
             end
 
             next unless (method = methods.named(attr.name).first)
+
             changed = true
             methods.delete(method)
             attr.reader_visibility = exp.fetch(setter, method.visibility)
@@ -278,7 +279,7 @@ module Docrb
           end
         end
       ensure
-        @current_visibility_modifier = old_visibility unless node.arguments&.empty?
+        @current_visibility_modifier = old_visibility unless node.arguments && node.arguments.empty?
       end
 
       def handle_singleton_visibility_modifier(_parser, node)

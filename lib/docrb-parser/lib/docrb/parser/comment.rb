@@ -34,7 +34,6 @@ module Docrb
         end
 
         @comments = comments.reverse.map(&:strip)
-
       end
     end
   end

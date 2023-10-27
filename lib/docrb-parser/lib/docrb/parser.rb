@@ -56,7 +56,6 @@ module Docrb
     def all_modules = all_objects.filter { _1.is_a? Module }
     def all_methods = all_objects.filter { _1.is_a? Method }
 
-
     def finalize = Computations.new(self).tap(&:run)
 
     docrb_inspect_attrs(:current_file, :locations, :references, :nodes)
@@ -106,6 +105,7 @@ module Docrb
 
     def reference(parent, path)
       raise ArgumentError, "Empty path" if path.nil? || path.empty?
+
       Reference.new(self, parent, path).tap { @references << _1 }
     end
 
@@ -130,9 +130,9 @@ module Docrb
     def handle_singleton_class(parent, node)
       case node.expression.type
       when :self_node
-        return Class.new(self, parent, node).tap(&:singleton!)
+        Class.new(self, parent, node).tap(&:singleton!)
       else
-        return DeferredSingletonClass.new(self, parent, node)
+        DeferredSingletonClass.new(self, parent, node)
       end
     end
   end

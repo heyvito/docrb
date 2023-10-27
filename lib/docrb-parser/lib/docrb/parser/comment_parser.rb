@@ -2,6 +2,8 @@
 
 module Docrb
   class Parser
+    # CommentParser implements a small parser for matching comment's contents to
+    # relevant references and annotations.
     class CommentParser
       NEWLINE = "\n"
       POUND = "#"
@@ -23,12 +25,12 @@ module Docrb
         @objects = []
         @current_object = []
         @data = data
-                  .split(NEWLINE)
-                  .map(&:rstrip)
-                  .map { _1.gsub(/^\s*#\s?/, "") }
-                  .join(NEWLINE)
-                  .each_grapheme_cluster
-                  .to_a
+          .split(NEWLINE)
+          .map(&:rstrip)
+          .map { _1.gsub(/^\s*#\s?/, "") }
+          .join(NEWLINE)
+          .each_grapheme_cluster
+          .to_a
         @data_len = @data.length
         @visibility = nil
 
@@ -100,7 +102,7 @@ module Docrb
           definitions = obj.split("\n").reject { _1.start_with? SPACE }
 
           if (definitions.length == 1 && definitions.first =~ FIELD_LIST_HEADING) ||
-            (definitions.first =~ FIELD_LIST_HEADING && definitions[1] =~ FIELD_LIST_HEADING)
+             (definitions.first =~ FIELD_LIST_HEADING && definitions[1] =~ FIELD_LIST_HEADING)
             return process_field_list(obj, idx)
           end
         end
@@ -148,8 +150,8 @@ module Docrb
 
             value = obj[:value]
             changes = extract_method_reference(value) ||
-              extract_symbol(value) ||
-              extract_camelcase_identifier(value)
+                      extract_symbol(value) ||
+                      extract_camelcase_identifier(value)
             next unless changes
 
             changes => { start_idx:, end_idx:, object: }
@@ -170,7 +172,9 @@ module Docrb
         objs.length == 1 ? objs.first : objs
       end
 
+      # rubocop:disable Layout/LineLength
       COMMENT_METHOD_REF_REGEXP = /(?:([A-Z][a-zA-Z0-9_]*::)*([A-Z][a-zA-Z0-9_]*))?(::|\.|#)([A-Za-z_][a-zA-Z0-9_@]*[!?]?)(?:\([a-zA-Z0-9=_,\s*]+\))?/
+      # rubocop:enable Layout/LineLength
 
       def extract_method_reference(text)
         match = COMMENT_METHOD_REF_REGEXP.match(text) or return nil
@@ -227,6 +231,7 @@ module Docrb
         case obj
         when Array then process_visibility(obj.first)
         when Hash
+          return if obj[:type] == :fields
           return process_visibility(obj[:value]) unless obj[:type] == :span
 
           value = obj[:value]
@@ -259,9 +264,9 @@ module Docrb
 
       def join_code_example_lines(start_at, end_at)
         lines = objects[start_at...end_at]
-                  .map { _1.split("\n") }
-                  .map { |el| el.map { "#{_1[2...]}\n" } }
-                  .flatten
+          .map { _1.split("\n") }
+          .map { |el| el.map { "#{_1[2...]}\n" } }
+          .flatten
         objects.slice!(start_at...end_at)
         objects.insert(start_at, {
           type: :code_example,
@@ -275,7 +280,7 @@ module Docrb
         elsif obj.is_a?(Hash) && obj[:type] == :span
           { type: :block, value: [obj] }
         elsif obj.is_a?(Hash) && obj[:type] == :fields
-          obj.tap {|f| f[:value].transform_values! { normalize_tree(_1) } }
+          obj.tap { |f| f[:value].transform_values! { normalize_tree(_1) } }
         else
           obj
         end

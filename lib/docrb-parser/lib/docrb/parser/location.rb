@@ -28,7 +28,7 @@ module Docrb
         return if @virtual
 
         @source = @ast.source.source[@offset_start...@offset_end]
-                      .then do |src|
+          .then do |src|
           lines = src.lines
           next src unless lines.length > 1
 

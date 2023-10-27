@@ -18,7 +18,6 @@ RSpec.describe Docrb::Parser do
     expect(method.parameters[6]).to be_keyword & be_rest & be_named(:**)
     expect(method.parameters[7]).to be_block & be_named(:&)
 
-
     expect(method.location.line_start).to eq 1
     expect(method.location.line_end).to eq 2
   end

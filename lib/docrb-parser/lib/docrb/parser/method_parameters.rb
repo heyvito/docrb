@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Docrb
   class Parser
     class MethodParameters < Array
@@ -71,7 +73,7 @@ module Docrb
           when Prism::FalseNode, Prism::TrueNode then :bool
           when Prism::CallNode then :call
           when Prism::StringNode then :string
-          when Prism::IntegerNode,Prism::FloatNode then :number
+          when Prism::IntegerNode, Prism::FloatNode then :number
           when Prism::ConstantReadNode, Prism::ConstantPathNode then :const
           else
             puts "Unhandled parameter value type #{value.class.name}"

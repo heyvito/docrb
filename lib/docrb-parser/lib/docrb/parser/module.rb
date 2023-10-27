@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Docrb
   class Parser
     class Module < Container
@@ -10,7 +11,7 @@ module Docrb
         adjust_split_attributes! :instance
       end
 
-      def instance_method_added(parser, node, method)
+      def instance_method_added(_parser, _node, method)
         return unless @inside_module_function
         return unless method.instance?
 
@@ -41,7 +42,7 @@ module Docrb
             parser.unhandled_node! node
           end
         ensure
-          @inside_module_function = old_module_function unless node.arguments&.empty?
+          @inside_module_function = old_module_function unless node.arguments && node.arguments.empty?
         end
       end
     end

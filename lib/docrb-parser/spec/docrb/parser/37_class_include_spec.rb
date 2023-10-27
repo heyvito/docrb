@@ -5,7 +5,7 @@ RSpec.describe Docrb::Parser do
 
   it "registers included modules" do
     includes = subject.includes
-    expect(includes[0].path).to eq [:Docrb, :IncludeA]
-    expect(includes[1].path).to eq [:Docrb, :IncludeB]
+    expect(includes[0].path).to eq %i[Docrb IncludeA]
+    expect(includes[1].path).to eq %i[Docrb IncludeB]
   end
 end

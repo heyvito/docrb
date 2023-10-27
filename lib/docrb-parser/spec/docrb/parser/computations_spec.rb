@@ -12,7 +12,7 @@ module Docrb
 
     it "groups containers" do
       subject.merge_containers(parser.nodes)
-      path = [:Docrb, :Parser, :MethodParameters, :Parameter]
+      path = %i[Docrb Parser MethodParameters Parameter]
       obj = parser.nodes.named(path.shift).first!
       until path.empty?
         obj = obj.classes.named(path.shift)
@@ -87,7 +87,7 @@ module Docrb
         .named!(:Docrb)
         .classes.named!(:Parser)
         .classes.named!(:CommentParser)
-      expect(target.doc.dig(:value, 0, :value)).to eq "CommentParser"
+      expect(target.doc.dig(:value, 0, :value, 0, :value)).to eq "CommentParser"
     end
 
     describe "deferred singletons" do

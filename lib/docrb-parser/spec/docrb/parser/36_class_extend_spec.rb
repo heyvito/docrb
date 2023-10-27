@@ -5,10 +5,9 @@ RSpec.describe Docrb::Parser do
 
   it "registers extended modules" do
     extends = subject.extends
-    expect(extends[0].path).to eq [:Docrb, :ExtendsA]
-    expect(extends[1].path).to eq [:Docrb, :ExtendsB]
-    expect(extends[2].path).to eq [:Docrb, :ExtendsC]
-    expect(extends[3].path).to eq [:Docrb, :ExtendsD]
-
+    expect(extends[0].path).to eq %i[Docrb ExtendsA]
+    expect(extends[1].path).to eq %i[Docrb ExtendsB]
+    expect(extends[2].path).to eq %i[Docrb ExtendsC]
+    expect(extends[3].path).to eq %i[Docrb ExtendsD]
   end
 end
