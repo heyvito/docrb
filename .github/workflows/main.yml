@@ -3,11 +3,17 @@ name: Ruby
 on: [push, pull_request]
 
 jobs:
-  rubocop:
+  test:
+    strategy:
+      matrix:
+        lib:
+          - docrb
+          - docrb-html
+          - docrb-parser
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./lib/docrb
+        working-directory: ./lib/${{ matrix.lib }}
     steps:
     - uses: actions/checkout@v2
 
@@ -23,22 +29,5 @@ jobs:
     - name: Run Rubocop
       run: bundle exec rubocop
 
-  rspec:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./lib/docrb
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.2
-        bundler-cache: true
-
-    - name: Install dependencies
-      run: bundle install
-
-    - name: Run Rspec
+    - name: Run rspec
       run: bundle exec rspec
