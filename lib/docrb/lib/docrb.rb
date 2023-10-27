@@ -6,8 +6,8 @@ require "rubygems"
 require "docrb-html"
 require "docrb-parser"
 
-require_relative 'docrb/spec'
-require_relative 'docrb/doc_compiler'
+require_relative "docrb/spec"
+require_relative "docrb/doc_compiler"
 
 # Docrb implements a source and documentation parser for Ruby projects
 module Docrb
