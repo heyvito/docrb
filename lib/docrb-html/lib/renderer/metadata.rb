@@ -16,10 +16,10 @@ class Renderer
 
       if meta.key? :git_url
         links << if meta[:git_url].index("github.com/")
-                   { kind: "github", href: meta[:git_url] }
-                 else
-                   { kind: "git", href: meta[:git_url] }
-                 end
+          { kind: "github", href: meta[:git_url] }
+        else
+          { kind: "git", href: meta[:git_url] }
+        end
       end
 
       links

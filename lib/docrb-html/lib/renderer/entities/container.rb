@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Renderer
   module Entities
     class Container < Base
@@ -11,7 +13,7 @@ class Renderer
         @includes = init_references!(model, :includes)
         @constants = model[:constants] || {}
         @defs = model.fetch(:defs, {}).map { |k, v| Method.new(self, :def, k.to_s, v) }
-        @sdefs = model.fetch(:sdefs, {}).map { |k, v| Method.new(self,:sdef, k.to_s, v) }
+        @sdefs = model.fetch(:sdefs, {}).map { |k, v| Method.new(self, :sdef, k.to_s, v) }
         @defined_by = init_entities(model, :defined_by, as: SourceDefinition)
       end
 

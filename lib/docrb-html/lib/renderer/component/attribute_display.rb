@@ -7,10 +7,10 @@ class Renderer
 
       def prepare
         @attr_type = case item.type
-                     when :accessor then "read/write"
-                     when :reader then "read-only"
-                     else "write-only"
-                     end
+        when :accessor then "read/write"
+        when :reader then "read-only"
+        else "write-only"
+        end
       end
     end
   end

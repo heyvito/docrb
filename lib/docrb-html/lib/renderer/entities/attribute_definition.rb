@@ -15,7 +15,6 @@ class Renderer
         @type = model[:type] # TODO
       end
 
-
       def accessor? = reader? && writer?
       def reader? = reader_visibility == :public
       def writer? = writer_visibility == :public

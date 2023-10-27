@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Renderer
   class Template
     class Bind
@@ -8,11 +6,11 @@ class Renderer
         @keys = keys
       end
 
-      def method_missing(method_name, *args, **kwargs, &)
+      def method_missing(method_name, ...)
         if @keys.include? method_name
           @keys[method_name]
         else
-          @obj.send(method_name, *args, **kwargs, &)
+          @obj.send(method_name, ...)
         end
       end
 
@@ -30,8 +28,8 @@ class Renderer
       @template.filename = path.to_s
     end
 
-    def render(b, *args, **kwargs)
-      bind = Bind.new(b, *args, **kwargs)
+    def render(bin, *, **)
+      bind = Bind.new(bin, *, **)
       @template.result(bind.make_binding)
     end
   end

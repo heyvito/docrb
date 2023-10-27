@@ -4,12 +4,12 @@ class Renderer
   class Component
     class DocBox < Component
       prop :item, :meta, :has_class_docs, :has_class_details,
-           :instance_methods, :has_instance_methods,
-           :class_methods, :has_class_methods,
-           :has_instance_attributes, :instance_attributes,
-           :has_class_attributes, :class_attributes,
-           :has_constants, :constants,
-           :page_components
+        :instance_methods, :has_instance_methods,
+        :class_methods, :has_class_methods,
+        :has_instance_attributes, :instance_attributes,
+        :has_class_attributes, :class_attributes,
+        :has_constants, :constants,
+        :page_components
 
       def prepare
         @has_class_docs = (item.doc && !item.doc.empty?) || false

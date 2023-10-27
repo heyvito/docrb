@@ -1,9 +1,11 @@
 class Renderer
   class Helpers
-    def self.current_renderer = @current_renderer
+    class << self
+      attr_reader :current_renderer
+    end
 
-    def self.current_renderer=(value)
-      @current_renderer = value
+    class << self
+      attr_writer :current_renderer
     end
 
     def svg(name, **kwargs)
@@ -34,8 +36,8 @@ class Renderer
     def div(class_name, **kwargs, &block)
       classes = [class_name, kwargs.delete(:class_name)].flatten.compact
       args = kwargs
-               .compact
-               .map { |k, v| "#{k}=\"#{v.gsub(/"/, "\\\"")}\"" }
+        .compact
+        .map { |k, v| "#{k}=\"#{v.gsub('"', "\\\"")}\"" }
 
       start_tag = "<div class=\"#{classes.join(" ")}\" #{args.join(" ")}>"
       end_tag = "</div>"
@@ -46,10 +48,10 @@ class Renderer
       raw = block.call
 
       captured = if fake_buffer.empty?
-                   raw
-                 else
-                   fake_buffer
-                 end
+        raw
+      else
+        fake_buffer
+      end
     ensure
       block.binding.local_variable_set(:_erbout, "#{start_tag}#{captured}#{end_tag}")
     end
@@ -61,10 +63,10 @@ class Renderer
       raw = block.call
 
       captured = if fake_buffer.empty?
-                   raw
-                 else
-                   fake_buffer
-                 end
+        raw
+      else
+        fake_buffer
+      end
     ensure
       block.binding.local_variable_set(:_erbout, old_buffer)
     end
@@ -119,7 +121,7 @@ class Renderer
       when Docrb::Parser::Attribute then "#{object.type}-attr-#{object.name}"
       when Docrb::Parser::Method then "#{object.type}-method-#{object.name}"
       when Docrb::Parser::Constant then "const-#{object.name}"
-      when Docrb::Parser::Class, Docrb::Parser::Module  then ""
+      when Docrb::Parser::Class, Docrb::Parser::Module then ""
       else
         raise ArgumentError, "#anchor_for cannot process #{object.class.name}"
       end
@@ -127,8 +129,8 @@ class Renderer
   end
 
   Component.constants
-           .reject { _1 == :HELPERS }
-           .each do |cls|
+    .reject { _1 == :HELPERS }
+    .each do |cls|
     Helpers.define_method(cls.to_s.snakify) do |**kwargs|
       Component.const_get(cls).new(**kwargs).render
     end

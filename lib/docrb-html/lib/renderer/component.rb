@@ -4,11 +4,11 @@ class Renderer
   class Component
     attr_accessor :id
 
-    def self.prop(*names)
-      attr_accessor(*names)
+    def self.prop(*)
+      attr_accessor(*)
 
       @props ||= []
-      @props.append(*names)
+      @props.append(*)
     end
 
     class << self
@@ -38,7 +38,7 @@ class Renderer
 
     def render(&)
       prepare
-      opts = props.map { [_1, send(_1)] }.to_h
+      opts = props.to_h { [_1, send(_1)] }
       opts[:id] = @id
       template.render(HELPERS, **opts, &)
     end
