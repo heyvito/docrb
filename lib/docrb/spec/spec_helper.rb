@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "docrb"
-require_relative "helpers"
 require "byebug"
 
 RSpec.configure do |config|
@@ -14,6 +13,4 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
-
-  config.include(Helpers)
 end
