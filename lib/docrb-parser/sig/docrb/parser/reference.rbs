@@ -1,0 +1,19 @@
+module Docrb
+  class Parser
+    class Reference
+      attr_accessor parent: untyped
+      attr_accessor path: Array[Symbol]
+      attr_accessor resolved: ResolvedReference
+
+      @parser: Parser
+
+      def initialize: (Parser parser, untyped parent, Array[Symbol] path) -> void
+
+      def resolved?: () -> bool
+
+      def fulfilled?: () -> bool
+
+      def dereference!: () -> untyped
+    end
+  end
+end

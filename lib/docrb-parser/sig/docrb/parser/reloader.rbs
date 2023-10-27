@@ -1,0 +1,7 @@
+module Docrb
+  class Parser
+    class Reloader
+      def self.reload!: () -> true
+    end
+  end
+end

@@ -1,23 +1,23 @@
 div.text-block-base {
     .html {
-        display: block;
+        display: flex;
+        flex-wrap: wrap;
+
         &.inline {
-            display: inline;
+            display: inline-block;
         }
 
-        margin-bottom: 12px;
         &.no-margin {
             margin-bottom: 0;
         }
 
         @include body;
         color: #FFFFFF;
-        p code {
-            @include mono;
-            font-size: 95%;
-            padding: 3px 4px;
-            background-color: #29292B;
-            border-radius: 3px;
+
+        .documentation-comment-base { display: inline-block; }
+
+        span {
+            white-space: pre-wrap;
         }
     }
 }

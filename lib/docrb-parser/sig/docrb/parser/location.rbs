@@ -1,0 +1,24 @@
+module Docrb
+  class Parser
+    class Location
+
+
+      @virtual: untyped
+
+      attr_reader line_start: Integer?
+      attr_reader line_end: Integer?
+      attr_reader source: String?
+      attr_reader offset_start: Integer?
+      attr_reader offset_end: Integer?
+      attr_reader parser: Parser
+      attr_reader file_path: String?
+      attr_reader ast: untyped
+
+      def virtual?: -> bool
+
+      def initialize: (Parser parser, untyped ast, untyped loc) -> void
+
+      def load_source!: () -> void
+    end
+  end
+end

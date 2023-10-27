@@ -1,0 +1,24 @@
+class Object
+  self.@__inspect_installed__: bool
+
+  def own_methods: -> Array[Symbol]
+  def object_id_hex: -> String
+
+  def self.docrb_inspect: { (void) -> String } -> String
+  def self.docrb_inspect_attrs: (*Symbol attrs) -> void
+  def self.visible_attr_reader: (*Symbol args) -> void
+  def self.visible_attr_Accessor: (*Symbol args) -> void
+
+  def try: (String | Symbol method, *untyped args,  **untyped kwargs) ?{ (untyped) -> untyped } -> untyped
+  def attr_list: (*String names) -> String
+end
+
+class Array[unchecked out Elem] < Object
+  def first!: () -> Elem
+
+  alias old_first first
+end
+
+module Kernel
+  def then!: () { (self) -> untyped } -> (nil | untyped)
+end

@@ -1,16 +1,15 @@
-<% div("text-block-base", id:) do %>
-    <% list.each do |i| %>
-        <% if i[:type] == 'span' %>
-            <div class="html inline"><%= i[:contents] %></div>
-        <% elsif i[:type] == 'ref' %>
-            <%= reference(ref: i) %>
-        <% elsif i[:type] == 'html' %>
-            <div class="html"><%= i[:contents] %></div>
-        <% elsif i[:type] == 'sym_ref' %>
-            <%= symbol(name: i[:contents]) %>
-        <% else %>
-            Unknown textblock item <%= i[:kind] %><br/>
-            <%= i.to_json %>
-        <% end %>
+<% div("text-block-base#{inline ? " inline" : ""}", id:) do %>
+    <% if contents.is_a? String %>
+        <div class="html"><%= Renderer::Markdown.inline(contents) %></div>
+    <% else %>
+        <div class="html">
+            <% contents.each do |block| %>
+                <% if block[:type] == :span %>
+                    <span><%= Renderer::Markdown.inline(block[:value]).gsub("\n", ' ').gsub(/\s{2,}/, ' ') %></span>
+                <% else %>
+                    <%= documentation_comment(doc: block) %>
+                <% end %>
+            <% end %>
+        </div>
     <% end %>
 <% end %>

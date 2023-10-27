@@ -1,5 +1,6 @@
 AllCops:
   TargetRubyVersion: 3.2
+  SuggestExtensions: false
   NewCops: enable
 
 Style/StringLiterals:
@@ -13,40 +14,56 @@ Style/StringLiteralsInInterpolation:
 Layout/LineLength:
   Max: 120
 
-Metrics/ClassLength:
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/Documentation:
   Enabled: false
 
-Metrics/MethodLength:
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent_relative_to_receiver
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Style/EmptyCaseCondition:
   Enabled: false
 
 Metrics/BlockLength:
   Enabled: false
 
-Metrics/PerceivedComplexity:
-  Enabled: false
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - bin/*
-
-Metrics/AbcSize:
+Metrics/ClassLength:
   Enabled: false
 
 Metrics/ModuleLength:
   Enabled: false
 
-Lint/BooleanSymbol:
+Metrics/MethodLength:
   Enabled: false
 
-Style/Documentation:
+Metrics/AbcSize:
   Enabled: false
 
-Naming/MethodParameterName:
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
   Exclude:
     - lib/renderer/helpers.rb
+    - lib/renderer/template.rb
+
+Naming/FileName:
+  Exclude:
+    - lib/docrb-html.rb

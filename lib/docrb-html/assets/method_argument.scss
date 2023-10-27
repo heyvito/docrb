@@ -1,6 +1,5 @@
 div.method-argument-base {
     color: #FFAB42;
-    display: inline;
     display: flex;
 
     span { display: inline-block; }
@@ -63,13 +62,8 @@ div.method-argument-base {
     .simple-argument {
         &.symbol { color: #CF91C9; }
         &.number { color: #FF724C; }
-        &.string {
-            color: #8CC98F;
-            :before, :after {
-                content: '"';
-                color: #39B6B5;
-            }
-        }
+        &.string { color: #8CC98F; }
         &.plain  { color: white; }
+        &.call   { color: white; }
     }
 }

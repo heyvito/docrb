@@ -1,0 +1,34 @@
+# frozen_string_literal: true
+module Docrb
+  class Parser
+    class Class < Container
+      attr_accessor node: untyped
+      attr_accessor inherits: Reference?
+      attr_accessor singleton: bool
+
+      def kind: () -> :class
+
+      def initialize: (Parser parser, Container? parent, untyped node) -> void
+
+      def unowned_classes: () -> NodeArray[Class]
+
+      def unowned_modules: () -> NodeArray[Module]
+
+      def unowned_instance_methods: () -> NodeArray[Method]
+
+      def unowned_class_methods: () -> NodeArray[Method]
+
+      def unowned_class_attributes: () -> NodeArray[Attribute]
+
+      def unowned_instance_attributes: () -> NodeArray[Attribute]
+
+      def singleton!: () -> self
+
+      def singleton?: () -> bool
+
+      def handle_parsed_node: (Parser parser, untyped node) ->  void
+
+      def merge_singleton_class: (Class other) -> void
+    end
+  end
+end

@@ -2,11 +2,7 @@
 
 class Renderer
   class Metadata
-    def initialize(base)
-      @data = JSON.parse(File.read("#{base}/metadata.json"))
-    end
-
-    def format_authors
+    def self.format_authors(authors)
       return nil if authors.nil? || authors.count.zero?
       return authors.first if authors.length == 1
 
@@ -14,31 +10,19 @@ class Renderer
       "#{authors.first}, and #{others} other#{others > 1 ? "s" : ""}"
     end
 
-    def project_links
+    def self.project_links(meta)
       links = []
-      links << { kind: "rubygems", href: host_url } if host_url
+      links << { kind: "rubygems", href: meta[:host_url] } if meta.key? :host_url
 
-      if git_url
-        links << if git_url.index("github.com/")
-                   { kind: "github", href: git_url }
-                 else
-                   { kind: "git", href: git_url }
-                 end
+      if meta.key? :git_url
+        links << if meta[:git_url].index("github.com/")
+          { kind: "github", href: meta[:git_url] }
+        else
+          { kind: "git", href: meta[:git_url] }
+        end
       end
 
       links
-    end
-
-    def method_missing(method_name, *arguments, &)
-      if @data.include? method_name.to_s
-        @data[method_name.to_s]
-      else
-        super
-      end
-    end
-
-    def respond_to_missing?(method_name, include_private = false)
-      @data.key?(method_name.to_s) || super
     end
   end
 end

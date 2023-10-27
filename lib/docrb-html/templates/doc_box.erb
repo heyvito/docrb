@@ -4,13 +4,7 @@
             <h3 class="heading"><%= name %></h3>
             <div class="link-column">
                 <% list.each do |item| %>
-                    <div>
-                        <% if item.is_a? String %>
-                            <%= reference(ref: { contents: item }) %>
-                        <% else %>
-                            <%= reference(ref: { ref_type: item.type, ref_path: item.path, contents: item.name }) %>
-                        <% end %>
-                    </div>
+                    <div><%= reference(object: item) %></div>
                 <% end %>
             </div>
         </div>
@@ -19,11 +13,11 @@
 
 <% div("doc-box-base", id:) do %>
     <div class="left">
-        <%= has_class_docs && documentation_block(doc: item[:doc]) %>
+        <%= has_class_docs ? documentation_block(doc: item.doc) : nil %>
         <% if has_class_details %>
             <div class="section-container" id="class-details">
                 <div class="horizontal-container">
-                    <% child_structure.call("Inherits", [item.inherits].compact) %>
+                    <% child_structure.call("Inherits", [item.kind == :class && item.inherits || nil].compact) %>
                     <% child_structure.call("Extends", item.extends) %>
                     <% child_structure.call("Includes", item.includes) %>
                     <% child_structure.call("Child Modules", item.modules) %>
@@ -31,41 +25,56 @@
                 </div>
             </div>
         <% end %>
-        <% if has_attrs %>
-            <div class="section-container" id="attributes">
-                <h3 class="heading">Attributes</h3>
-                <% attrs.each do |att| %>
-                    <div class="attribute-container"
-                        data-origin="<%= att.dig(:origin) %>"
-                        data-type="<%= att[:type].downcase %>"
-                        id="<%= att[:type] %>-<%= att[:name] %>"
-                        >
-                        <% if att[:decoration] %>
-                            <%= svg(att[:decoration], class_name: "decoration", title: att[:decoration] == 'inherited' ? 'Inherited' : 'Override') %>
+
+        <% if has_constants %>
+            <div class="section-container" id="constants">
+                <h3 class="heading">Constants</h3>
+                <% constants.each do |const| %>
+                    <% origin = source_of(const, item) %>
+                    <div class="constant-container"
+                         data-origin="<%= origin %>"
+                         data-type="Constant"
+                         id="const-<%= const.name %>"
+                    >
+                        <% if origin == "inherited" %>
+                            <%= svg("inheritance", class_name: "decoration", title: 'Inherited') %>
                         <% end %>
-                        <span class="name"><%= att[:name] %></span>
-                        <span class="label"><%= att[:visibility] %></span>
-                        <% if att[:doc] %>
-                            <%= markdown(source: att[:doc]) %>
-                        <% else %>
-                            <div class="faded">
-                                (No documentation available)
-                            </div>
-                        <% end %>
+                        <a class="dashed" href="<%= link_for(const) %>"><span class="name"><%= const.name %></span></a>
+                        <div class="doc-block">
+                            <%= documentation_block(doc: const.doc) %>
+                        </div>
                     </div>
+                <% end %>
+            </div>
+        <% end %>
+
+        <% if has_class_attributes %>
+            <div class="section-container" id="class-attributes">
+                <h3 class="heading">Class Attributes</h3>
+                <% class_attributes.each do |att| %>
+                    <%= attribute(item: att, kind: :class, omit_type: true) %>
+                <% end %>
+            </div>
+        <% end %>
+
+        <% if has_instance_attributes %>
+            <div class="section-container" id="instance-attributes">
+                <h3 class="heading">Instance Attributes</h3>
+                <% instance_attributes.each do |att| %>
+                    <%= attribute(item: att, kind: :instance, omit_type: true) %>
                 <% end %>
             </div>
         <% end %>
         <% if has_class_methods %>
             <div class="section-container" id="class-methods">
                 <h3 class="heading">Class Methods</h3>
-                <%= method_list(list: sdefs) %>
+                <%= method_list(list: class_methods, omit_type: true, parent: item) %>
             </div>
         <% end %>
         <% if has_instance_methods %>
             <div class="section-container" id="instance-methods">
                 <h3 class="heading">Instance Methods</h3>
-                <%= method_list(list: defs) %>
+                <%= method_list(list: instance_methods, omit_type: true, parent: item) %>
             </div>
         <% end %>
     </div>

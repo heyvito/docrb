@@ -1,0 +1,79 @@
+module Docrb
+  class Parser
+    class CommentParser
+      type untyped_hash = Hash[untyped, untyped]
+      type replacement_object = { start_idx: Integer, end_idx: Integer, object: untyped_hash }
+
+      NEWLINE: "\n"
+      POUND: "#"
+      SPACE: ""
+      DASH: "-"
+      COLON: ":"
+
+      @data: Array[String]
+
+      @data_len: Integer
+
+      attr_accessor objects: Array[untyped_hash] | Array[String]
+      attr_accessor current_object: Array[String]
+      attr_accessor cursor: Integer
+      attr_accessor visibility: String?
+
+      def self.parse: (String data) -> untyped_hash
+
+      def initialize: (String data) -> void
+
+      def at_end?: () -> bool
+      def will_end?: () -> bool
+      def at_start?: () -> bool
+      def peek: () -> String?
+      def peek_next: () -> String?
+      def peek_prev: () -> String?
+      def advance: () -> String?
+      def match?: (*String args) -> bool
+      def consume_spaces: () -> nil
+      def extract_while: () { () -> bool } -> void
+      def extract_until: () { () -> bool } -> void
+
+      def parse: () -> true
+
+      def flush_current_object: () -> void
+
+      def parse_one: () -> void
+
+      FIELD_LIST_HEADING: ::Regexp
+
+      def detect_field_list: () -> void
+
+      def process_field_list: (String obj, Integer at) -> void
+
+      def process_text_blocks: () -> void
+
+      def span: (String text) -> { type: :span, value: String }
+
+      def process_text_block: (String text) -> void
+
+      COMMENT_METHOD_REF_REGEXP: ::Regexp
+
+      def extract_method_reference: (String text) ->replacement_object?
+
+      COMMENT_SYMBOL_REGEXP: ::Regexp
+
+      def extract_symbol: (untyped text) -> replacement_object?
+
+      CAMELCASE_IDENTIFIER_REGEXP: ::Regexp
+
+      def extract_camelcase_identifier: (untyped text) -> replacement_object?
+
+      VISIBILITY_INDICATOR_REGEXP: ::Regexp
+
+      def process_visibility: (?untyped? obj) -> void
+
+      def process_code_examples: () -> void
+
+      def join_code_example_lines: (Integer start_at, Integer end_at) -> void
+
+      def normalize_tree: () -> void
+    end
+  end
+end

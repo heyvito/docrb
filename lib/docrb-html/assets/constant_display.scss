@@ -1,0 +1,16 @@
+div.constant-display-base {
+    @include container;
+    margin-top: 8px;
+    .container {
+        @include container;
+    }
+
+    .constant-name {
+        @include mono;
+        color: #FFAB42;
+    }
+
+    .label {
+        @include label;
+    }
+}

@@ -1,0 +1,15 @@
+<% div("field-block-base", id:) do %>
+    <h3>Arguments</h3>
+    <table>
+        <tbody>
+        <% fields.each do |name, value| %>
+            <tr>
+                <td class="name"><%= name %></td>
+                <td class="value">
+                    <%= documentation_comment(doc: value) %>
+                </td>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+<% end %>

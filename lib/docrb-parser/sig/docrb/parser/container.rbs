@@ -1,0 +1,91 @@
+module Docrb
+  class Parser
+    class Container
+      type visibility = :public | :protected | :private | :module_function
+
+      attr_accessor parent: Container?
+      attr_accessor parser: Parser
+      attr_accessor classes: NodeArray[Class]
+      attr_accessor modules: NodeArray[Module]
+      attr_accessor instance_methods: NodeArray[Method]
+      attr_accessor class_methods: NodeArray[Method]
+      attr_accessor extends: NodeArray[Reference]
+      attr_accessor includes: NodeArray[Reference]
+      attr_accessor name: String | Symbol
+      attr_accessor path_segments: Array[Symbol]?
+      attr_accessor instance_attributes: Array[Attribute]
+      attr_accessor class_attributes: Array[Attribute]
+      attr_accessor current_visibility_modifier: visibility
+      attr_accessor constants: NodeArray[Constant]
+      attr_accessor location: Location
+
+      @object_id: Integer
+      @node: untyped
+      @explicit_instance_visibility: Hash[Symbol, visibility]
+      @explicit_class_visibility: Hash[Symbol, visibility]
+      @defined_by: Array[Location]
+      @inside_module_function: bool
+      @default_constructor_visibility: visibility?
+
+      SINGLETON_CLASS_TYPES: ::Array[:singleton_class_node | :deferred_singleton_class_node]
+
+      def initialize: (Parser parser, Container? parent, untyped node) -> void
+
+      def extract_references: (NodeArray[untyped] from, Symbol attr) -> NodeArray[untyped]
+
+      def unowned_classes: () -> NodeArray[Class]
+
+      def all_classes: () -> NodeArray[Class]
+
+      def unowned_modules: () -> NodeArray[Module]
+
+      def all_modules: () -> NodeArray[Module]
+
+      def unowned_instance_methods: () -> NodeArray[Method]
+
+      def all_instance_methods: () -> NodeArray[Method]
+
+      def unowned_class_methods: () -> NodeArray[Method]
+
+      def all_class_methods: () -> NodeArray[Method]
+
+      def unowned_class_attributes: () -> NodeArray[Attribute]
+
+      def all_class_attributes: () -> NodeArray[Attribute]
+
+      def unowned_instance_attributes: () -> NodeArray[Attribute]
+
+      def all_instance_attributes: () -> NodeArray[Attribute]
+
+      def id: () -> Integer
+
+      def handle_parsed_node: (Parser parser, untyped node) -> nil
+
+      def instance_method_added: (Parser parser, untyped node, Method method) -> nil
+
+      def class_method_added: (Parser parser, untyped node, Method method) -> nil
+
+      def class_added: (Parser parser, untyped node, Method method) -> nil
+
+      def module_added: (Parser parser, untyped node, Method method) -> nil
+
+      def handle_call: (Call call) -> untyped
+
+      def handle_node: (untyped node) -> untyped
+
+      def parse_node: (untyped node) -> untyped
+
+      def reference: (Symbol | Array[Symbol] path) -> Reference
+
+      def add_attribute: (Parser parser, untyped node, Attribute::kind `type`) -> void
+
+      def adjust_split_attributes!: (Symbol scope) -> void
+
+      def handle_visibility_modifier: (Parser _parser, untyped node) -> void
+
+      def handle_singleton_visibility_modifier: (Parser _parser, untyped node) -> void
+
+      def update_constructor_visibility!: () -> void
+    end
+  end
+end

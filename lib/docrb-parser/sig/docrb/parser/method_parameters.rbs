@@ -1,0 +1,34 @@
+module Docrb
+  class Parser
+    class MethodParameters < Array[Parameter]
+      def initialize: (Parser parser, Method parent, untyped node) -> void
+
+      def id: () -> Integer
+
+      class Parameter
+        attr_reader parser: Parser
+        type kind = :arg | :kw | :optarg | :optkw | :rest | :kwrest | :block
+
+        def initialize: (Parser parser, kind kind, Symbol name, ?untyped? value) -> void
+
+        def id: () -> Integer
+
+        def has_value?: () -> bool
+
+        def optional?: () -> bool
+
+        def positional?: () -> bool
+
+        def keyword?: () -> bool
+
+        def block?: () -> bool
+
+        def rest?: () -> bool
+
+        private
+
+        def name_by_type: () -> Symbol
+      end
+    end
+  end
+end

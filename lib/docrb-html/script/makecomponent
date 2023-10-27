@@ -4,7 +4,7 @@
 require_relative "../lib/renderer/core_extensions"
 name = ARGV.first.snakify
 real_name = ARGV.first
-dashed_name = name.gsub(/_/, "-")
+dashed_name = name.gsub("_", "-")
 File.write("assets/#{name}.scss", "div.#{dashed_name}-base {\n\n}\n")
 styles = File.read("assets/style.scss")
 File.write("assets/style.scss", "#{styles}@import './#{name}';\n")

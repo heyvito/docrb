@@ -3,21 +3,32 @@
 class Renderer
   class Component
     class Reference < Component
-      prop :ref, :unresolved, :path
+      prop :unresolved, :path, :ref_type, :object, :value
 
       def prepare
-        @unresolved = !ref[:ref_path]
-        return if @unresolved
+        case @object
+        when Docrb::Parser::Reference
+          @unresolved = !@object.fulfilled?
+          @path = [@object.path.last]
+          return if @unresolved
 
-        components = ref[:ref_path].dup
-        @path = if ref[:ref_type] == "method"
-                  method_name = components.pop
-                  parent_name = components.pop
-                  components + ["#{parent_name}.html#{method_name}"]
-                else
-                  last = components.pop
-                  (components + ["#{last}.html"]).compact
-                end
+          @object = @object.dereference!
+          prepare
+        when Docrb::Parser::Container
+          @path = [@object.name]
+          @ref_type = @object.kind
+          parent = @object.parent
+          until parent.nil?
+            @path << parent.name
+            parent = parent.parent
+          end
+          @path << ""
+          @path.reverse!
+        else
+          @ref_type = :pure
+          @value = @object[:value]
+          @object = @object[:object]
+        end
       end
     end
   end

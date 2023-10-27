@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+module Docrb
+  class Parser
+    class NodeArray[unchecked out Elem] < Array[Elem]
+      def by_kind: (Symbol kind) -> ::Array[Elem]
+
+      def named: (Symbol name) -> ::Array[Elem]
+
+      def named!: (Symbol name) -> Elem
+    end
+  end
+end

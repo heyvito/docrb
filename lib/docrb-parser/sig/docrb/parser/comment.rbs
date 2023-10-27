@@ -1,0 +1,14 @@
+module Docrb
+  class Parser
+    class Comment
+      @location: Location
+      @file_path: String
+      @parser: Parser
+      @comments: Array[String]?
+
+      def initialize: (Parser parser, Location location, String file_path) -> void
+
+      def locate: () -> void
+    end
+  end
+end

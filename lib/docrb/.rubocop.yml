@@ -1,8 +1,7 @@
 AllCops:
   TargetRubyVersion: 3.2
+  SuggestExtensions: false
   NewCops: enable
-  Exclude:
-    - spec/**/*
 
 Style/StringLiterals:
   Enabled: true
@@ -12,59 +11,50 @@ Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
 
-Style/Documentation:
-  Exclude:
-    - lib/docrb/module_extensions.rb
-
 Layout/LineLength:
   Max: 120
-  Exclude:
-    - exe/*
-    - lib/docrb/comment_parser.rb
-    - lib/docrb/ruby_parser.rb
 
-Metrics/ClassLength:
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: start_of_line
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/Documentation:
   Enabled: false
 
-Metrics/MethodLength:
-  Enabled: false
+Layout/CaseIndentation:
+  EnforcedStyle: end
 
-Naming/MethodParameterName:
-  Exclude:
-    - spec/**/*
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent_relative_to_receiver
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Style/EmptyCaseCondition:
+  Enabled: false
 
 Metrics/BlockLength:
-  Exclude:
-    - exe/*
-    - lib/docrb/ruby_parser.rb
+  Enabled: false
 
-Metrics/PerceivedComplexity:
-  Exclude:
-    - exe/*
-    - lib/docrb/doc_compiler/base_container.rb
-    - lib/docrb/doc_compiler/base_container/computations.rb
-    - lib/docrb/doc_compiler/object_container.rb
-    - lib/docrb/resolvable.rb
-    - lib/docrb/ruby_parser.rb
-
-Metrics/CyclomaticComplexity:
-  Exclude:
-    - exe/*
-    - lib/docrb/doc_compiler/base_container.rb
-    - lib/docrb/doc_compiler/base_container/computations.rb
-    - lib/docrb/doc_compiler/object_container.rb
-    - lib/docrb/resolvable.rb
-    - lib/docrb/ruby_parser.rb
-
-Lint/ShadowingOuterLocalVariable:
-  Exclude:
-    - exe/*
-
-Metrics/AbcSize:
+Metrics/ClassLength:
   Enabled: false
 
 Metrics/ModuleLength:
   Enabled: false
 
-Lint/BooleanSymbol:
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
   Enabled: false

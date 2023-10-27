@@ -17,5 +17,5 @@ indent_size = 2
 [*.yml]
 indent_size = 2
 
-[./bin/*]
+[bin/*]
 indent_size = 2

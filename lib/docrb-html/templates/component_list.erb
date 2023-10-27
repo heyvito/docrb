@@ -1,18 +1,24 @@
 <% div("component-list-base", id:, class_name: class_name) do %>
     <% list.each do |item| %>
         <%
-            base_path = (parents + ["#{item[:name]}.html"]).join("/")
-            new_parents = parents + [item[:name]]
+            obj = item[:object]
+            base_path = (parents + ["#{obj.name}.html"]).join("/")
+            new_parents = parents + [obj.name]
         %>
         <div class="level" style="padding-left: <%= item[:level] * 20 %>px">
-            <%= type_definition(type: item[:type], href: "#{base_path}", name: item[:name]) %>
+            <%= type_definition(type: obj.kind, href: "#{base_path}", name: obj.name) %>
             <div class="level" style="padding-left: <%= (item[:level] + 1) * 20 %>px">
-                <% item[:attributes]&.each do |att| %>
-                    <%= method_display(type: att[:type], name: att[:name], visibility: att[:visibility], decoration: att[:decoration], href: "#{base_path}#attr-#{att[:name]}") %>
+                <%= obj.constants.map { constant_display(item: _1) }.join("") %>
+                <% obj.kind == :class && obj.instance_attributes.each do |i| %>
+                    <%= attribute_display(item: i, kind: :instance) %>
                 <% end %>
-                <% item[:defs]&.each do |met| %>
-                    <%= method_display(href: "#{base_path}##{met[:short_type]}-#{met[:name]}", **met) %>
-                <% end %>
+                <% obj.class_attributes
+                      .map { attribute_display(item: _1, kind: :class) }
+                      .join("") %>
+                <%= (obj.all_class_methods + obj.all_instance_methods)
+                        .map { method_display(item: _1, parent: obj) }
+                        .join("")
+                %>
             </div>
             <%= component_list(list: item[:modules], parents: new_parents, class_name: "no-margin") %>
             <%= component_list(list: item[:classes], parents: new_parents, class_name: "no-margin") %>
