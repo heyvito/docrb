@@ -25,13 +25,14 @@ module Docrb
       docrb_inspect { to_a }
 
       class Parameter
-        visible_attr_reader :kind, :name, :value
+        visible_attr_reader :kind, :name, :value, :value_type
         attr_reader :parser
 
         def initialize(parser, kind, name, value = nil)
           @object_id = parser.make_id(self)
           @kind = kind
           @name = name || name_by_type
+          @value_type = type_for_value(value)
           @value = value.then! { parser.location(_1.location) }
         end
 
@@ -58,6 +59,22 @@ module Docrb
           when :block then :&
           else
             raise "Invalid call to name_by_type for a non-anonymous parameter"
+          end
+        end
+
+        def type_for_value(value)
+          return unless value
+
+          case value
+          when Prism::SymbolNode then :symbol
+          when Prism::NilNode then :nil
+          when Prism::FalseNode, Prism::TrueNode then :bool
+          when Prism::CallNode then :call
+          when Prism::StringNode then :string
+          when Prism::IntegerNode,Prism::FloatNode then :number
+          when Prism::ConstantReadNode, Prism::ConstantPathNode then :const
+          else
+            puts "Unhandled parameter value type #{value.class.name}"
           end
         end
       end

@@ -11,22 +11,7 @@ div.text-block-base {
 
         @include body;
         color: #FFFFFF;
-        p code {
-            @include mono;
-            font-size: 95%;
-            padding: 3px 4px;
-            background-color: #29292B;
-            border-radius: 3px;
-        }
 
-        code {
-            padding: 0.2em 0.4em;
-            margin: 0;
-            font-size: 85%;
-            white-space: break-spaces;
-            background: #48484d;
-            border-radius: 6px;
-            text-shadow: 0 0 3px black;
-        }
+        .documentation-comment-base { display: inline-block; }
     }
 }

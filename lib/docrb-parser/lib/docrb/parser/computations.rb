@@ -72,7 +72,9 @@ module Docrb
         @parser.all_objects
           .filter { _1.respond_to? :doc }
           .reject { _1.doc.nil? }
-          .each { resolve_documentation_reference(_1, _1.doc) }
+          .each do |node|
+          node.doc[:value].each { resolve_documentation_reference(node, _1) }
+        end
       end
 
       def associate_container_sources
@@ -82,26 +84,73 @@ module Docrb
           .each { _1.defined_by << _1.location }
       end
 
-      def resolve_documentation_reference(obj, node)
-        node[:value].each.with_index do |v, i|
-          case v[:type]
-          when :camel_case_identifier
-            if v[:value].to_sym == obj.try(:name)&.to_sym
-              v[:type] = :neutral_identifier
-            else
-              resolved = resolve_path(obj, [v[:value].to_sym])
-              if resolved.respond_to?(:id)
-                v[:type] = :reference
-                v[:id] = resolved.id
-                v[:path] = path_of(resolved)
-              else
-                v[:type] = :unresolved_identifier
-              end
-            end
-          else
-            puts "Unhandled documentation node #{v[:type]}"
-          end
+      def resolve_documentation_reference(node, obj)
+        case obj[:type]
+        when :block
+          obj[:value].map! { resolve_documentation_reference node, _1 }
+          obj
+        when :fields
+          obj[:value].transform_values! { resolve_documentation_reference(node, _1) }
+          obj
+        when :method_ref
+          resolve_documentation_pure_reference(node, obj)
+        else
+          puts "Unhandled documentation node #{obj[:type]}"
+          obj
         end
+
+        # obj[:value].each do |v|
+        #   case v[:type]
+        #   when :identifier
+        #     if v[:value].to_sym == node.try(:name)&.to_sym
+        #       v[:type] = :neutral_identifier
+        #     else
+        #       resolved = resolve_path(node, [v[:value].to_sym])
+        #       if resolved.respond_to?(:id)
+        #         v[:type] = :reference
+        #         v[:id] = resolved.id
+        #         v[:path] = path_of(resolved)
+        #       else
+        #         v[:type] = :unresolved_identifier
+        #       end
+        #     end
+        #   when :reference
+        #     resolve_documentation_pure_reference(v, node)
+        #   when :block
+        #     v[:value]
+        #       .reject { [:span, :symbol].include? _1[:type] }
+        #       .each { resolve_documentation_reference(node, _1) }
+        #   when :fields
+        #     val = v[:value].values.flatten
+        #     resolve_documentation_reference(node, { value: val })
+        #   else
+        #     puts "Unhandled documentation node #{v[:type]}"
+        #   end
+        # end
+      end
+
+      def resolve_documentation_pure_reference(node, ref)
+        return ref if ref.key? :object
+
+        node = find_next_container(node) unless node.is_a? Container
+        name = ref[:name].to_sym
+        obj = if ref[:class_path]
+                resolve_path(ref[:class_path].split("::").map(&:to_sym), node)
+              else
+                node
+              end
+        result = if ref[:type] == :method
+                   obj.all_instance_methods.named(name).first || obj.all_class_methods.named(name).first
+                 else
+                   obj.all_objects.named(name).first
+                 end
+
+        if result.nil?
+          ref[:type] = :unresolved_identifier
+        else
+          ref[:object] = result
+        end
+        ref
       end
 
       def merge_inline_documentation_blocks
@@ -122,8 +171,8 @@ module Docrb
 
             last_i = i - 1
             last = block[:value][i - 1]
-
-            if last[:type] == :neutral_identifier && current[:type] == :text_block
+            mergeable_types = [:netural_identifier, :unresolved_identifier, :reference]
+            if mergeable_types.include?(last[:type]) && current[:type] == :text_block
               case current[:value]
               when String
                 current[:value] = [last, { type: :span, value: current[:value] }]
@@ -136,6 +185,26 @@ module Docrb
                 continue = true
                 break
               end
+            elsif mergeable_types.include?(current[:type]) && last[:type] == :text_block
+              case last[:value]
+              when String
+                last[:value] = [{ type: :span, value: last[:value] }, current]
+                block[:value].delete_at(i)
+                continue = true
+                break
+              when Array
+                last[:value].append(current)
+                block[:value].delete_at(i)
+                continue = true
+                break
+              end
+            elsif current[:type] == :text_block && last[:type] == :text_block && !current[:paragraph]
+              last[:value] = [{ type: :span, value: last[:value] }] if last[:value].is_a? String
+              current[:value] = [{ type: :span, value: current[:value] }] if current[:value].is_a? String
+              last[:value].append(*current[:value])
+              block[:value].delete_at(i)
+              continue = true
+              break
             end
           end
         end

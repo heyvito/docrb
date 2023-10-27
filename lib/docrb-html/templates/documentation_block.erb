@@ -2,24 +2,8 @@
     <% if doc.nil? || doc.empty? %>
         <div class="faded">(No documentation available)</div>
     <% else %>
-        <!--
-        <%= doc %>
-        -->
-        <% doc[:value].each do |i| %>
-            <% if i[:type] == :text_block %>
-                <%= text_block contents: i[:value] %>
-            <% elsif i[:type] == 'code_example' %>
-                <%= markdown(source: i[:contents]) %>
-            <% elsif i[:type] == :field_block %>
-                <%= field_block(fields: i[:value]) %>
-            <% elsif i[:type] == :neutral_identifier %>
-                <code><%= i[:value] %></code>
-            <% else %>
-                <div class="unknown-object">
-                    Unknown object <%= i[:type] %>
-                    <!-- <%= i.to_json %> -->
-                </div>
-            <% end %>
+        <% doc[:value].each do |block| %>
+            <%= documentation_comment(doc: block) %>
         <% end %>
     <% end %>
 <% end %>

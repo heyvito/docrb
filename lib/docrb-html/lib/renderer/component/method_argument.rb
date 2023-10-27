@@ -8,7 +8,8 @@ class Renderer
       def prepare
         @type = @arg.kind
         @name = @arg.name
-        @value = @arg.value
+        @value = @arg.value&.source
+        @value_type = @arg.value_type
 
         @computed = {
           rest: rest_arg,
@@ -27,9 +28,9 @@ class Renderer
       end
 
       REST_ARG_BY_TYPE = {
-        :kwrestarg => :double,
-        :restarg => :single,
-        :blockarg => :block
+        kwrest: :double,
+        rest: :single,
+        block: :block
       }.freeze
 
       def rest_arg
@@ -40,70 +41,21 @@ class Renderer
         return if value_type.nil?
 
         case value_type
-        when "sym"
+        when :symbol, :bool
           { kind: :symbol, value: }
-        when "bool"
-          { kind: :symbol, value: value.inspect }
-        when "nil"
+        when :nil
           { kind: :symbol, value: "nil" }
-        when "int"
+        when :number
           { kind: :number, value: }
-        when "str"
+        when :string
           { kind: :string, value: }
-        when "send"
-          method_call_argument(value)
-        when "const"
-          const_value(value)
+        when :call
+          { kind: :call, value: }
+        when :const
+          { kind: :const, value: [value] }
         else
           { kind: :plain, value: }
         end
-      end
-
-      def method_call_argument(value)
-        class_path = value[:target].map do |i|
-          next { kind: :symbol, value: "self" } if i == "self"
-
-          # TODO: Is this plain?
-          [{ kind: :class_or_module, value: i }, { kind: :plain, value: "::" }]
-        end.flatten
-
-        class_path.pop
-
-        {
-          kind: :method_call_argument,
-          value: [
-            class_path,
-            { kind: :plain, value: "." },
-            { kind: :plain, value: value[:name] }
-          ].flatten
-        }
-      end
-
-      def const_value(value)
-        class_path = value[:target].map do |i|
-          # TODO: Is this plain?
-          [{ kind: :class_or_module, value: i }, { kind: :continuation, double: true }]
-        end.flatten
-
-        class_path.pop
-
-        if class_path.empty?
-          return {
-            kind: :const,
-            value: [
-              { kind: :class_or_module, value: value[:name] }
-            ].flatten
-          }
-        end
-
-        {
-          kind: :const,
-          value: [
-            class_path,
-            { kind: :continuation, double: true },
-            { kind: :class_or_module, value: value[:name] }
-          ].flatten
-        }
       end
     end
   end

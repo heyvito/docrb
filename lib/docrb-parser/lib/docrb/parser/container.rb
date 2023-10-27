@@ -96,7 +96,9 @@ module Docrb
       end
 
       def all_objects
-        all_classes + all_modules + all_instance_methods + all_classes + all_class_attributes + all_instance_attributes
+        NodeArray.new(
+          all_classes + all_modules + all_instance_methods + all_classes +
+            all_class_attributes + all_instance_attributes)
       end
 
       def id = @object_id

@@ -3,7 +3,7 @@
 class Renderer
   class Component
     class Reference < Component
-      prop :unresolved, :path, :ref_type, :object
+      prop :unresolved, :path, :ref_type, :object, :value
 
       def prepare
         case @object
@@ -24,6 +24,10 @@ class Renderer
           end
           @path << ""
           @path.reverse!
+        else
+          @ref_type = :pure
+          @value = @object[:value]
+          @object = @object[:object]
         end
       end
     end

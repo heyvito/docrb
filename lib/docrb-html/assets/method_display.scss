@@ -5,6 +5,10 @@ div.method-display-base {
         @include container;
     }
 
+    a.dashed {
+        padding-bottom: 3px;
+    }
+
     .method-name {
         @include mono;
         color: #39B6B5;

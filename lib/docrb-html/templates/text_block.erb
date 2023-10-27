@@ -5,9 +5,9 @@
         <div class="html">
             <% contents.each do |block| %>
                 <% if block[:type] == :span %>
-                    <span class="span"><%= Renderer::Markdown.inline(block[:value]) %></span>
-                <% elsif block[:type] == :neutral_identifier %>
-                    <code><%= block[:value] %></code>
+                    <%= Renderer::Markdown.inline(block[:value]) %>
+                <% else %>
+                    <%= documentation_comment(doc: block) %>
                 <% end %>
             <% end %>
         </div>

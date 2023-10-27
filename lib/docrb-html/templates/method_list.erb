@@ -1,7 +1,7 @@
 <% div("method-list-base", id:) do %>
     <% !list&.empty? && list.each do |i| %>
         <div class="method-definition"
-             id="<%= i.type %>-<%= i.name %>"
+             id="<%= i.type %>-method-<%= i.name %>"
              data-visibility="<%= i.doc&.dig(:meta, :visibility_annotation) || '' %>"
              data-origin="<%= source_of(i, parent) %>">
             <div class="method-block">

@@ -1,0 +1,23 @@
+<% div("documentation-comment-base", id:) do %>
+    <% if doc[:type] == :block %>
+        <%= text_block contents: doc[:value] %>
+    <% elsif doc[:type] == :code_example %>
+        <%= markdown(source: doc[:contents]) %>
+    <% elsif doc[:type] == :fields %>
+        <%= field_block(fields: doc[:value]) %>
+    <% elsif doc[:type] == :neutral_identifier || doc[:type] == :unresolved_identifier %>
+        <code><%= doc[:value] %></code>
+    <% elsif doc[:type] == :reference %>
+        <%= reference(object: i) %>
+    <% elsif doc[:type] == :symbol %>
+        <%= symbol(name: doc[:value]) %>
+    <% elsif doc[:type] == :method_ref %>
+        <a class="method-ref dashed" href="<%= link_for(doc[:object]) %>"><%= doc[:value] %></a>
+        <!-- <%= doc.to_json %> -->
+    <% else %>
+        <div class="unknown-object">
+            Unknown object <%= doc[:type] %>
+            <!-- <%= doc.to_json %> -->
+        </div>
+    <% end %>
+<% end %>

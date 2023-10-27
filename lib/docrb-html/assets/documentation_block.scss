@@ -1,10 +1,23 @@
-div.documentation-block-base {
+
+.documentation-comment-base, div.documentation-block-base {
     line-height: 1.5;
     .faded {
         @include faded;
     }
 
     .inline { display: inline-block }
+
+    .method-ref {
+        @include mono;
+    }
+
+    code {
+        @include mono;
+        font-size: 95%;
+        padding: 3px 4px;
+        background-color: #29292B;
+        border-radius: 3px;
+    }
 }
 
 .unknown-object {

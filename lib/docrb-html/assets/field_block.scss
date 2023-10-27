@@ -1,5 +1,10 @@
 .field-block-base {
     margin-left: 8px;
+
+    .documentation-comment-base {
+        display: inline-block;
+    }
+
     h3 {
         @include faded;
         text-transform: uppercase;
@@ -26,5 +31,16 @@
                 margin: 0;
             }
         }
+    }
+
+    code {
+        padding: 0.2em 0.4em;
+        margin: 0;
+        font-size: 85%;
+        white-space: break-spaces;
+        background: #48484d;
+        border-radius: 6px;
+        text-shadow: 0 0 3px black;
+        color: white;
     }
 }

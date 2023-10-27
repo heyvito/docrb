@@ -1,14 +1,17 @@
 <% div("reference-base", id:) do %>
     <% if unresolved %>
-        <span class="unresolved" title="Docrb could not resolve this reference. It may be from an external library or dynamically-generated method.">
-            <%= svg('questionmark') %>
-            <span><%= path.last %></span>
-        </span>
-    <% else %>
-    <a href="<%= path.join('/') %>.html">
+        <span><%= value || path.last %></span>
+    <% elsif ref_type == :pure %>
+        <a href="<%= link_for(object) %>">
         <span class="resolved <%= ref_type %>">
-            <span><%= path.last %></span>
+            <span><%= value %></span>
         </span>
-    </a>
+        </a>
+    <% else %>
+        <a href="<%= path.join('/') %>.html">
+        <span class="resolved <%= ref_type %>">
+            <span><%= value || path.last %></span>
+        </span>
+        </a>
     <% end %>
 <% end %>

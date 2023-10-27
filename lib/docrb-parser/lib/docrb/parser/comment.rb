@@ -1,11 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "comment_parser/code_example_block"
-require_relative "comment_parser/code_example_parser"
-require_relative "comment_parser/field_block"
-require_relative "comment_parser/field_list_parser"
-require_relative "comment_parser/text_block"
-
 module Docrb
   class Parser
     class Comment
@@ -24,7 +18,7 @@ module Docrb
 
         lines = @parser.lines_for(@file_path, @location.ast)
 
-        # NOTE: Regarding -1, -1 since `lines` is zero-indexed, and another -1
+        # NOTE: Regarding -2, -1 since `lines` is zero-indexed, and another -1
         # to get the line before the current location
         offset = @location.line_start - 2
         comments = []
@@ -39,14 +33,8 @@ module Docrb
           offset -= 1
         end
 
-        comments
-          .reverse!
-          .map!(&:strip)
-          .map! { _1.gsub(/^#/, "") }
+        @comments = comments.reverse.map(&:strip)
 
-        indentation_level = /(\s+)/.match(comments.first)&.[](1)&.length
-        comments.map! { _1[indentation_level...] } unless indentation_level.nil?
-        @comments = comments.empty? ? nil : comments
       end
     end
   end

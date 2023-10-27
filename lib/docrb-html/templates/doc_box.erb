@@ -4,17 +4,7 @@
             <h3 class="heading"><%= name %></h3>
             <div class="link-column">
                 <% list.each do |item| %>
-                    <div>
-                        <%= case item
-                            when String
-                              reference(ref: { contents: item })
-                            when Renderer::Entities::Reference, Renderer::Entities::Container
-                              reference(native_ref: item)
-                            else
-                              reference(object: item)
-                            end
-                        %>
-                    </div>
+                    <div><%= reference(object: item) %></div>
                 <% end %>
             </div>
         </div>
