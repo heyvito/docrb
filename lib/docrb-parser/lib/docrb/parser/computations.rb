@@ -94,6 +94,8 @@ module Docrb
           obj
         when :method_ref
           resolve_documentation_pure_reference(node, obj)
+        when :span, :symbol
+          obj
         else
           puts "Unhandled documentation node #{obj[:type]}"
           obj

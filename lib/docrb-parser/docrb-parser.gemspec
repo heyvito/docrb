@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   DESC
   spec.homepage = "https://github.com/heyvito/docrb"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.1"
+  spec.required_ruby_version = ">= 3.2"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/trunk/lib/docrb-parser"

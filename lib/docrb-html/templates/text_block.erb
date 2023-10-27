@@ -5,7 +5,7 @@
         <div class="html">
             <% contents.each do |block| %>
                 <% if block[:type] == :span %>
-                    <%= Renderer::Markdown.inline(block[:value]) %>
+                    <span><%= Renderer::Markdown.inline(block[:value]).gsub("\n", ' ').gsub(/\s{2,}/, ' ') %></span>
                 <% else %>
                     <%= documentation_comment(doc: block) %>
                 <% end %>

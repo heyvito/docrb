@@ -1,8 +1,10 @@
 PATH
   remote: .
   specs:
-    docrb-html (0.2.5)
+    docrb-html (0.3.0)
       nokogiri (~> 1.14)
+      redcarpet (~> 3.6)
+      rouge (~> 4.1)
       sassc (~> 2.4)
 
 GEM
@@ -17,6 +19,8 @@ GEM
     nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
     racc (1.6.2)
+    redcarpet (3.6.0)
+    rouge (4.2.0)
     sassc (2.4.0)
       ffi (~> 1.9)
 

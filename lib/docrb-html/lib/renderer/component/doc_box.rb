@@ -35,7 +35,8 @@ class Renderer
           "class-documentation" => { enabled: has_class_docs, name: "Class Documentation" },
           "class-details" => { enabled: has_class_details, name: "Inheritance" },
           "constants" => { enabled: has_constants, name: "Constants" },
-          "attributes" => { enabled: has_class_attributes || has_instance_attributes, name: "Attributes" },
+          "class-attributes" => { enabled: has_class_attributes, name: "Class Attributes" },
+          "instance-attributes" => { enabled: has_instance_attributes, name: "Instance Attributes" },
           "class-methods" => { enabled: has_class_methods, name: "Class Methods" },
           "instance-methods" => { enabled: has_instance_methods, name: "Instance Methods" }
         }

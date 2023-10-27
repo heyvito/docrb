@@ -1,6 +1,8 @@
 div.text-block-base {
     .html {
-        display: block;
+        display: flex;
+        flex-wrap: wrap;
+
         &.inline {
             display: inline-block;
         }
@@ -13,5 +15,9 @@ div.text-block-base {
         color: #FFFFFF;
 
         .documentation-comment-base { display: inline-block; }
+
+        span {
+            white-space: pre-wrap;
+        }
     }
 }

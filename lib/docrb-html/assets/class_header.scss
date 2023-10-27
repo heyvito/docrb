@@ -19,6 +19,7 @@ div.class-header-base {
     .class-name {
         @include body($weight: 300, $size: 64);
         color: white;
+        margin-bottom: 8px;
     }
 
     .def-link {

@@ -171,7 +171,6 @@ def run
   spec[:version] = Docrb::VERSION
 
   if File.exist? readme_path
-    puts "Found #{readme_path}"
     md = File.read(readme_path).to_s
     spec[:readme] = md
   else
