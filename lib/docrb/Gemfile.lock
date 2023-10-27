@@ -88,7 +88,7 @@ DEPENDENCIES
   docrb-parser!
   rake (~> 13.0)
   rspec (~> 3.0)
-  rubocop (~> 1.8)
+  rubocop (~> 1.21)
 
 BUNDLED WITH
    2.2.22
