@@ -11,7 +11,7 @@ PATH
   remote: ../docrb-parser
   specs:
     docrb-parser (0.1.0)
-      prism
+      prism (~> 0.13)
 
 PATH
   remote: .
