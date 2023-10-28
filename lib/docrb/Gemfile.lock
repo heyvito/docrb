@@ -1,7 +1,7 @@
 PATH
   remote: ../docrb-html
   specs:
-    docrb-html (0.3.0)
+    docrb-html (0.3.1)
       nokogiri (~> 1.14)
       redcarpet (~> 3.6)
       rouge (~> 4.1)
@@ -10,13 +10,13 @@ PATH
 PATH
   remote: ../docrb-parser
   specs:
-    docrb-parser (0.1.0)
+    docrb-parser (0.1.1)
       prism (~> 0.13)
 
 PATH
   remote: .
   specs:
-    docrb (0.3.0)
+    docrb (0.3.1)
       docrb-html (~> 0.3)
       docrb-parser (~> 0.1)
 
@@ -36,7 +36,7 @@ GEM
     parallel (1.22.1)
     parser (3.2.1.0)
       ast (~> 2.4.1)
-    prism (0.14.0)
+    prism (0.15.1)
     racc (1.7.1)
     rainbow (3.1.1)
     rake (13.0.6)

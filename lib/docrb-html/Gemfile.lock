@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    docrb-html (0.3.0)
+    docrb-html (0.3.1)
       nokogiri (~> 1.14)
       redcarpet (~> 3.6)
       rouge (~> 4.1)

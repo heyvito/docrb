@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    docrb-parser (0.1.0)
+    docrb-parser (0.1.1)
       prism (~> 0.13)
 
 GEM
