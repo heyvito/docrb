@@ -38,4 +38,8 @@ div.markdown-base {
     code, pre {
         @include mono($size: 15);
     }
+
+    .faded {
+        @include faded;
+    }
 }

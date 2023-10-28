@@ -108,9 +108,9 @@ module Docrb
         case
         when parent == id
           :self
-        when @includes.filter(&:fulfilled?).any? { _1.resolved.id == id }
+        when @includes.filter(&:fulfilled?).any? { _1.resolved.id == parent }
           :included
-        when @extends.filter(&:fulfilled?).any? { _1.resolved.id == id }
+        when @extends.filter(&:fulfilled?).any? { _1.resolved.id == parent }
           :extended
         else
           :unknown

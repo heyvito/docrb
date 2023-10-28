@@ -39,11 +39,16 @@ module Docrb
         last_found_node = resolve[:last_found_node] || parser
         if resolve[:missing_segments].empty?
           remove_from_parent!(node, parent: node.parent)
-          node.parent = resolve[:last_found_node]
-          if node.is_a? Class
-            last_found_node.classes << node
-          elsif node.is_a? Module
-            last_found_node.modules << node
+          if last_found_node.is_a? Parser
+            node.parent = nil
+            last_found_node.nodes.append(node)
+          else
+            node.parent = resolve[:last_found_node]
+            if node.is_a? Class
+              last_found_node.classes << node
+            elsif node.is_a? Module
+              last_found_node.modules << node
+            end
           end
 
           return
@@ -93,59 +98,74 @@ module Docrb
           obj[:value].transform_values! { resolve_documentation_reference(node, _1) }
           obj
         when :method_ref
-          resolve_documentation_pure_reference(node, obj)
+          resolve_method_reference(node, obj)
         when :span, :symbol
           obj
+        when :identifier
+          if obj[:value].to_sym == node.try(:name)&.to_sym
+            obj[:type] = :neutral_identifier
+          else
+            container = if node.is_a? Container
+              node
+            else
+              find_next_container(node)
+            end
+            resolved = resolve_path(container, [obj[:value].to_sym])
+            if resolved.respond_to?(:id)
+              obj[:type] = :reference
+              obj[:id] = resolved.id
+              obj[:path] = path_of(resolved)
+            else
+              obj[:type] = :unresolved_identifier
+            end
+          end
+          obj
+        when :class_path_ref
+          resolve_class_path_reference(node, obj)
         else
           puts "Unhandled documentation node #{obj[:type]}"
           obj
         end
-
-        # obj[:value].each do |v|
-        #   case v[:type]
-        #   when :identifier
-        #     if v[:value].to_sym == node.try(:name)&.to_sym
-        #       v[:type] = :neutral_identifier
-        #     else
-        #       resolved = resolve_path(node, [v[:value].to_sym])
-        #       if resolved.respond_to?(:id)
-        #         v[:type] = :reference
-        #         v[:id] = resolved.id
-        #         v[:path] = path_of(resolved)
-        #       else
-        #         v[:type] = :unresolved_identifier
-        #       end
-        #     end
-        #   when :reference
-        #     resolve_documentation_pure_reference(v, node)
-        #   when :block
-        #     v[:value]
-        #       .reject { [:span, :symbol].include? _1[:type] }
-        #       .each { resolve_documentation_reference(node, _1) }
-        #   when :fields
-        #     val = v[:value].values.flatten
-        #     resolve_documentation_reference(node, { value: val })
-        #   else
-        #     puts "Unhandled documentation node #{v[:type]}"
-        #   end
-        # end
       end
 
-      def resolve_documentation_pure_reference(node, ref)
+      def resolve_class_path_reference(node, ref)
+        path = (ref[:class_path].gsub(/(^::|::$)/, "").split("::") + [ref[:target]]).flatten.compact.map(&:to_sym)
+        node = find_next_container(node) unless node.is_a? Container
+        resolved = resolve_path_partial(path, node)
+
+        unless resolved[:missing_segments].empty?
+          ref[:type] = :unresolved_identifier
+          return ref
+        end
+
+        prefix = /^(::)/.match(ref[:value])&.to_a&.last
+        segments = resolved[:segment_list]
+        target = resolved[:last_found_node].all_objects.named(ref[:name].to_sym).first
+
+        if target.nil?
+          ref[:type] = :unresolved_identifier
+          return ref
+        end
+
+        {
+          type: :class_path_reference,
+          prefix:,
+          segments:,
+          target:
+        }
+      end
+
+      def resolve_method_reference(node, ref)
         return ref if ref.key? :object
 
         node = find_next_container(node) unless node.is_a? Container
         name = ref[:name].to_sym
         obj = if ref[:class_path]
-          resolve_path(ref[:class_path].split("::").map(&:to_sym), node)
+          resolve_path(node, ref[:class_path].split("::").map(&:to_sym))
         else
           node
         end
-        result = if ref[:type] == :method
-          obj.all_instance_methods.named(name).first || obj.all_class_methods.named(name).first
-        else
-          obj.all_objects.named(name).first
-        end
+        result = resolve_path(obj, [ref[:target], name].compact.map(&:to_sym))
 
         if result.nil?
           ref[:type] = :unresolved_identifier
@@ -347,6 +367,7 @@ module Docrb
         c_filter = -> { container_only ? _1.is_a?(Container) : true }
 
         found_segments = []
+        segment_list = []
         until path.empty?
           last_parent = parent
           if parent.is_a? Parser
@@ -357,6 +378,7 @@ module Docrb
             end
 
             found_segments << path.shift
+            segment_list << parent
             next
           end
 
@@ -365,14 +387,15 @@ module Docrb
             parent = last_parent
             break
           end
-
           found_segments << path.shift
+          segment_list << parent
         end
 
         {
           last_found_node: parent,
           found_segments:,
-          missing_segments: path
+          missing_segments: path,
+          segment_list:
         }
       end
 
@@ -455,8 +478,7 @@ module Docrb
           container&.all_class_methods&.named(name)&.first ||
           container&.all_class_attributes&.named(name)&.first ||
           (find_object(container.parent, name, container_only:) if container&.parent) ||
-          parser.nodes.lazy.filter { _1.is_a?(Container) && _1.name == name }.first ||
-          parser.nodes.lazy.filter { _1.is_a? Container }.first { find_object(_1, name) }
+          parser.nodes.lazy.filter { _1.is_a?(Container) && _1.name == name }.first
       end
 
       def find_next_container(obj)

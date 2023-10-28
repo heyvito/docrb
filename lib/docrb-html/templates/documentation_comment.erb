@@ -8,12 +8,13 @@
     <% elsif doc[:type] == :neutral_identifier || doc[:type] == :unresolved_identifier %>
         <code><%= doc[:value] %></code>
     <% elsif doc[:type] == :reference %>
-        <%= reference(object: i) %>
+        <%= reference(object: doc) %>
     <% elsif doc[:type] == :symbol %>
         <%= symbol(name: doc[:value]) %>
     <% elsif doc[:type] == :method_ref %>
         <a class="method-ref dashed" href="<%= link_for(doc[:object]) %>"><%= doc[:value] %></a>
-        <!-- <%= doc.to_json %> -->
+    <% elsif doc[:type] == :class_path_reference %>
+        <%= class_path_reference(doc: doc) %>
     <% else %>
         <div class="unknown-object">
             Unknown object <%= doc[:type] %>

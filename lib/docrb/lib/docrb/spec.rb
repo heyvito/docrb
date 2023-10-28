@@ -14,7 +14,7 @@ module Docrb
     # :git_url, :authors, :host_url
     def self.parse_folder(input)
       spec = Dir["#{input}/*"].find { |f| f.end_with? ".gemspec" }
-      return if spec.nil?
+      return {} if spec.nil?
 
       data = Gem::Specification.load(spec)
       is_private = data.metadata.key? "allowed_push_host"

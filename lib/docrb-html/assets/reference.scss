@@ -11,6 +11,11 @@ div.reference-base {
         &.module { color: #579AD1; border-color: #579AD1; }
     }
 
+    .broken {
+        @include mono;
+        cursor: initial;
+    }
+
     .unresolved {
         border: 1px dotted #D8D8D8;
         border-radius: 10px 3px 3px 10px;

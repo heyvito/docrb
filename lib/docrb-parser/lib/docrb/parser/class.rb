@@ -64,7 +64,10 @@ module Docrb
         return false if parent.nil? || !parent.fulfilled?
         return true if parent.resolved.id == obj.parent.id
 
-        is_inherited?(obj, parent.dereference!.inherits)
+        deref = parent.dereference!
+        return is_inherited?(obj, deref.inherits) if deref.is_a? Class
+
+        false
       end
 
       def source_of(obj)

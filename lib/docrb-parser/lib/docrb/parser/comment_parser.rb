@@ -10,6 +10,11 @@ module Docrb
       SPACE = " "
       DASH = "-"
       COLON = ":"
+      IGNORED_ANNOTATIONS = [
+        ":nodoc:",
+        ":nocov:",
+        /^rubocop:\s?(enable|disable)/
+      ].freeze
 
       attr_accessor :objects, :current_object, :cursor, :visibility
 
@@ -17,8 +22,8 @@ module Docrb
         new(data)
           .tap(&:parse)
           .then do |parser|
-          { meta: { visibility: parser.visibility }.compact, value: parser.objects }
-        end
+            { meta: { visibility: parser.visibility }.compact, value: parser.objects }
+          end
       end
 
       def initialize(data)
@@ -28,6 +33,7 @@ module Docrb
           .split(NEWLINE)
           .map(&:rstrip)
           .map { _1.gsub(/^\s*#\s?/, "") }
+          .reject { reject_annotation? _1 }
           .join(NEWLINE)
           .each_grapheme_cluster
           .to_a
@@ -35,6 +41,16 @@ module Docrb
         @visibility = nil
 
         @cursor = 0
+      end
+
+      def reject_annotation?(value)
+        IGNORED_ANNOTATIONS.any? do |match|
+          case match
+          when Regexp then match.match? value
+          when String then value == match
+          else false
+          end
+        end
       end
 
       def at_end? = (cursor >= @data_len)
@@ -173,13 +189,13 @@ module Docrb
       end
 
       # rubocop:disable Layout/LineLength
-      COMMENT_METHOD_REF_REGEXP = /(?:([A-Z][a-zA-Z0-9_]*::)*([A-Z][a-zA-Z0-9_]*))?(::|\.|#)([A-Za-z_][a-zA-Z0-9_@]*[!?]?)(?:\([a-zA-Z0-9=_,\s*]+\))?/
+      COMMENT_METHOD_REF_REGEXP = /(?:((?:::)?(?:[a-z][a-z0-9_]*::)*)([a-z][a-z0-9_]*))?(::|\.|#)([a-z_][a-z0-9_@]*[!?]?)(?:\([a-z0-9:=_,\s*]+\))?/i
       # rubocop:enable Layout/LineLength
 
       def extract_method_reference(text)
         match = COMMENT_METHOD_REF_REGEXP.match(text) or return nil
         value, class_path, target, invocation, name = match.to_a
-        class_path&.gsub!(/::$/, "")
+        class_path&.gsub!(/(^::|::$)/, "")
 
         {
           start_idx: match.begin(0),

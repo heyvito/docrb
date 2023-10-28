@@ -3,7 +3,12 @@
         <span class="rest-arg <%= computed[:rest] %>"></span>
     <% end %>
 
-    <%= computed[:name] %>
+    <% if computed[:rest] || computed[:block] %>
+        <%= computed[:name].to_s.gsub(/^([*]{1,2}|&)$/, '') %>
+    <% else %>
+        <%= computed[:name] %>
+    <% end %>
+
 
     <% if computed[:continuation] %>
         <span class="continuation <%= computed[:continuation] %>"></span>

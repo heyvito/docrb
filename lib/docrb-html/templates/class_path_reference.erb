@@ -1,0 +1,9 @@
+<% div("class-path-reference-base", id:) do %>
+    <% if doc[:prefix] %>
+        <span><%= doc[:prefix] %></span>
+    <% end %>
+    <% doc[:segments].each do |segment| %>
+        <span class="segment <%= segment.kind %>"><a class="dashed" href="<%= link_for(segment) %>"><%= segment.name %></a></span>
+    <% end %>
+    <span class="segment <%= doc[:target].kind %>"><a class="dashed" href="<%= link_for(doc[:target]) %>"><%= doc[:target].name %></a></span>
+<% end %>

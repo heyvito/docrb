@@ -215,7 +215,7 @@ RSpec.describe Docrb::Parser::CommentParser do
           type: :block,
           value: [
             { type: :span, value: "Emits a fatal message to the log output, and invokes " },
-            { class_path: nil, name: "exit", target: "Kernel", type: :method_ref, value: "Kernel#exit" },
+            { class_path: "", name: "exit", target: "Kernel", type: :method_ref, value: "Kernel#exit" },
             { type: :span, value: "\nwith a non-zero status code. When error is provided, this method attempts\nto gather a stacktrace to include in the emitted entry. This log entry\ncannot be filtered, and is always emitted." }
           ]
         }

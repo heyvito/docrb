@@ -1,5 +1,5 @@
 <% div("documentation-block-base", id:) do %>
-    <% if doc.nil? || doc.empty? %>
+    <% if doc.nil? || doc.empty? || doc[:value].empty? %>
         <div class="faded">(No documentation available)</div>
     <% else %>
         <% doc[:value].each do |block| %>

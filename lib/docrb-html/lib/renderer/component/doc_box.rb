@@ -12,7 +12,7 @@ class Renderer
         :page_components
 
       def prepare
-        @has_class_docs = (item.doc && !item.doc.empty?) || false
+        @has_class_docs = (item.doc && !item.doc.empty? && !item.doc[:value].empty?) || false
         @instance_methods = item.all_instance_methods
         @class_methods = item.all_class_methods
         @instance_attributes = item.kind == :class ? item.all_instance_attributes : []

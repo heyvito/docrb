@@ -75,6 +75,7 @@ module Docrb
           when Prism::StringNode then :string
           when Prism::IntegerNode, Prism::FloatNode then :number
           when Prism::ConstantReadNode, Prism::ConstantPathNode then :const
+          when Prism::HashNode then :hash
           else
             puts "Unhandled parameter value type #{value.class.name}"
           end

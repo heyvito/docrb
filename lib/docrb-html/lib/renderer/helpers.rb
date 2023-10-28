@@ -90,7 +90,7 @@ class Renderer
       parent ||= obj.parent
 
       case (v = parent.source_of(obj))
-      when :inherited, :included, :extended then v.to_s
+      when :inherited, :included, :extended then "inherited"
       when :self then ("override" if obj.try(:overriding))
       else raise "WTF? Source of #{obj} is #{v.inspect}!"
       end

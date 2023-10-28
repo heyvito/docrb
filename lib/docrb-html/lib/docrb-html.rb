@@ -73,9 +73,14 @@ class Renderer
       links: Metadata.project_links(@spec)
     )
 
-    index = Page.new(title: "#{@spec[:name]} - Docrb") do
-      readme = Component::Markdown.new(source: Markdown.render(@spec[:readme]))
+    readme = if @spec[:readme]
+      Component::Markdown.new(source: Markdown.render(@spec[:readme]))
+    else
+      Component::Markdown.new(source: "<div class=\"html\">" \
+                                      "<div class=\"faded\">This project does not contain a README.</div></div>")
+    end
 
+    index = Page.new(title: "#{@spec[:name]} - Docrb") do
       [
         project_header,
         Component::TabBar.new(

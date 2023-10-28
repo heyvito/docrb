@@ -1,0 +1,30 @@
+.html div.class-path-reference-base {
+    @include mono;
+    display: flex;
+    flex-wrap: wrap;
+
+    span {
+        white-space: unset;
+
+        a {
+            @include mono;
+        }
+
+        &.segment {
+            &:not(:last-child) {
+                ::after {
+                    content: '::'
+                }
+            }
+
+
+            &.class a {
+                color: #FFAB42;
+            }
+
+            &.module a {
+                color: #579AD1;
+            }
+        }
+    }
+}
