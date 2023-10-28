@@ -16,7 +16,7 @@ PATH
 PATH
   remote: .
   specs:
-    docrb (0.3.1)
+    docrb (0.3.3)
       docrb-html (~> 0.3)
       docrb-parser (~> 0.1)
 
