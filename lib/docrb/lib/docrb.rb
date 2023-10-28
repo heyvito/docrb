@@ -6,6 +6,7 @@ require "rubygems"
 require "docrb-html"
 require "docrb-parser"
 
+require_relative "docrb/version"
 require_relative "docrb/spec"
 require_relative "docrb/doc_compiler"
 
