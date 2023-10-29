@@ -70,6 +70,10 @@ def run
     opt.on("-lLICENSE", "--license=LICENSE", "The project's license. #{gemspec_info}") do |license|
       options[:license] = license
     end
+
+    opt.on("-pPATH", "--path=PATH", "The base URL to use for generated links.") do |path|
+      options[:path] = path
+    end
   end
 
   opts.parse!
@@ -125,6 +129,12 @@ def run
 
   %i[name summary host_url git_url authors license].each do |k|
     spec[k] = options[k] if options.key? k
+  end
+
+  spec[:base_path] = if options.key? :path
+    options[:path]
+  else
+    "/"
   end
 
   if spec[:name] == "" || spec[:name].nil?
