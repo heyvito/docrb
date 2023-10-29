@@ -29,6 +29,8 @@ require_relative "renderer/metadata"
 require_relative "renderer/entities"
 
 class Renderer
+  attr_reader :spec
+
   def now = Time.now.strftime("%A, %-d %b %Y %H:%M:%S %Z")
 
   def output_path(*args) = File.join(@output, *args.map(&:to_s))
@@ -53,6 +55,11 @@ class Renderer
   def make_outline
     (@source.nodes.by_kind(:module) + @source.nodes.by_kind(:class))
       .map { outline(_1) }
+  end
+
+  def make_path(*args)
+    root = spec.fetch(:base_path, "/")
+    File.join(root, *args.flatten.map(&:to_s))
   end
 
   def outline(object, level = 0)
@@ -86,8 +93,8 @@ class Renderer
         Component::TabBar.new(
           selected_index: 0,
           items: [
-            { name: "Readme", href: "/" },
-            { name: "Components", href: "/components.html" }
+            { name: "Readme", href: make_path("/") },
+            { name: "Components", href: make_path("/components.html") }
           ]
         ),
         readme,
@@ -101,8 +108,8 @@ class Renderer
         Component::TabBar.new(
           selected_index: 1,
           items: [
-            { name: "Readme", href: "/" },
-            { name: "Components", href: "/components.html" }
+            { name: "Readme", href: make_path("/") },
+            { name: "Components", href: make_path("/components.html") }
           ]
         ),
         Component::ComponentList.new(list: make_outline),

@@ -1,6 +1,6 @@
 <% div("breadcrumb-base", id:) do %>
     <div class="link">
-        <a href="/">
+        <a href="<%= make_path %>">
             <%= svg("home") %>
             <span class="padded">
             <%= project_name %>
@@ -11,13 +11,13 @@
         <%= svg("breadcrumb_separator") %>
         <div class="link">
             <% if i[:parents].empty? && idx == 0 %>
-                <a href="components.html">
+                <a href="<%= make_path("/components.html") %>">
                 <span class="padded">
                     <%= i[:name] %>
                 </span>
                 </a>
             <% else %>
-                <a href="<%= (i[:parents] + [idx == 0 ? nil : i[:name]]).flatten.compact.join("/") %>.html">
+                <a href="<%= make_path((i[:parents] + [idx == 0 ? nil : i[:name]]).flatten.compact) %>.html">
             <span class="padded">
                 <%= i[:name] %>
             </span>

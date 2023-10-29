@@ -96,13 +96,14 @@ class Renderer
       end
     end
 
+    def make_path(*) = self.class.current_renderer.make_path(*)
+
     def path_of(object, root: true)
       return [] if object.nil? && !root
       return [object.name] + path_of(object.parent, root: false) unless root
 
       path = ["#{object.name}.html"] + path_of(object.parent, root: false)
-      path << ""
-      path.reverse.join("/")
+      make_path(*path.reverse)
     end
 
     def link_for(object)

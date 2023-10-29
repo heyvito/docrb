@@ -7,12 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-    <% unless level.zero? %>
-    <base href="<%= ([".."] * level).join("/") %>" />
-    <% end %>
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" href="<%= make_path.call("style.css") %>" />
+    <link rel="shortcut icon" href="<%= make_path.call("favicon.ico") %>" type="image/x-icon"/>
+    <link rel="icon" href="<%= make_path.call("favicon.ico") %>" type="image/x-icon"/>
 </head>
 <body>
     <% if body.is_a? Array %>
@@ -20,6 +17,6 @@
     <% else %>
         <%= body %>
     <% end %>
-    <script type="text/javascript" src="filtering.js"></script>
+    <script type="text/javascript" src="<%= make_path.call("filtering.js") %>"></script>
 </body>
 </html>

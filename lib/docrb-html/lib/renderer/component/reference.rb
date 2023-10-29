@@ -9,7 +9,7 @@ class Renderer
         case @object
         when Docrb::Parser::Reference
           @unresolved = !@object.fulfilled?
-          @path = [@object.path.last]
+          @path = @object.path
           return if @unresolved
 
           @object = @object.dereference!

@@ -1,6 +1,6 @@
 <% div("reference-base", id:) do %>
     <% if unresolved %>
-        <span class="broken"><%= value || path.last %></span>
+        <span class="broken"><%= value || path.join("::") %></span>
     <% elsif ref_type == :pure %>
         <a href="<%= link_for(object) %>">
         <span class="resolved <%= ref_type %>">
@@ -8,7 +8,7 @@
         </span>
         </a>
     <% else %>
-        <a href="<%= path.join('/') %>.html">
+        <a href="<%= make_path(*path) %>.html">
         <span class="resolved <%= ref_type %>">
             <span><%= value || path.last %></span>
         </span>

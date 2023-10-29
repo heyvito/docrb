@@ -8,9 +8,17 @@ class Renderer
       @title = "#{title} - Docrb"
       @body = body || -> { "" }
       @level = level
+      @make_path = -> (path) { Helpers.current_renderer.make_path(path) }
     end
 
-    def render = PAGE_BASE.render(Object.new, title: @title, level: @level, body: @body.call)
+    def render
+      PAGE_BASE.render(Object.new,
+        make_path: @make_path,
+        title: @title,
+        level: @level,
+        body: @body.call
+      )
+    end
 
     def render_to(path) = File.write(path, render)
   end
