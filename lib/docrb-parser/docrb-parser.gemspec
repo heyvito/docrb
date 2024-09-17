@@ -5,7 +5,7 @@ require_relative "lib/docrb/parser/version"
 Gem::Specification.new do |spec|
   spec.name = "docrb-parser"
   spec.version = Docrb::Parser::VERSION
-  spec.authors = ["Victor Gama"]
+  spec.authors = ["Vito Sartori"]
   spec.email = ["hey@vito.io"]
 
   spec.summary = "Docrb's Ruby Parser"
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 3.2"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/trunk/lib/docrb-parser"
+  spec.metadata["source_code_uri"] = "#{spec.homepage}/tree/master/lib/docrb-parser"
   spec.metadata["changelog_uri"] = spec.homepage
   spec.metadata["rubygems_mfa_required"] = "true"
 
@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "prism", "~> 0.13"
+  spec.add_dependency "prism", "~> 1"
 end

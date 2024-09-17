@@ -13,7 +13,8 @@ module Docrb
           when Prism::RequiredParameterNode then :arg
           when Prism::OptionalParameterNode then :optarg
           when Prism::RestParameterNode then :rest
-          when Prism::KeywordParameterNode then n.value ? :optkw : :kw
+          when Prism::OptionalKeywordParameterNode then n.value ? :optkw : :kw
+          when Prism::RequiredKeywordParameterNode then :kw
           when Prism::KeywordRestParameterNode then :kwrest
           when Prism::BlockParameterNode then :block
           else raise NotImplementedError, "Unsupported parameter kind #{n.class}"
