@@ -13,10 +13,17 @@ case you run into any issue, please do tell us using GitHub's issue tracker! ðŸ’
 
 ## Installing
 
-Install the `docrb` by executing the following command:
+Install `docrb` by adding it to your bundle. Remember to place it in your development/test group, and to not auto
+require it!
 
-```
-gem install docrb
+```ruby
+group :development, :test do
+  gem "docrb", require: false
+end
+
+# or...
+
+gem "docrb", require: false
 ```
 
 ## Using
@@ -143,7 +150,7 @@ chat rooms, and mailing lists is expected to follow it. Rule of thumb: be nice.
 ```
 The MIT License (MIT)
 
-Copyright (c) 2021-2023 Vito Sartori
+Copyright (c) 2021-2024 Vito Sartori
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

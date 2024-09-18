@@ -1,0 +1,7 @@
+services:
+  doc:
+    image: ruby:3
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash

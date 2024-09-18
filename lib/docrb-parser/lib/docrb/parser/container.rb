@@ -106,7 +106,7 @@ module Docrb
       def source_of(obj)
         parent = obj.parent.id
         case
-        when parent == id
+        when parent == id || (obj.parent.singleton? && obj.parent.parent == self)
           :self
         when @includes.filter(&:fulfilled?).any? { _1.resolved.id == parent }
           :included

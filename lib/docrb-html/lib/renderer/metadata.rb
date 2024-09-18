@@ -12,7 +12,7 @@ class Renderer
 
     def self.project_links(meta)
       links = []
-      links << { kind: "rubygems", href: meta[:host_url] } if meta.key? :host_url
+      links << { kind: "rubygems", href: meta[:host_url] } if meta.key?(:host_url) && !meta[:host_url].nil?
 
       if meta.key? :git_url
         links << if meta[:git_url].index("github.com/")
